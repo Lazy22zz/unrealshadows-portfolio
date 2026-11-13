@@ -1,0 +1,70 @@
+---
+import Base from "./Base.astro";
+import { url } from "../lib/url";
+
+interface Heading { depth: number; slug: string; text: string }
+interface Props {
+  title: string;
+  summary?: string;
+  eyebrow?: string;
+  headings?: Heading[];
+  sources?: string[];
+  lang?: "en" | "zh-CN";
+  back?: { href: string; label: string };
+  pills?: { label: string; kind?: string }[];
+  wide?: boolean;
+}
+const { title, summary, eyebrow, headings = [], sources = [], lang = "en", back, pills = [], wide = false } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const zh = lang === "zh-CN";
+---
+<Base title={title} description={summary} lang={lang}>
+  <div class="wrap article">
+    <header class="art-head rise">
+      {back && <a class="back small" href={url(back.href)}>← {back.label}</a>}
+      {eyebrow && <div class="eyebrow">{eyebrow}</div>}
+      <h1>{title}</h1>
+      {summary && <p class="lede">{summary}</p>}
+      {pills.length > 0 && <div class="btn-row">{pills.map((p) => <span class={`pill ${p.kind ?? ""}`}>{p.label}</span>)}</div>}
+    </header>
+    <div class={`art-grid ${toc.length < 3 ? "no-toc" : ""}`}>
+      {toc.length >= 3 && (
+        <aside class="toc" aria-label={zh ? "目录" : "On this page"}>
+          <div class="eyebrow">{zh ? "目录" : "On this page"}</div>
+          <ol>
+            {toc.map((h) => <li class={`d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+          </ol>
+          {sources.length > 0 && (
+            <>
+              <div class="eyebrow src-h">{zh ? "源码位置" : "Source files"}</div>
+              <ul class="src">{sources.map((s) => <li><code>{s}</code></li>)}</ul>
+            </>
+          )}
+        </aside>
+      )}
+      <article class={`prose ${wide ? "wide" : ""}`}>
+        <slot />
+      </article>
+    </div>
+  </div>
+</Base>
+<style>
+  .article { padding-top: 34px; }
+  .art-head { max-width: 860px; margin-bottom: 26px; }
+  .back { display: inline-block; margin-bottom: 14px; color: var(--muted); text-decoration: none; }
+  .back:hover { color: var(--gilt-2); }
+  .art-grid { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 44px; align-items: start; }
+  .art-grid.no-toc { grid-template-columns: minmax(0, 1fr); }
+  .toc { position: sticky; top: calc(var(--nav-h) + 20px); max-height: calc(100vh - var(--nav-h) - 40px); overflow: auto; font-size: 0.86rem; padding-right: 6px; }
+  .toc ol, .toc ul { list-style: none; padding: 0; margin: 10px 0 0; }
+  .toc li { margin: 0; }
+  .toc a { display: block; padding: 4px 8px; color: var(--muted); text-decoration: none; border-left: 2px solid var(--line); }
+  .toc a:hover { color: var(--text); border-left-color: var(--gilt-dim); }
+  .toc .d3 a { padding-left: 20px; font-size: 0.82rem; }
+  .src-h { margin-top: 22px; }
+  .src code { font-size: 0.72rem; word-break: break-all; display: block; margin: 4px 0; background: none; padding: 0; color: var(--faint); }
+  @media (max-width: 980px) {
+    .art-grid { grid-template-columns: minmax(0, 1fr); }
+    .toc { position: static; max-height: none; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  }
+</style>

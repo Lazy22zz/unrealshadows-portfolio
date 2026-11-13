@@ -1,0 +1,63 @@
+---
+title: 用 NativePaint 画 UI：布局纯函数与逻辑画布
+summary: 本项目大部分 HUD 和谜题面板不用 UMG 控件，而是在 UUserWidget::NativePaint 里用 Slate 绘制。核心做法：布局由一个纯函数算出，绘制和鼠标命中共用它；内容画在 1600×900 的逻辑子几何里，随分辨率缩放。
+order: 12
+topic: UI
+sources:
+  - Source/UnrealShadows_LOTL/Public/UI/US_SketchHUD.h
+  - Source/UnrealShadows_LOTL/Private/UI/US_CoinLockWidget.cpp
+  - Source/UnrealShadows_LOTL/Public/UI/US_SharedHUDWidget.h
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Figure from "../../components/Figure.astro";
+
+## 30 秒理解
+
+```cpp
+int32 UMyWidget::NativePaint(const FPaintArgs& Args, const FGeometry& Geo, const FSlateRect& Cull,
+    FSlateWindowElementList& Out, int32 LayerId, const FWidgetStyle& Style, bool bEnabled) const
+{
+    FSlateDrawElement::MakeBox(Out, LayerId, Geo.ToPaintGeometry(Size, FSlateLayoutTransform(Pos)), Brush);
+    return LayerId + 1;
+}
+```
+
+`NativePaint` 每帧把绘制元素加进列表；层号越大越靠上。它是 const 的，状态要在 `NativeTick` 里更新。
+
+## 解决什么问题
+
+项目早期几乎没有 UI 美术资源，大量面板需要按游戏状态动态绘制（旋转的盘、刻度、进度弧、手绘抖动线）。用 UMG 摆控件很难做这种程序化图形，也很难做到所有分辨率都一致。
+
+## 在本项目中的应用
+
+- **共享绘制库** `USSketchHUD`：毛刺线、羊皮纸卡、弧线、键印、按件绘制的方块等，所有职业 HUD 共用；调色板 `FUS_SketchPalette` 是唯一的颜色来源，职业色由 `ApplyClassAccent` 一处决定。
+- **布局纯函数**：例如 `ComputeLayout(ViewSize)`、`ComputeCenterHUD`。绘制、鼠标命中和自动化测试都用它——测试断言 5 档分辨率下不出屏、不重叠。
+- **逻辑子几何**：用 `MakeChild` 得到一个 1600×900 的画布，后面所有像素数和字号自动随分辨率缩放（不夹到 1，高分屏会放大）；铺满整屏的背景仍画在物理像素上。
+
+<Snippet id="nativepaint-makechild" />
+
+<Figure id="ui-mage" caption="Mage 试炼的三环回路完全由 NativePaint 绘制（盘面纹理是导入的插画，旋转、槽线和电流都是程序绘制）。" />
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "NativeTick", t: "读复制状态，更新动画时间" },
+  { k: "ComputeLayout", t: "纯函数：视口 → 各元素矩形" },
+  { k: "NativePaint", t: "MakeChild 逻辑画布 → MakeBox / MakeLines / MakeText" },
+  { k: "输入", t: "鼠标坐标 ÷ Scale → 同一份布局做命中" }
+]} />
+
+## 常见错误
+
+- 绘制和命中各算一遍布局，结果“点的不是画的”。
+- 用 `FMath::Rand` 生成每帧的手绘抖动，画面会闪成噪点——要用按索引的确定性伪随机。
+- `UUserWidget::NativePaint` 画在子控件**之上**：需要输入框的页面要把绘制放进一个子控件里。
+- 两种状态用两种画法（实心 vs 线框），小尺寸下看起来像“缺了一块”——统一形状、只改颜色。
+- 小尺寸图标层数太多：40 px 的图标靠剪影，不靠细节。
+
+## 延伸学习
+
+- `FSlateDrawElement` 的各种 Make 函数、`FSlateLayoutTransform`
+- `SLeafWidget` 自定义 Slate 控件
+- UMG 的 Invalidation / Retainer Box（性能）

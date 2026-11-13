@@ -1,0 +1,63 @@
+---
+title: CharacterMovementComponent 的客户端预测
+summary: CMC 让远端客户端先走、服务器再重放同一步、出现分歧时纠正客户端。任何会移动玩家的新能力，都应该做成 CMC 移动流里的一个事件，而不是在流之外偷偷改位置。
+order: 6
+topic: 网络 · 移动
+sources:
+  - Source/UnrealShadows_LOTL/Public/PlayerClass/US_CharacterMovementComponent.h
+  - Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Callout from "../../components/Callout.astro";
+
+## 30 秒理解
+
+远端客户端每一帧把输入打包成一个 **SavedMove**，先在本地执行（预测），再发给服务器。服务器用同样的输入重放；如果结果对不上，就发 `ClientAdjustPosition`，客户端回到服务器的位置，然后把之后保存的移动再**重放**一遍。
+
+想让一个新动作也能预测，就把它变成 SavedMove 里的一个标志：`FLAG_Custom_0..3`。
+
+## 解决什么问题
+
+如果在移动流之外直接 `SetActorLocation`，服务器不知道这件事，下一次纠正就会把玩家拉回去（橡皮筋）。如果改成“等服务器做”，玩家就要等一个来回。
+
+## 在本项目中的应用
+
+穿过传送门被做成了 CMC 事件：
+
+<Snippet id="portal-flags" caption="穿门标志随着这一步的移动一起发出去。" />
+<Snippet id="portal-restore-flags" caption="服务器（以及客户端重放时）从压缩标志里还原这一步的意图。" />
+
+要点：
+
+- **overlap 回调里只排队，不改位置**（和引擎的 `bPressedJump` 一样）：在回调里改位置会破坏正在构造的 SavedMove。
+- **这一步永不合并**：`CanCombineWith` 遇到穿门标志返回 false，否则事件会被合并掉，服务器收不到。
+- **一次性表现要防重放**：客户端被纠正后会重放之前的移动，闪白、音效、横幅必须用 `!bClientUpdating` 挡住，否则每次纠正都播一遍。
+- **拒绝要防死循环**：服务器拒绝 → 纠正 → 重放 → 又穿门 → 又拒绝……客户端记住被拒的时间戳，之后对不晚于它的标志一律跳过。
+- **不要在流之外清预测数据**：调用 `ResetPredictionData_Client()` 之类的“绕法”会丢失历史，看起来对、网络上不对。
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "客户端", t: "SavedMove(输入 + 标志) → 本地执行" },
+  { k: "服务器", t: "ServerMove → 用同样输入重放" },
+  { k: "一致", t: "确认（ack），丢掉已确认的 SavedMove" },
+  { k: "不一致", t: "ClientAdjustPosition → 客户端回退并重放未确认的移动" }
+]} />
+
+<Callout kind="info" title="同样的思路用在重力上">
+房间重力也在移动更新里计算（<code>UpdateRoomGravity</code>），并在修正时把服务器的重力方向带回客户端，而不是由某个关卡触发器直接改。
+</Callout>
+
+## 常见错误
+
+- 在 Tick 或 overlap 里直接传送 autonomous proxy。
+- 自定义标志忘了在 `UpdateFromCompressedFlags` 里还原。
+- 重放时重复触发 UI / 音效。
+- 蓝图没有重新编译：C++ 里用 `SetDefaultSubobjectClass` 换了 CMC 类，但旧蓝图序列化的仍是基类，拿不到预测。本项目为此保留了“没有自定义 CMC 就退回服务器权威穿门”的兜底。
+
+## 延伸学习
+
+- 引擎源码 `CharacterMovementComponent.cpp`：`ReplicateMoveToServer`、`ClientUpdatePositionAfterServerUpdate`
+- Root Motion Source（本项目的浮板跨越弧线就是一个自定义 Root Motion Source）
+- `p.NetShowCorrections 1`、`Net PktLag=100` 用于观察纠正

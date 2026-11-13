@@ -1,0 +1,23 @@
+---
+import Article from "../../layouts/Article.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const all = (await getCollection("systems")).sort((a, b) => a.data.order - b.data.order);
+  return all.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, prev: all[i - 1], next: all[i + 1] } }));
+}
+const { entry, prev, next } = Astro.props;
+const { Content, headings } = await render(entry);
+const pill = { verified: ["ok", "Verified"], scripted: ["wip", "Script-verified"], "in-progress": ["plan", "In progress"] }[entry.data.status];
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+<Article title={entry.data.title} summary={entry.data.summary} eyebrow={entry.data.area} headings={headings}
+  sources={entry.data.sources} back={{ href: "/systems/", label: "All systems" }} pills={[{ label: pill[1], kind: pill[0] }]}>
+  <div class="callout info"><span class="callout-title">Verification status</span>{entry.data.statusNote}</div>
+  <Content />
+  <nav class="pn">
+    {prev ? <a class="card" href={`${base}/systems/${prev.id}/`}><span class="small muted">← Previous</span><br />{prev.data.title}</a> : <span />}
+    {next ? <a class="card" href={`${base}/systems/${next.id}/`} style="text-align:right"><span class="small muted">Next →</span><br />{next.data.title}</a> : <span />}
+  </nav>
+</Article>
+<style>.pn { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 48px; } .pn a { text-decoration: none; color: var(--text); }</style>

@@ -1,0 +1,26 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { url } from "../../lib/url";
+
+const items = (await getCollection("kb")).sort((a, b) => a.data.order - b.data.order);
+const topics = [...new Set(items.map((i) => i.data.topic))];
+---
+<Base title="Knowledge Base 知识库" lang="zh-CN" description="与本项目实现直接相关的 UE5 技术知识点，每篇都附项目里的真实代码与踩过的坑。">
+  <div class="wrap" style="padding-top:34px">
+    <div class="eyebrow rise">知识库 · 中文</div>
+    <h1 class="rise">UE5 技术知识库</h1>
+    <p class="lede rise-2">只收录在本项目里真正用到、或真正踩过坑的知识点。每篇固定七段：30 秒理解 → 解决什么问题 → 本项目里怎么用 → 简化流程图 → 关键代码 → 常见错误 → 延伸学习。</p>
+    <div class="topics">{topics.map((t) => <span class="pill">{t}</span>)}</div>
+    <div class="grid grid-3" style="margin-top:20px">
+      {items.map((i) => (
+        <a class="card" href={url(`/kb/${i.id}/`)}>
+          <div class="eyebrow">{String(i.data.order).padStart(2, "0")} · {i.data.topic}</div>
+          <h3>{i.data.title}</h3>
+          <p class="small muted">{i.data.summary}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
+<style>.topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }</style>

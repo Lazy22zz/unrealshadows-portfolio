@@ -1,0 +1,129 @@
+{
+ "_doc": "Hand-maintained engineering facts. Every result below must point at a record in the game repo (hand-off notes under .ai/handoffs or the evidence folders named). Do not add numbers without a source.",
+ "testRuns": [
+  {
+   "date": "2026-11-12",
+   "what": "UnrealShadows automation group, full run (class skill FX task)",
+   "result": "339 / 340 — the one failure was the new test's own sample point; after the fix the Ability group passed 4 / 4",
+   "source": ".ai/handoffs/2026-11-12T18-34-57Z_claude-code_class-skill-fx.md"
+  },
+  {
+   "date": "2026-11-12",
+   "what": "UnrealShadows automation group on the library-maze art sample map",
+   "result": "342 / 342",
+   "source": "CLAUDE.md, library maze art entry (run by Codex before promotion)"
+  },
+  {
+   "date": "2026-11-12",
+   "what": "Library maze walking bot on the shipped Level_02",
+   "result": "79 / 79 warrior · 82 / 82 thief · 79 / 79 duo roster",
+   "source": "Saved/LibraryMaze/game-{solo,solo-THIEF,duo}-formal.json"
+  },
+  {
+   "date": "2026-11-12",
+   "what": "Core-shield gate route on the shipped Level_02",
+   "result": "61 / 61 solo · 67 / 67 duo roster",
+   "source": "Saved/LibraryMazeArt/FormalPromotion/chain.out"
+  },
+  {
+   "date": "2026-11-12",
+   "what": "Sword shrines route on the shipped Level_02",
+   "result": "62 / 62 solo · 62 / 62 duo roster",
+   "source": "Saved/LibraryMazeArt/FormalPromotion/chain.out"
+  },
+  {
+   "date": "2026-11-12",
+   "what": "Class skill FX, -game solo script",
+   "result": "51 / 51",
+   "source": "Saved/ClassFx/game-solo5.json"
+  },
+  {
+   "date": "2026-11-10",
+   "what": "Time temple V9.5 full gate run on the shipped Level_02",
+   "result": "98 / 99 — the failure is a known input flag 0.5 s after class select",
+   "source": "Saved/TempleRift/CryptPromotion/"
+  },
+  {
+   "date": "2026-11-10",
+   "what": "Rescue lock, two independent processes (host + client)",
+   "result": "75 / 75 host · 12 / 12 client",
+   "source": "Saved/RescueTraining/FormalPromotion/"
+  },
+  {
+   "date": "2026-10-05",
+   "what": "Stage 1 NPC pass, solo and in-process listen server, DLC on and off",
+   "result": "212 checks passed",
+   "source": "Saved/Stage1NPCArt/"
+  },
+  {
+   "date": "2026-11-06",
+   "what": "Time temple technical slice, two independent -game processes",
+   "result": "duo 59 / 59 after the 25 cm portal tolerance fix, zero rejected crossings",
+   "source": "Tools/Stage2/TempleV92Tech/TEMPLE_V92_TECH.md"
+  }
+ ],
+ "status": {
+  "verified": [
+   "Stage 1 flow: coin lock prologue, three class trials, optional Hunter quest, journal hints, shared key, team muster at the final gate",
+   "Predicted, black-screen-free portals with paired returns",
+   "Stage 2 gravity cube with six gravity rooms, seams and lanes",
+   "Five-artifact collection, guidance light trail, return gate and departure muster",
+   "Death cage and six-seal rescue lock (two-process verified)",
+   "Four classes with their abilities and HUDs",
+   "Library maze with rolling shelves on the ceiling face",
+   "Time temple behind the core-top gate (three eras, crypt, lift)"
+  ],
+  "inProgress": [
+   "Two-machine Steam acceptance (invites, room codes, reconnect over the internet)",
+   "Full human playthrough from spawn to sword on the shipped map",
+   "Sound pass for several mechanisms (some use placeholder sounds)",
+   "Packaging and performance profiling"
+  ],
+  "planned": [
+   "Minion head-status v2 (3 + 1 tier icons) — specified, prototype pending",
+   "Gameplay capture (video / GIF) for this site"
+  ],
+  "knownIssues": [
+   "Some older audit scripts still assert retired layouts (e.g. core-loop and gravity-cube audits for the ceiling face) and are marked stale",
+   "A known flag keeps movement input ignored for about 0.5 s after class selection in scripted runs",
+   "Many map edits are generator + guarded patches, so a full regeneration does not reproduce the shipped map"
+  ]
+ },
+ "iterations": [
+  {
+   "date": "2025-11",
+   "title": "Tutorial scaffold",
+   "text": "Project created from a UE5 multiplayer tutorial: character data table, XP and pickups."
+  },
+  {
+   "date": "2026-05",
+   "title": "Own direction",
+   "text": "Sprint and noise systems, victory flow, the first class abilities; XP, coins and data tables removed in favour of one DataAsset."
+  },
+  {
+   "date": "2026-07",
+   "title": "Two-stage structure",
+   "text": "Stage 1 trials unlock classes; Stage 2 is the artifact level. A planned third stage was cancelled in August."
+  },
+  {
+   "date": "2026-08",
+   "title": "Seamless portals",
+   "text": "Black-screen teleports replaced with client-predicted portal traversal inside the CMC; Hunter DLC switch."
+  },
+  {
+   "date": "2026-09",
+   "title": "Pursuit rework",
+   "text": "Chase fatigue and head icons replaced the team pressure meter; guidance light trail; five-artifact collection."
+  },
+  {
+   "date": "2026-10",
+   "title": "Gravity cube, lobby, UI language",
+   "text": "Level_02 rebuilt as a six-room gravity cube; two-player lobby and disconnect handling; manuscript UI and wordless illustrated journal."
+  },
+  {
+   "date": "2026-11",
+   "title": "Temple, shrines, library",
+   "text": "Time temple V9.x embedded behind the core gate; sword shrines; the rolling-shelf library maze on the ceiling face."
+  }
+ ]
+}

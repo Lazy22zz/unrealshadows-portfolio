@@ -1,0 +1,174 @@
+---
+import Base from "../layouts/Base.astro";
+import { url, media } from "../lib/url";
+import project from "../data/project.json";
+import tests from "../data/tests.json";
+import M from "../data/media.json";
+
+const mediaMeta = M as Record<string, { alt: string }>;
+const stats = [
+  { n: `UE ${project.engine}`, l: "C++ project" },
+  { n: `${Math.round(project.sourceLines / 1000)}k`, l: `lines in ${project.sourceFiles} .h/.cpp files` },
+  { n: String(tests.count), l: "automation tests in the module" },
+  { n: String(project.commits), l: `commits since ${project.firstCommit}` },
+];
+const loop = [
+  { stage: "Stage 1", title: "Explore & unlock", color: "var(--past)", items: [
+    ["Coin lock prologue", "Fetch two coins from sealed side rooms, then solve a two-disc clutch lock to open the central gate."],
+    ["Three class trials", "Thief, Mage and Warrior NPCs each run a 2–3 minute puzzle; solving it unlocks that class for the team."],
+    ["Hunter side quest", "Optional DLC content: three observation puzzles in a lodge and a cipher grid unlock the Hunter."],
+    ["Journal & key", "An illustrated field journal reveals hints in layers; the team forges a shared key and everyone must gather at the final gate."],
+  ]},
+  { stage: "Stage 2", title: "The gravity cube", color: "var(--present)", items: [
+    ["Pick a class", "Each player picks one of the unlocked classes (Thief, Mage, Warrior, Hunter)."],
+    ["Collect five artifacts", "Across six gravity rooms: walls, ceiling, a library maze, sword shrines, a time temple behind a gate."],
+    ["Don't get caught", "No combat. A guard's touch puts you in a cage on the south wall; your partner solves a six-seal lock to free you."],
+    ["Return together", "Everyone alive back in the spawn room for three seconds ends the run."],
+  ]},
+];
+const classes = [
+  { name: "Thief", color: "var(--thief)", img: "ui-thief", text: "Throws knives that become blink anchors, then teleports to them; a decoy lures guards away.", trial: "The Blind Leap — a sliding knife puzzle where only the last blade may seal the slot." },
+  { name: "Mage", color: "var(--mage)", img: "ui-mage", text: "Spins a rune wheel to collect fragments for three spells — shadow veil, a rescuing ghost book, foresight — and an ultimate.", trial: "Arcane Convergence — rotate three rings until every element reaches its seal." },
+  { name: "Warrior", color: "var(--warrior)", img: "ui-warrior", text: "Raises a three-tier shield that stuns and knocks back guards; repairs it with a line-drawing puzzle and forges it to the next tier.", trial: "The Warden's Drill — a 48-beat, three-lane run against fire, falling rocks and skeletons." },
+  { name: "Hunter", color: "var(--hunter)", img: "ui-hunter", text: "Duels a guard in a private board game: place fixed-shape blocks to herd skeletons into traps; a win subdues the guard.", trial: "Unlocked through the optional lodge quest." },
+];
+const demos = [
+  { href: "/levels/time-temple/", img: "temple-eras", title: "Time Temple", text: "Switch between Past, Present and Future; follow the solver's route through three junctions." },
+  { href: "/levels/library-maze/", img: "library-top", title: "Library maze", text: "Turn winches, watch 5 m bookcases roll, and see which shelf tops and floor regions open up." },
+  { href: "/levels/coin-lock/", img: "ui-coinlock", title: "Coin clutch lock", text: "Play the actual Stage 1 lock, rules ported from the C++ and checked against its tests." },
+  { href: "/levels/gravity-cube/", img: "core-deck", title: "Gravity cube 3D", text: "Orbit the six-room cube built from the shipped map's collision data." },
+];
+---
+<Base>
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <img src={media("core-shield")} alt="" />
+    </div>
+    <div class="wrap hero-inner">
+      <div class="eyebrow rise">Unreal Engine 5.8 · C++ · co-op stealth puzzle</div>
+      <h1 class="rise">Unreal Shadows</h1>
+      <p class="lede rise-2">
+        A one-to-two-player cooperative stealth puzzle game. Players explore without weapons, unlock four classes by solving trials,
+        then cross a cube whose six inner faces each have their own gravity — collecting relics, avoiding guards and rescuing each other.
+      </p>
+      <div class="btn-row rise-3">
+        <a class="btn primary" href={url("/levels/")}>Explore the level design</a>
+        <a class="btn" href={url("/systems/")}>Gameplay systems</a>
+        <a class="btn" href={url("/engineering/")}>Engineering</a>
+      </div>
+      <dl class="stats rise-3">
+        {stats.map((s) => (<div><dt>{s.n}</dt><dd>{s.l}</dd></div>))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="eyebrow">Core loop</div>
+    <h2>Two stages, one run</h2>
+    <p class="muted">Click a step to read what happens there.</p>
+    <div class="loop">
+      {loop.map((s) => (
+        <div class="loop-stage" style={`--c:${s.color}`}>
+          <div class="loop-head"><span class="pill" style="color:var(--c);border-color:var(--c)">{s.stage}</span> <strong>{s.title}</strong></div>
+          <ol>
+            {s.items.map(([t, d], i) => (
+              <li>
+                <details>
+                  <summary><span class="num">{i + 1}</span>{t}</summary>
+                  <p>{d}</p>
+                </details>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+    <p class="small muted">Design rules that shape every level: no jump button (traversal is steps, ramps, falls and abilities), no combat, a guard's touch is a capture, and class abilities may never bypass a puzzle.</p>
+  </section>
+
+  <section class="wrap section">
+    <div class="eyebrow">Interactive</div>
+    <h2>Level & puzzle demos</h2>
+    <p class="muted">Each demo is driven by data exported from the project's own design tools and solvers — not redrawn by hand.</p>
+    <div class="grid grid-4">
+      {demos.map((d) => (
+        <a class="card media-card" href={url(d.href)}>
+          <img src={media(d.img, true)} alt={mediaMeta[d.img].alt} loading="lazy" width="640" height="360" />
+          <div class="body"><h3>{d.title}</h3><p class="small muted">{d.text}</p></div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="eyebrow">Classes</div>
+    <h2>Four ways to play</h2>
+    <div class="grid grid-4">
+      {classes.map((c) => (
+        <article class="card media-card class-card" style={`--c:${c.color}`}>
+          <img src={media(c.img, true)} alt={mediaMeta[c.img].alt} loading="lazy" width="640" height="360" />
+          <div class="body">
+            <h3 style="color:var(--c)">{c.name}</h3>
+            <p class="small">{c.text}</p>
+            <p class="small muted"><strong>Trial:</strong> {c.trial}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="eyebrow">In engine</div>
+    <h2>Screenshots</h2>
+    <p class="muted small">All images are real editor or <code>-game</code> captures from the project's verification runs. No gameplay video has been recorded yet.</p>
+    <div class="shots">
+      {["sun-rotunda", "time-gate", "crypt-relic", "library-pad", "stage1-hub", "npc-lineup", "wave-rim", "shields"].map((id) => (
+        <a href={media(id)} target="_blank" rel="noopener"><img src={media(id, true)} alt={mediaMeta[id].alt} loading="lazy" width="640" height="360" /></a>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="card credit">
+      <div class="eyebrow">How it was built</div>
+      <p>
+        The project started from the scaffold of a UE5 multiplayer tutorial (the original character, data-table and pickup setup visible in the first
+        commits, Nov–Dec 2025). Since May 2026 nearly all systems on this site were designed and directed by me and implemented with the help of AI coding
+        agents (Claude Code and Codex), with every change recorded in hand-off notes, verified by automation tests and scripted <code>-game</code> runs, and
+        reviewed in engine. Art assets are KayKit and Poly Haven packs plus project-made shaders and UI. Details on the <a href={url("/engineering/#credits")}>engineering page</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.32; filter: saturate(0.85); }
+  .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(17,14,12,0.96) 0%, rgba(17,14,12,0.78) 45%, rgba(17,14,12,0.35) 100%), linear-gradient(0deg, var(--bg) 0%, transparent 40%); }
+  .hero-inner { position: relative; padding: 90px 16px 60px; }
+  @media (min-width: 720px) { .hero-inner { padding: 120px 28px 70px; } }
+  .hero h1 { font-size: clamp(2.6rem, 7vw, 4.6rem); margin: 0.2em 0 0.25em; text-shadow: 0 2px 20px rgba(0,0,0,0.6); }
+  .hero .btn-row { margin: 22px 0 34px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; max-width: 760px; margin: 0; }
+  .stats div { background: rgba(0,0,0,0.35); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .stats dt { font: 600 1.5rem/1.1 var(--serif); color: var(--gilt-2); }
+  .stats dd { margin: 4px 0 0; font-size: 0.82rem; color: var(--muted); }
+  .section { padding-top: 64px; }
+  .loop { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 18px; }
+  @media (min-width: 860px) { .loop { grid-template-columns: 1fr 1fr; } }
+  .loop-stage { border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: var(--radius); padding: 16px 18px; background: var(--panel); }
+  .loop-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .loop ol { list-style: none; padding: 0; margin: 0; }
+  .loop li { border-top: 1px solid var(--line); }
+  .loop summary { cursor: pointer; padding: 10px 2px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+  .loop summary::-webkit-details-marker { display: none; }
+  .loop summary:hover { color: var(--gilt-2); }
+  .loop details[open] summary { color: var(--gilt-2); }
+  .loop details p { margin: 0 0 12px 34px; color: var(--muted); font-size: 0.93rem; }
+  .num { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--c); color: var(--c); display: inline-grid; place-items: center; font-size: 0.78rem; flex: none; }
+  .class-card { border-top: 3px solid var(--c); }
+  .shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 10px; margin-top: 16px; }
+  .shots img { border-radius: 8px; border: 1px solid var(--line); aspect-ratio: 16/9; object-fit: cover; width: 100%; }
+  .credit p { margin: 8px 0 0; color: var(--muted); }
+</style>

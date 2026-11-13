@@ -1,0 +1,53 @@
+---
+title: Enhanced Input：Mapping Context 挂在 LocalPlayer 上
+summary: Input Action 描述“做什么”，Mapping Context 描述“哪个键做”。Mapping Context 属于 LocalPlayer，不随 Pawn 销毁——换职业时如果不清掉，旧职业的按键会继续生效。
+order: 11
+topic: 输入
+sources:
+  - Source/UnrealShadows_LOTL/Private/PlayerClass/US_Character.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+
+## 30 秒理解
+
+- `UInputAction`：一个动作（移动、冲刺、使用技能）及其值类型。
+- `UInputMappingContext`（IMC）：键 → 动作的映射，可以带修饰器和触发器。
+- `UEnhancedInputLocalPlayerSubsystem`：给本地玩家加 / 删 IMC，带优先级。
+- Pawn 在 `SetupPlayerInputComponent` 里把动作绑到函数。
+
+## 解决什么问题
+
+不同职业、不同界面（死亡等待、菜单、谜题）需要不同的按键集合，而且同一个物理键在不同职业里含义不同。
+
+## 在本项目中的应用
+
+**真实 bug**：Thief 在祭坛换成 Warrior 后，右键弹不出修盾谜题，反而按 R 触发了副技能。原因是 Thief 的 IMC 还挂在 LocalPlayer 上：它把右键映射到 Thief 的瞬移动作并且 Consume Input，新职业的绑定收不到。
+
+<Snippet id="input-clear-mappings" caption="每次激活默认输入时先清空，再只加本职业的 Look + Move。对任何职业组合都成立，也顺带清掉从菜单关卡漏过来的 IMC。" />
+
+其他用法：
+
+- 死亡等待时换成只有移动和视角的 IMC；牢笼里的玩家额外复制一份“只含交互键”的映射，用来操作营救机关。
+- 游戏内菜单的按键说明直接读取当前职业 IMC 的 Player Mappable Key Settings 显示名，按最近使用的输入设备只画一种键位。
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "换 Pawn", t: "SwitchPlayerClass → Possess 新 Pawn" },
+  { k: "清空", t: "Subsystem->ClearAllMappings()" },
+  { k: "添加", t: "Look IMC (0) + 本职业 Move IMC (1)" },
+  { k: "绑定", t: "SetupPlayerInputComponent → BindAction" }
+]} />
+
+## 常见错误
+
+- 只 `RemoveMappingContext(自己的 IMC)`：新 Pawn 根本不知道旧 Pawn 加过哪些 IMC。
+- 在职业蓝图的 BeginPlay 里额外加 IMC，然后被统一的清空逻辑清掉。
+- 弹出模态 UI 后忘了 `FlushPressedKeys`，或者在不该打断移动的地方调用了它（本项目的“自语”提示刻意不改输入模式，避免松掉玩家正按着的 W）。
+
+## 延伸学习
+
+- Input Modifiers / Triggers（Hold、Pressed、Chorded）
+- Player Mappable Input Config 与按键重绑定
+- `FInputModeGameOnly` / `UIOnly` / `GameAndUI`

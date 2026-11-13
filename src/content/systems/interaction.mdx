@@ -1,0 +1,82 @@
+---
+title: Interaction — hold, prompt, refuse, validate
+summary: One interface and one component drive every lever, door, NPC, chest and relic. The client decides what to show; the server decides what happens, including a line-of-sight check that closed a real "pull the sword through the bars" exploit.
+order: 2
+area: Gameplay framework
+status: verified
+statusNote: Decision tables covered by Interact.* automation tests (refusal gating, line-of-sight rule, prompts); server LOS validated in PIE on every reachable cell of the 1B maze.
+classes: [IUS_Interactable, UUS_InteractComponent, AUS_TrialSwitch, AUS_IronDoor, AUS_CoinLockAltar]
+sources:
+  - Source/UnrealShadows_LOTL/Public/Interactables/US_Interactable.h
+  - Source/UnrealShadows_LOTL/Public/PlayerClass/US_InteractComponent.h
+  - Source/UnrealShadows_LOTL/Private/PlayerClass/US_InteractComponent.cpp
+  - Source/UnrealShadows_LOTL/Public/Interactables/US_TrialSwitch.h
+  - Source/UnrealShadows_LOTL/Private/Tests/US_InteractRefusalTests.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Figure from "../../components/Figure.astro";
+import Callout from "../../components/Callout.astro";
+
+## The problem
+
+The game has dozens of things you press **E** on: switches, sealed doors, task NPCs, a coin lock, relics, rescue consoles, warded chests. They need the same feel (short press or hold, a prompt that tells you what will happen) but very different rules about *when* they work. Two classes of bug kept recurring:
+
+1. **"I press E and nothing happens."** The target could not be used, but the input still started a 1.5 s hold bar with no label.
+2. **Exploits through geometry.** The sweep starts 1 m in front of the capsule. Standing against bars, the start point was already on the other side, and the server only checked distance — so a sword could be pulled through a grille.
+
+## What the player sees
+
+<Figure id="ui-denied" caption="Glyph prompt: conditions that are not met shake red and the hold never starts. Conditions that are met are drawn in gold." />
+
+- A glyph prompt (action icon, one or two words, lock and condition icons).
+- If something is locked, pressing E either shakes the missing conditions or, for a few targets, makes the player say one short line (e.g. which coin is still missing).
+- Holds are reserved for actions that really happen.
+
+## How it works
+
+<Flow steps={[
+  { k: "Trace", t: "Local sphere sweep from the capsule; LOS from capsule to sweep start" },
+  { k: "Decide", t: "USInteractPress::Resolve(CanInteract, HasRefusalLine, Hold)" },
+  { k: "Hold", t: "Local hold bar, then Interact_Server(target)" },
+  { k: "Validate", t: "Server: distance + HasLineOfSightTo(target)" },
+  { k: "Act", t: "IUS_Interactable::Interact on the server" },
+  { k: "Fan out", t: "TrialSwitch.LinkedTargets → doors, portals, lifts" }
+]} />
+
+The decision of what a key press does is a pure function, so the "zero regression for the other implementers" promise can be asserted in a test:
+
+<Snippet id="interact-resolve" strip caption="Only 'cannot interact AND has something to say' changes behaviour. Without a refusal line the old path is kept, because e.g. an NPC cooldown can legitimately expire during the 1.5 s hold." />
+
+Refusal text is an optional `BlueprintNativeEvent` on the interface with an empty default, so 7 of the 9 implementers did not change at all. Refusal is **local only**: the facts it reads (`bLocked`, coin progress) are already replicated, and a server round trip would only delay feedback that should be instant.
+
+On the server, `Interact_Server` re-checks distance **and** line of sight from the capsule centre to the target; hitting the target itself or anything attached to it (a sword's pedestal) is accepted.
+
+## Key classes and functions
+
+| Piece | Responsibility |
+|---|---|
+| `IUS_Interactable` | `CanInteract`, `Interact`, `GetHoldDuration`, `GetRefusalText`, glyph prompt view |
+| `UUS_InteractComponent` | Sweep, prompt selection, hold progress, `Interact_Server` RPC |
+| `USInteractPress::Resolve` | Pure decision table (Instant / StartHold / Refuse / DenyIcons) |
+| `LineOfSightAccepts` | Pure rule for the server LOS check (target or its attachment chain) |
+| `AUS_TrialSwitch` | Reusable one-shot lever; `LinkedTargets` opens doors, activates portals, unlocks sealed doors |
+
+## Why this design
+
+- **One judgement, two callers.** `CanInteract` and the commit path must use the same predicate. This was learned twice: once with a sealed door, once with artifacts whose hold bar ran a full second and then did nothing. Artifacts now share `ResolveRealRefusal()` between both.
+- **Refusal is cosmetic, authority is not.** The client can only make things *quieter*; it can never make a locked thing open.
+- **Watch for replication races.** The coin altar's lock lives on the actor; coin progress lives on the GameState. A client can see "both coins collected" before "altar unlocked". In that window the altar stays silent instead of telling the player a lie (`USCoinLock::ResolvePrompt(true, true) == None`, covered by a test).
+
+<Callout kind="warn" title="A sweep blind spot worth knowing">
+The sweep starts 100 cm in front of the body and covers roughly ±50 cm vertically. Interactables on tall pedestals or in wall niches get no prompt at all — once, four artifacts were unclickable for exactly this reason. Placement now accounts for it.
+</Callout>
+
+## Limits and next steps
+
+- The sweep follows the body's facing, not the camera; scripted clients must turn the pawn before pressing.
+- Gamepad-only interaction flows were not part of the verification matrix.
+
+## Where the code lives
+
+`Public/Interactables/US_Interactable.h`, `Public/PlayerClass/US_InteractComponent.h`, `Private/PlayerClass/US_InteractComponent.cpp`, tests `UnrealShadows.Interact.*`.

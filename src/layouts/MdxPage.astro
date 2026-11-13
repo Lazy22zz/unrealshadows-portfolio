@@ -1,0 +1,11 @@
+---
+// Layout for .mdx pages under src/pages (levels). Maps MDX frontmatter + headings onto the Article layout.
+import Article from "./Article.astro";
+const { frontmatter, headings } = Astro.props as any;
+---
+<Article title={frontmatter.title} summary={frontmatter.summary} eyebrow={frontmatter.eyebrow} headings={headings}
+  sources={frontmatter.sources ?? []} lang={frontmatter.lang ?? "en"} wide={frontmatter.wide ?? false}
+  back={frontmatter.back ? { href: frontmatter.back, label: frontmatter.backLabel ?? "Back" } : undefined}
+  pills={frontmatter.pills ?? []}>
+  <slot />
+</Article>

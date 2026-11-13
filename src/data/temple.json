@@ -1,0 +1,2528 @@
+{
+ "source": "Source/UnrealShadows_LOTL/Tools/Stage2/TempleV9/TempleV9Space.py + TempleV9Layout.py",
+ "site": [
+  42.0,
+  42.0
+ ],
+ "zRange": [
+  -3.0,
+  17.0
+ ],
+ "well": [
+  [
+   19.0,
+   17.0
+  ],
+  [
+   30.0,
+   15.0
+  ],
+  [
+   36.0,
+   21.0
+  ],
+  [
+   35.0,
+   31.0
+  ],
+  [
+   28.0,
+   36.0
+  ],
+  [
+   20.0,
+   32.0
+  ],
+  [
+   17.5,
+   25.0
+  ]
+ ],
+ "sunken": [
+  [
+   30.0,
+   1.0
+  ],
+  [
+   40.6,
+   1.0
+  ],
+  [
+   40.6,
+   21.5
+  ],
+  [
+   36.0,
+   21.5
+  ],
+  [
+   30.0,
+   15.0
+  ]
+ ],
+ "pier": [
+  [
+   26.0,
+   24.0
+  ],
+  [
+   29.0,
+   23.8
+  ],
+  [
+   29.6,
+   26.2
+  ],
+  [
+   27.8,
+   27.6
+  ],
+  [
+   25.8,
+   26.8
+  ]
+ ],
+ "eraName": {
+  "0": "PAST",
+  "1": "PRESENT",
+  "2": "FUTURE"
+ },
+ "places": {
+  "pa_gate": {
+   "x": 37.0,
+   "y": 3.0,
+   "z": -2.6,
+   "era": 0,
+   "label": "Cistern gate (start)"
+  },
+  "pa_cis": {
+   "x": 34.0,
+   "y": 9.0,
+   "z": -2.2,
+   "era": 0,
+   "label": "Cistern floor"
+  },
+  "pa_cisL": {
+   "x": 30.0,
+   "y": 14.0,
+   "z": -1.4,
+   "era": 0,
+   "label": "Well-bottom lip"
+  },
+  "pa_naveFoot": {
+   "x": 24.0,
+   "y": 9.0,
+   "z": 1.2,
+   "era": 0,
+   "label": "Foot of the fallen nave"
+  },
+  "pa_nave1": {
+   "x": 17.0,
+   "y": 6.0,
+   "z": 3.6,
+   "era": 0,
+   "label": "Fallen nave slab"
+  },
+  "pa_nave2": {
+   "x": 11.0,
+   "y": 10.0,
+   "z": 6.1,
+   "era": 0,
+   "label": "Top of the fallen slab"
+  },
+  "pa_crypt": {
+   "x": 24.0,
+   "y": 2.5,
+   "z": 1.6,
+   "era": 0,
+   "label": "Crypt in the south-east wall"
+  },
+  "pa_tunS": {
+   "x": 7.0,
+   "y": 12.0,
+   "z": 6.4,
+   "era": 0,
+   "label": "Bastion passage (south)"
+  },
+  "pa_tunN": {
+   "x": 6.5,
+   "y": 23.0,
+   "z": 7.7,
+   "era": 0,
+   "label": "Bastion passage (north)"
+  },
+  "pa_wgal": {
+   "x": 12.0,
+   "y": 27.0,
+   "z": 7.9,
+   "era": 0,
+   "label": "West gallery"
+  },
+  "pa_wlook": {
+   "x": 12.0,
+   "y": 33.0,
+   "z": 8.8,
+   "era": 0,
+   "label": "West balcony"
+  },
+  "pa_bridgeW": {
+   "x": 17.5,
+   "y": 23.5,
+   "z": 4.1,
+   "era": 0,
+   "label": "Low bridge (west head)"
+  },
+  "pa_ngal": {
+   "x": 25.0,
+   "y": 36.0,
+   "z": 4.1,
+   "era": 0,
+   "label": "North gallery, low"
+  },
+  "pa_eL1": {
+   "x": 39.8,
+   "y": 11.5,
+   "z": 0.9,
+   "era": 0,
+   "label": "Sluice crawl, inner end"
+  },
+  "pa_eL2": {
+   "x": 39.5,
+   "y": 19.5,
+   "z": 2.6,
+   "era": 0,
+   "label": "East ledge"
+  },
+  "pa_eL2b": {
+   "x": 39.8,
+   "y": 24.5,
+   "z": 1.6,
+   "era": 0,
+   "label": "East ledge, sagging (sidle)"
+  },
+  "pa_eL3": {
+   "x": 38.8,
+   "y": 29.5,
+   "z": 3.4,
+   "era": 0,
+   "label": "East ledge, upper"
+  },
+  "pa_eGal": {
+   "x": 34.5,
+   "y": 31.5,
+   "z": 6.2,
+   "era": 0,
+   "label": "East gallery"
+  },
+  "pa_A": {
+   "x": 30.0,
+   "y": 38.0,
+   "z": 6.6,
+   "era": 0,
+   "label": "Bell gallery  [A]"
+  },
+  "pa_tw0": {
+   "x": 35.5,
+   "y": 35.5,
+   "z": 7.6,
+   "era": 0,
+   "label": "Bell tower door"
+  },
+  "pa_tw1": {
+   "x": 39.5,
+   "y": 35.0,
+   "z": 9.4,
+   "era": 0,
+   "label": "Bell tower spiral 1"
+  },
+  "pa_tw2": {
+   "x": 39.5,
+   "y": 39.5,
+   "z": 11.2,
+   "era": 0,
+   "label": "Bell tower spiral 2"
+  },
+  "pa_tw3": {
+   "x": 35.5,
+   "y": 40.0,
+   "z": 12.9,
+   "era": 0,
+   "label": "Bell tower spiral 3"
+  },
+  "pa_crownN": {
+   "x": 30.0,
+   "y": 39.0,
+   "z": 11.5,
+   "era": 0,
+   "label": "Crown, north arc"
+  },
+  "pa_crownNW": {
+   "x": 21.0,
+   "y": 38.5,
+   "z": 12.3,
+   "era": 0,
+   "label": "Crown, north-west arc"
+  },
+  "pa_C": {
+   "x": 16.0,
+   "y": 33.0,
+   "z": 13.4,
+   "era": 0,
+   "label": "Crown break  [C]"
+  },
+  "pa_crownW": {
+   "x": 11.5,
+   "y": 24.0,
+   "z": 14.6,
+   "era": 0,
+   "label": "Crown, west arc"
+  },
+  "pa_crownSW": {
+   "x": 8.8,
+   "y": 18.8,
+   "z": 13.6,
+   "era": 0,
+   "label": "Crown, behind the pinnacle"
+  },
+  "pa_crownS": {
+   "x": 12.0,
+   "y": 13.0,
+   "z": 12.7,
+   "era": 0,
+   "label": "Crown, broken south lip"
+  },
+  "pa_sanctDoor": {
+   "x": 21.0,
+   "y": 29.5,
+   "z": 13.6,
+   "era": 0,
+   "label": "Sanctum door"
+  },
+  "pa_heart": {
+   "x": 27.5,
+   "y": 25.5,
+   "z": 13.8,
+   "era": 0,
+   "label": "Heart of Time (goal)"
+  },
+  "pa_liftTop": {
+   "x": 31.0,
+   "y": 24.8,
+   "z": 13.8,
+   "era": 0,
+   "label": "Heart lift, upper stop"
+  },
+  "pa_liftBot": {
+   "x": 31.0,
+   "y": 24.8,
+   "z": -7.0,
+   "era": 0,
+   "label": "Heart lift, lower stop (crypt under the pier)"
+  },
+  "pa_relic": {
+   "x": 27.9,
+   "y": 21.9,
+   "z": -7.0,
+   "era": 0,
+   "label": "Sealed relic in the crypt (goal)"
+  },
+  "pn_A": {
+   "x": 30.0,
+   "y": 38.0,
+   "z": 6.6,
+   "era": 1,
+   "label": "Bell gallery  [A]"
+  },
+  "pn_gal2": {
+   "x": 23.0,
+   "y": 39.5,
+   "z": 7.4,
+   "era": 1,
+   "label": "North cloister"
+  },
+  "pn_dip": {
+   "x": 19.5,
+   "y": 40.0,
+   "z": 6.8,
+   "era": 1,
+   "label": "Cloister steps"
+  },
+  "pn_loft": {
+   "x": 15.5,
+   "y": 35.5,
+   "z": 9.2,
+   "era": 1,
+   "label": "Organ loft"
+  },
+  "pn_pier": {
+   "x": 27.0,
+   "y": 26.5,
+   "z": 11.0,
+   "era": 1,
+   "label": "Pier top (present)"
+  },
+  "pn_pierE": {
+   "x": 30.0,
+   "y": 25.6,
+   "z": 10.9,
+   "era": 1,
+   "label": "Pier rim, east"
+  },
+  "pn_pS1": {
+   "x": 32.4,
+   "y": 21.6,
+   "z": 8.7,
+   "era": 1,
+   "label": "Pier spiral 1"
+  },
+  "pn_pS2": {
+   "x": 28.2,
+   "y": 21.4,
+   "z": 6.4,
+   "era": 1,
+   "label": "Present seal - on the pier spiral"
+  },
+  "pn_pS3": {
+   "x": 25.0,
+   "y": 22.6,
+   "z": 5.8,
+   "era": 1,
+   "label": "Pier spiral 3"
+  },
+  "pn_pS4": {
+   "x": 22.6,
+   "y": 18.4,
+   "z": 4.1,
+   "era": 1,
+   "label": "Pier spiral, lowest turn"
+  },
+  "pn_pierFoot": {
+   "x": 22.0,
+   "y": 16.0,
+   "z": 1.3,
+   "era": 1,
+   "label": "Foot of the chain climb"
+  },
+  "pn_hiS": {
+   "x": 29.0,
+   "y": 16.5,
+   "z": 11.6,
+   "era": 1,
+   "label": "High south bridge"
+  },
+  "pn_hiE": {
+   "x": 36.0,
+   "y": 19.0,
+   "z": 12.0,
+   "era": 1,
+   "label": "East rim"
+  },
+  "pn_shaftTop": {
+   "x": 37.5,
+   "y": 21.0,
+   "z": 12.2,
+   "era": 1,
+   "label": "Shaft mouth"
+  },
+  "pn_shaftBot": {
+   "x": 37.5,
+   "y": 21.0,
+   "z": -0.4,
+   "era": 1,
+   "label": "Shaft bottom"
+  },
+  "pn_low1": {
+   "x": 33.5,
+   "y": 15.5,
+   "z": -1.0,
+   "era": 1,
+   "label": "Flooded hall"
+  },
+  "pn_B": {
+   "x": 30.0,
+   "y": 14.0,
+   "z": -1.4,
+   "era": 1,
+   "label": "Well-bottom lip  [B]"
+  },
+  "pn_low2": {
+   "x": 24.0,
+   "y": 10.0,
+   "z": 0.9,
+   "era": 1,
+   "label": "Sunken nave"
+  },
+  "pn_low3": {
+   "x": 31.0,
+   "y": 5.5,
+   "z": -0.9,
+   "era": 1,
+   "label": "Cistern causeway"
+  },
+  "pn_low4": {
+   "x": 37.0,
+   "y": 9.0,
+   "z": -0.8,
+   "era": 1,
+   "label": "Sluice steps"
+  },
+  "pn_chapel": {
+   "x": 17.5,
+   "y": 4.0,
+   "z": 1.7,
+   "era": 1,
+   "label": "Flooded chapel (in the south wall)"
+  },
+  "pn_look": {
+   "x": 39.5,
+   "y": 12.0,
+   "z": 2.6,
+   "era": 1,
+   "label": "Sluice lookout"
+  },
+  "pn_drain": {
+   "x": 35.0,
+   "y": 27.0,
+   "z": 0.8,
+   "era": 1,
+   "label": "Drain alcove"
+  },
+  "pn_eStair": {
+   "x": 39.5,
+   "y": 26.5,
+   "z": 3.6,
+   "era": 1,
+   "label": "Sealed east stair"
+  },
+  "pn_eGal": {
+   "x": 34.5,
+   "y": 31.0,
+   "z": 6.2,
+   "era": 1,
+   "label": "East gallery"
+  },
+  "pf_C": {
+   "x": 16.0,
+   "y": 33.0,
+   "z": 13.4,
+   "era": 2,
+   "label": "Crown break  [C]"
+  },
+  "pf_crownE": {
+   "x": 23.0,
+   "y": 37.5,
+   "z": 14.3,
+   "era": 2,
+   "label": "Crown, north span"
+  },
+  "pf_view": {
+   "x": 31.5,
+   "y": 40.5,
+   "z": 15.6,
+   "era": 2,
+   "label": "Sky ledge"
+  },
+  "pf_span1": {
+   "x": 27.0,
+   "y": 31.0,
+   "z": 11.6,
+   "era": 2,
+   "label": "Broken span over the well"
+  },
+  "pf_span2": {
+   "x": 30.5,
+   "y": 26.3,
+   "z": 9.6,
+   "era": 2,
+   "label": "Broken span, last flight"
+  },
+  "pf_stump": {
+   "x": 27.8,
+   "y": 25.2,
+   "z": 6.4,
+   "era": 2,
+   "label": "Pier stump - future seal"
+  },
+  "pf_wellFloor": {
+   "x": 26.2,
+   "y": 22.3,
+   "z": 1.6,
+   "era": 2,
+   "label": "Rubble mound in the well"
+  },
+  "pf_arch": {
+   "x": 24.5,
+   "y": 24.0,
+   "z": 10.6,
+   "era": 2,
+   "label": "Ruined arch"
+  },
+  "pf_crownW": {
+   "x": 11.5,
+   "y": 24.0,
+   "z": 14.6,
+   "era": 2,
+   "label": "Crown, west arc"
+  },
+  "pf_hole": {
+   "x": 12.5,
+   "y": 17.0,
+   "z": 13.1,
+   "era": 2,
+   "label": "Collapse edge"
+  },
+  "pf_crownS": {
+   "x": 14.0,
+   "y": 11.0,
+   "z": 13.2,
+   "era": 2,
+   "label": "Crown stub over the nave"
+  },
+  "pf_mid1": {
+   "x": 13.5,
+   "y": 16.5,
+   "z": 8.4,
+   "era": 2,
+   "label": "Rubble terrace"
+  },
+  "pf_alcove": {
+   "x": 8.5,
+   "y": 20.0,
+   "z": 9.0,
+   "era": 2,
+   "label": "Bastion shrine"
+  },
+  "pf_slabTop": {
+   "x": 15.5,
+   "y": 9.5,
+   "z": 7.3,
+   "era": 2,
+   "label": "Broken slab top"
+  },
+  "pf_slabMid": {
+   "x": 21.5,
+   "y": 8.0,
+   "z": 4.5,
+   "era": 2,
+   "label": "Rubble steps"
+  },
+  "pf_hole2": {
+   "x": 24.5,
+   "y": 9.5,
+   "z": 3.9,
+   "era": 2,
+   "label": "Slab break"
+  },
+  "pf_low1": {
+   "x": 25.5,
+   "y": 11.0,
+   "z": 0.9,
+   "era": 2,
+   "label": "Silt bank"
+  },
+  "pf_cLedge": {
+   "x": 9.15,
+   "y": 16.4,
+   "z": 11.2,
+   "era": 2,
+   "label": "Chain foot on the bastion face"
+  },
+  "pf_cWalk": {
+   "x": 11.0,
+   "y": 8.7,
+   "z": 10.4,
+   "era": 2,
+   "label": "End of the bastion hanging walk"
+  },
+  "pf_sLedge": {
+   "x": 24.2,
+   "y": 3.2,
+   "z": 1.0,
+   "era": 2,
+   "label": "Chain ledge along the south wall"
+  },
+  "pf_B": {
+   "x": 30.0,
+   "y": 14.0,
+   "z": -1.4,
+   "era": 2,
+   "label": "Well-bottom lip  [B]"
+  },
+  "pf_cis": {
+   "x": 34.0,
+   "y": 9.0,
+   "z": -2.2,
+   "era": 2,
+   "label": "Dry cistern"
+  },
+  "pf_gateF": {
+   "x": 37.0,
+   "y": 3.0,
+   "z": -2.6,
+   "era": 2,
+   "label": "Choked gate"
+  },
+  "pf_balc": {
+   "x": 37.0,
+   "y": 18.0,
+   "z": 3.4,
+   "era": 2,
+   "label": "Sluice balcony"
+  }
+ },
+ "paths": [
+  {
+   "a": "pa_gate",
+   "b": "pa_cis",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_cis",
+   "b": "pa_cisL",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_cisL",
+   "b": "pa_naveFoot",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_naveFoot",
+   "b": "pa_nave1",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_nave1",
+   "b": "pa_nave2",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_nave1",
+   "b": "pa_crypt",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_crypt",
+   "b": "pa_gate",
+   "kind": "tunnel",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": "pa_crypt",
+   "name": "Crypt door"
+  },
+  {
+   "a": "pa_nave2",
+   "b": "pa_tunS",
+   "kind": "tunnel",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_tunS",
+   "b": "pa_tunN",
+   "kind": "tunnel",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_tunN",
+   "b": "pa_wgal",
+   "kind": "tunnel",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_wgal",
+   "b": "pa_wlook",
+   "kind": "ledge",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_wgal",
+   "b": "pa_bridgeW",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_bridgeW",
+   "b": "pa_ngal",
+   "kind": "bridge",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_ngal",
+   "b": "pa_A",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_cis",
+   "b": "pa_eL1",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_eL1",
+   "b": "pa_eL2",
+   "kind": "ledge",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_eL2",
+   "b": "pa_eL2b",
+   "kind": "ledge",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_eL2b",
+   "b": "pa_eL3",
+   "kind": "ledge",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_eL3",
+   "b": "pa_eGal",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_eGal",
+   "b": "pa_A",
+   "kind": "walk",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_A",
+   "b": "pa_tw0",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_tw0",
+   "b": "pa_tw1",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_tw1",
+   "b": "pa_tw2",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_tw2",
+   "b": "pa_tw3",
+   "kind": "stair",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_tw3",
+   "b": "pa_crownN",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_crownN",
+   "b": "pa_crownNW",
+   "kind": "walk",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_crownNW",
+   "b": "pa_C",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_C",
+   "b": "pa_crownW",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_crownW",
+   "b": "pa_crownSW",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_crownSW",
+   "b": "pa_crownS",
+   "kind": "ramp",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_crownS",
+   "b": "pa_nave2",
+   "kind": "drop",
+   "era": 0,
+   "oneway": true,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_crownW",
+   "b": "pa_sanctDoor",
+   "kind": "bridge",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_sanctDoor",
+   "b": "pa_heart",
+   "kind": "bridge",
+   "era": 0,
+   "oneway": false,
+   "keys": [
+    "PSEAL",
+    "NSEAL",
+    "FSEAL"
+   ],
+   "door": null,
+   "name": "Sanctum door"
+  },
+  {
+   "a": "pn_A",
+   "b": "pn_gal2",
+   "kind": "ramp",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_gal2",
+   "b": "pn_dip",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_dip",
+   "b": "pn_loft",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_loft",
+   "b": "pn_pier",
+   "kind": "bridge",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pier",
+   "b": "pn_hiS",
+   "kind": "bridge",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_hiS",
+   "b": "pn_hiE",
+   "kind": "bridge",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_hiE",
+   "b": "pn_shaftTop",
+   "kind": "walk",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_shaftTop",
+   "b": "pn_shaftBot",
+   "kind": "shaft",
+   "era": 1,
+   "oneway": true,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pier",
+   "b": "pn_pierE",
+   "kind": "walk",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pierE",
+   "b": "pn_pS1",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pS1",
+   "b": "pn_pS2",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pS2",
+   "b": "pn_pS3",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pS3",
+   "b": "pn_pS4",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pS4",
+   "b": "pn_pierFoot",
+   "kind": "ladder",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_pS2",
+   "b": "pn_eGal",
+   "kind": "bridge",
+   "era": 1,
+   "oneway": false,
+   "keys": [
+    "NSEAL"
+   ],
+   "door": null,
+   "name": "Seal bridge"
+  },
+  {
+   "a": "pn_pierFoot",
+   "b": "pn_low2",
+   "kind": "walk",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_shaftBot",
+   "b": "pn_low1",
+   "kind": "ramp",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_low1",
+   "b": "pn_B",
+   "kind": "walk",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_B",
+   "b": "pn_low2",
+   "kind": "ramp",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_low2",
+   "b": "pn_low3",
+   "kind": "ramp",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_low3",
+   "b": "pn_low4",
+   "kind": "ramp",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_low4",
+   "b": "pn_low1",
+   "kind": "ramp",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_low2",
+   "b": "pn_chapel",
+   "kind": "walk",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_low1",
+   "b": "pn_look",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_low1",
+   "b": "pn_drain",
+   "kind": "ramp",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_shaftBot",
+   "b": "pn_eStair",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [
+    "NSEAL"
+   ],
+   "door": null,
+   "name": "Sealed east stair"
+  },
+  {
+   "a": "pn_eStair",
+   "b": "pn_eGal",
+   "kind": "stair",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pn_eGal",
+   "b": "pn_A",
+   "kind": "walk",
+   "era": 1,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_C",
+   "b": "pf_crownE",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_crownE",
+   "b": "pf_view",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_crownE",
+   "b": "pf_span1",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_span1",
+   "b": "pf_span2",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_span2",
+   "b": "pf_stump",
+   "kind": "drop",
+   "era": 2,
+   "oneway": true,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_stump",
+   "b": "pf_wellFloor",
+   "kind": "drop",
+   "era": 2,
+   "oneway": true,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_wellFloor",
+   "b": "pf_B",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_stump",
+   "b": "pf_arch",
+   "kind": "ladder",
+   "era": 2,
+   "oneway": false,
+   "keys": [
+    "FSEAL"
+   ],
+   "door": null,
+   "name": "Rope ladder"
+  },
+  {
+   "a": "pf_C",
+   "b": "pf_crownW",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_crownW",
+   "b": "pf_hole",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_hole",
+   "b": "pf_arch",
+   "kind": "ledge",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_hole",
+   "b": "pf_crownS",
+   "kind": "ledge",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_hole",
+   "b": "pf_mid1",
+   "kind": "drop",
+   "era": 2,
+   "oneway": true,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_mid1",
+   "b": "pf_alcove",
+   "kind": "tunnel",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_mid1",
+   "b": "pf_slabTop",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_slabTop",
+   "b": "pf_slabMid",
+   "kind": "stair",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_slabMid",
+   "b": "pf_hole2",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_hole2",
+   "b": "pf_low1",
+   "kind": "drop",
+   "era": 2,
+   "oneway": true,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_low1",
+   "b": "pf_B",
+   "kind": "stair",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_B",
+   "b": "pf_cis",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_cis",
+   "b": "pf_gateF",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_B",
+   "b": "pf_balc",
+   "kind": "stair",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_heart",
+   "b": "pa_liftTop",
+   "kind": "walk",
+   "era": 0,
+   "oneway": false,
+   "keys": [
+    "PSEAL",
+    "NSEAL",
+    "FSEAL"
+   ],
+   "door": null,
+   "name": "Heart lift gate"
+  },
+  {
+   "a": "pa_liftTop",
+   "b": "pa_liftBot",
+   "kind": "lift",
+   "era": 0,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pa_liftBot",
+   "b": "pa_relic",
+   "kind": "walk",
+   "era": 0,
+   "oneway": false,
+   "keys": [
+    "FRAG_HOURGLASS",
+    "FRAG_BELL",
+    "FRAG_LANTERN",
+    "FRAG_KEY"
+   ],
+   "door": null,
+   "name": "Relic seal"
+  },
+  {
+   "a": "pf_hole",
+   "b": "pf_cLedge",
+   "kind": "ladder",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": "pf_hole",
+   "name": "Collapse chain"
+  },
+  {
+   "a": "pf_cLedge",
+   "b": "pf_cWalk",
+   "kind": "ledge",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_cWalk",
+   "b": "pf_slabTop",
+   "kind": "stair",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  },
+  {
+   "a": "pf_slabMid",
+   "b": "pf_sLedge",
+   "kind": "ladder",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": "pf_slabMid",
+   "name": "Slab chain"
+  },
+  {
+   "a": "pf_sLedge",
+   "b": "pf_cis",
+   "kind": "ramp",
+   "era": 2,
+   "oneway": false,
+   "keys": [],
+   "door": null,
+   "name": null
+  }
+ ],
+ "masses": [
+  {
+   "id": "bastion",
+   "eras": [
+    0,
+    1,
+    2
+   ],
+   "kind": "wall",
+   "poly": [
+    [
+     0.0,
+     5.0
+    ],
+    [
+     8.5,
+     4.5
+    ],
+    [
+     10.0,
+     9.5
+    ],
+    [
+     9.0,
+     16.0
+    ],
+    [
+     9.6,
+     24.0
+    ],
+    [
+     8.2,
+     30.0
+    ],
+    [
+     6.5,
+     34.5
+    ],
+    [
+     0.0,
+     35.0
+    ]
+   ],
+   "z0": -1.0,
+   "z1": 11.5,
+   "note": "west bastion - bends with the passage inside it"
+  },
+  {
+   "id": "tower",
+   "eras": [
+    0,
+    1,
+    2
+   ],
+   "kind": "tower",
+   "poly": [
+    [
+     40.818799999999996,
+     38.6171
+    ],
+    [
+     38.817099999999996,
+     40.6188
+    ],
+    [
+     35.9829,
+     40.6188
+    ],
+    [
+     33.9812,
+     38.6171
+    ],
+    [
+     33.9812,
+     35.782900000000005
+    ],
+    [
+     35.9829,
+     33.781200000000005
+    ],
+    [
+     38.817099999999996,
+     33.781200000000005
+    ],
+    [
+     40.818799999999996,
+     35.782900000000005
+    ]
+   ],
+   "z0": -0.5,
+   "z1": 13.6,
+   "note": "octagonal bell tower around the past spiral"
+  },
+  {
+   "id": "pier_p",
+   "eras": [
+    0
+   ],
+   "kind": "pier",
+   "poly": [
+    [
+     26.0,
+     24.0
+    ],
+    [
+     29.0,
+     23.8
+    ],
+    [
+     29.6,
+     26.2
+    ],
+    [
+     27.8,
+     27.6
+    ],
+    [
+     25.8,
+     26.8
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 13.2,
+   "note": "pier, intact - the sanctum sits on top"
+  },
+  {
+   "id": "pier_n",
+   "eras": [
+    1
+   ],
+   "kind": "pier",
+   "poly": [
+    [
+     26.0,
+     24.0
+    ],
+    [
+     29.0,
+     23.8
+    ],
+    [
+     29.6,
+     26.2
+    ],
+    [
+     27.8,
+     27.6
+    ],
+    [
+     25.8,
+     26.8
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 10.4,
+   "note": "pier, top broken off - the present bridge stop; the seal on its spiral"
+  },
+  {
+   "id": "pier_f",
+   "eras": [
+    2
+   ],
+   "kind": "pier",
+   "poly": [
+    [
+     26.0,
+     24.0
+    ],
+    [
+     29.0,
+     23.8
+    ],
+    [
+     29.6,
+     26.2
+    ],
+    [
+     27.8,
+     27.6
+    ],
+    [
+     25.8,
+     26.8
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 6.0,
+   "note": "pier stump - the future seal lies on it"
+  },
+  {
+   "id": "arch_f",
+   "eras": [
+    2
+   ],
+   "kind": "pier",
+   "poly": [
+    [
+     23.4,
+     23.0
+    ],
+    [
+     25.4,
+     22.8
+    ],
+    [
+     25.6,
+     24.9
+    ],
+    [
+     23.6,
+     25.2
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 10.0,
+   "note": "ruined arch pillar - carries the broken beam to the collapse edge"
+  },
+  {
+   "id": "mound_f",
+   "eras": [
+    2
+   ],
+   "kind": "rubble",
+   "poly": [
+    [
+     24.8,
+     21.0
+    ],
+    [
+     27.8,
+     20.8
+    ],
+    [
+     28.2,
+     23.2
+    ],
+    [
+     25.0,
+     23.6
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 1.3,
+   "note": "rubble mound in the well - where the stump-edge fall lands"
+  },
+  {
+   "id": "sluice_p",
+   "eras": [
+    0
+   ],
+   "kind": "wall",
+   "poly": [
+    [
+     37.4,
+     4.4
+    ],
+    [
+     40.6,
+     4.4
+    ],
+    [
+     40.6,
+     14.2
+    ],
+    [
+     38.0,
+     14.4
+    ],
+    [
+     37.0,
+     9.5
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 3.5,
+   "note": "sluice wall of the past cistern - the crawl to the east ledges is cut through it"
+  },
+  {
+   "id": "pinnacle_p",
+   "eras": [
+    0
+   ],
+   "kind": "pinnacle",
+   "poly": [
+    [
+     11.3,
+     17.2
+    ],
+    [
+     16.6,
+     18.4
+    ],
+    [
+     16.2,
+     21.0
+    ],
+    [
+     11.4,
+     19.9
+    ]
+   ],
+   "z0": 0.0,
+   "z1": 16.0,
+   "note": "crown pinnacle - hides the broken south lip from the crown break"
+  },
+  {
+   "id": "cryptwall",
+   "eras": [
+    0
+   ],
+   "kind": "wall",
+   "poly": [
+    [
+     21.6,
+     0.8
+    ],
+    [
+     36.0,
+     1.0
+    ],
+    [
+     36.2,
+     4.6
+    ],
+    [
+     22.6,
+     4.4
+    ],
+    [
+     21.6,
+     3.0
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 4.5,
+   "note": "thick south-east wall of the past - the crypt and its passage to the gate are carved inside"
+  },
+  {
+   "id": "southwall",
+   "eras": [
+    0,
+    1,
+    2
+   ],
+   "kind": "wall",
+   "poly": [
+    [
+     12.0,
+     0.0
+    ],
+    [
+     32.0,
+     0.0
+    ],
+    [
+     32.0,
+     1.2
+    ],
+    [
+     20.0,
+     1.6
+    ],
+    [
+     12.0,
+     1.0
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 8.0,
+   "note": "south wall"
+  },
+  {
+   "id": "eastwall",
+   "eras": [
+    0,
+    1,
+    2
+   ],
+   "kind": "wall",
+   "poly": [
+    [
+     40.8,
+     0.0
+    ],
+    [
+     42.0,
+     0.0
+    ],
+    [
+     42.0,
+     32.0
+    ],
+    [
+     40.6,
+     32.0
+    ],
+    [
+     41.2,
+     16.0
+    ]
+   ],
+   "z0": -3.0,
+   "z1": 14.0,
+   "note": "east wall - carries the past ledges"
+  },
+  {
+   "id": "northwall",
+   "eras": [
+    0,
+    1,
+    2
+   ],
+   "kind": "wall",
+   "poly": [
+    [
+     14.0,
+     40.6
+    ],
+    [
+     33.8,
+     40.8
+    ],
+    [
+     33.8,
+     42.0
+    ],
+    [
+     14.0,
+     42.0
+    ]
+   ],
+   "z0": -1.0,
+   "z1": 11.0,
+   "note": "north wall - carries the crown and the cloister"
+  }
+ ],
+ "junctions": {
+  "A": [
+   "pa_A",
+   "pn_A"
+  ],
+  "B": [
+   "pn_B",
+   "pf_B"
+  ],
+  "C": [
+   "pa_C",
+   "pf_C"
+  ]
+ },
+ "moments": {
+  "PSEAL": {
+   "place": "pa_cisL",
+   "name": "Past moment"
+  },
+  "NSEAL": {
+   "place": "pn_pS2",
+   "name": "Present moment"
+  },
+  "FSEAL": {
+   "place": "pf_stump",
+   "name": "Future moment"
+  }
+ },
+ "fragments": {
+  "FRAG_HOURGLASS": {
+   "place": "pa_crypt",
+   "name": "Votive hourglass"
+  },
+  "FRAG_BELL": {
+   "place": "pn_chapel",
+   "name": "Drowned bell"
+  },
+  "FRAG_LANTERN": {
+   "place": "pf_view",
+   "name": "Sky-ledge lantern"
+  },
+  "FRAG_KEY": {
+   "place": "pf_balc",
+   "name": "Sluice key"
+  }
+ },
+ "start": "pa_gate",
+ "goal": "pa_relic",
+ "crypt": {
+  "floor": -7.0,
+  "rect": [
+   25.7,
+   19.4,
+   32.7,
+   26.7
+  ],
+  "wall": 0.4
+ },
+ "oculus": {
+  "c": [
+   27.9,
+   21.9
+  ],
+  "r": 1.5
+ },
+ "solo": {
+  "seconds": 174.9,
+  "steps": [
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_gate",
+    "b": "pa_cis"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_cis",
+    "b": "pa_cisL"
+   },
+   {
+    "type": "pull",
+    "what": "PSEAL"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_cisL",
+    "b": "pa_naveFoot"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_naveFoot",
+    "b": "pa_nave1"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_nave1",
+    "b": "pa_crypt"
+   },
+   {
+    "type": "pull",
+    "what": "FRAG_HOURGLASS"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_crypt",
+    "b": "pa_nave1"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_nave1",
+    "b": "pa_nave2"
+   },
+   {
+    "type": "move",
+    "kind": "tunnel",
+    "a": "pa_nave2",
+    "b": "pa_tunS"
+   },
+   {
+    "type": "move",
+    "kind": "tunnel",
+    "a": "pa_tunS",
+    "b": "pa_tunN"
+   },
+   {
+    "type": "move",
+    "kind": "tunnel",
+    "a": "pa_tunN",
+    "b": "pa_wgal"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_wgal",
+    "b": "pa_bridgeW"
+   },
+   {
+    "type": "move",
+    "kind": "bridge",
+    "a": "pa_bridgeW",
+    "b": "pa_ngal"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_ngal",
+    "b": "pa_A"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_A",
+    "b": "pa_tw0"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_tw0",
+    "b": "pa_tw1"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_tw1",
+    "b": "pa_tw2"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_tw2",
+    "b": "pa_tw3"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_tw3",
+    "b": "pa_crownN"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pa_crownN",
+    "b": "pa_crownNW"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_crownNW",
+    "b": "pa_C"
+   },
+   {
+    "type": "switch",
+    "junction": "C",
+    "frm": "P",
+    "to": "F"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pf_C",
+    "b": "pf_crownE"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pf_crownE",
+    "b": "pf_view"
+   },
+   {
+    "type": "pull",
+    "what": "FRAG_LANTERN"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pf_view",
+    "b": "pf_crownE"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pf_crownE",
+    "b": "pf_span1"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pf_span1",
+    "b": "pf_span2"
+   },
+   {
+    "type": "move",
+    "kind": "drop",
+    "a": "pf_span2",
+    "b": "pf_stump"
+   },
+   {
+    "type": "pull",
+    "what": "FSEAL"
+   },
+   {
+    "type": "move",
+    "kind": "drop",
+    "a": "pf_stump",
+    "b": "pf_wellFloor"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pf_wellFloor",
+    "b": "pf_B"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pf_B",
+    "b": "pf_balc"
+   },
+   {
+    "type": "pull",
+    "what": "FRAG_KEY"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pf_balc",
+    "b": "pf_B"
+   },
+   {
+    "type": "switch",
+    "junction": "B",
+    "frm": "F",
+    "to": "N"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pn_B",
+    "b": "pn_low2"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pn_low2",
+    "b": "pn_chapel"
+   },
+   {
+    "type": "pull",
+    "what": "FRAG_BELL"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pn_chapel",
+    "b": "pn_low2"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pn_low2",
+    "b": "pn_pierFoot"
+   },
+   {
+    "type": "move",
+    "kind": "ladder",
+    "a": "pn_pierFoot",
+    "b": "pn_pS4"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pn_pS4",
+    "b": "pn_pS3"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pn_pS3",
+    "b": "pn_pS2"
+   },
+   {
+    "type": "pull",
+    "what": "NSEAL"
+   },
+   {
+    "type": "move",
+    "kind": "bridge",
+    "a": "pn_pS2",
+    "b": "pn_eGal"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pn_eGal",
+    "b": "pn_A"
+   },
+   {
+    "type": "switch",
+    "junction": "A",
+    "frm": "N",
+    "to": "P"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_A",
+    "b": "pa_tw0"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_tw0",
+    "b": "pa_tw1"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_tw1",
+    "b": "pa_tw2"
+   },
+   {
+    "type": "move",
+    "kind": "stair",
+    "a": "pa_tw2",
+    "b": "pa_tw3"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_tw3",
+    "b": "pa_crownN"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pa_crownN",
+    "b": "pa_crownNW"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_crownNW",
+    "b": "pa_C"
+   },
+   {
+    "type": "move",
+    "kind": "ramp",
+    "a": "pa_C",
+    "b": "pa_crownW"
+   },
+   {
+    "type": "move",
+    "kind": "bridge",
+    "a": "pa_crownW",
+    "b": "pa_sanctDoor"
+   },
+   {
+    "type": "move",
+    "kind": "bridge",
+    "a": "pa_sanctDoor",
+    "b": "pa_heart"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pa_heart",
+    "b": "pa_liftTop"
+   },
+   {
+    "type": "move",
+    "kind": "lift",
+    "a": "pa_liftTop",
+    "b": "pa_liftBot"
+   },
+   {
+    "type": "move",
+    "kind": "walk",
+    "a": "pa_liftBot",
+    "b": "pa_relic"
+   }
+  ],
+  "places": [
+   "pa_gate",
+   "pa_cis",
+   "pa_cisL",
+   "pa_naveFoot",
+   "pa_nave1",
+   "pa_crypt",
+   "pa_nave1",
+   "pa_nave2",
+   "pa_tunS",
+   "pa_tunN",
+   "pa_wgal",
+   "pa_bridgeW",
+   "pa_ngal",
+   "pa_A",
+   "pa_tw0",
+   "pa_tw1",
+   "pa_tw2",
+   "pa_tw3",
+   "pa_crownN",
+   "pa_crownNW",
+   "pa_C",
+   "pf_C",
+   "pf_crownE",
+   "pf_view",
+   "pf_crownE",
+   "pf_span1",
+   "pf_span2",
+   "pf_stump",
+   "pf_wellFloor",
+   "pf_B",
+   "pf_balc",
+   "pf_B",
+   "pn_B",
+   "pn_low2",
+   "pn_chapel",
+   "pn_low2",
+   "pn_pierFoot",
+   "pn_pS4",
+   "pn_pS3",
+   "pn_pS2",
+   "pn_eGal",
+   "pn_A",
+   "pa_A",
+   "pa_tw0",
+   "pa_tw1",
+   "pa_tw2",
+   "pa_tw3",
+   "pa_crownN",
+   "pa_crownNW",
+   "pa_C",
+   "pa_crownW",
+   "pa_sanctDoor",
+   "pa_heart",
+   "pa_liftTop",
+   "pa_liftBot",
+   "pa_relic"
+  ]
+ },
+ "soloStates": 81288,
+ "soloDeadStates": 0
+}

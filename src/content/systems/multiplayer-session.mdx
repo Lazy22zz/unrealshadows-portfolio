@@ -1,0 +1,63 @@
+---
+title: Two-player sessions, lobby and reconnect
+summary: Steam or LAN sessions behind one flow, a lobby where both players stand on a platform for five seconds to start, a run roster locked by an anonymous token, and a 60-second wait when someone drops.
+order: 7
+area: Networking · Online
+status: in-progress
+statusNote: Rules covered by Multiplayer.* and GameMenu.* automation; offline two-process demo verified. Two-machine Steam acceptance is still open.
+classes: [UUS_GameSessionSubsystem, AUS_LobbyGameMode, AUS_LobbyAssemblyPlatform, UUS_DisconnectCoordinatorComponent, UUS_HostReconnectSubsystem, AUS_PlayerState]
+sources:
+  - Source/UnrealShadows_LOTL/Public/Multiplayer/
+  - Source/UnrealShadows_LOTL/Public/GameMenu/
+  - Source/UnrealShadows_LOTL/Public/Online/
+  - Source/UnrealShadows_LOTL/Public/Lobby/
+---
+import Flow from "../../components/Flow.astro";
+import Figure from "../../components/Figure.astro";
+import Callout from "../../components/Callout.astro";
+
+## The problem
+
+The game is co-op for one or two players over a listen server. That means: hosting and joining on Steam *and* without Steam (LAN, editor PIE, offline demos), making sure the second player in a run is the same person after a disconnect, deciding what happens to the world when one player drops, and doing all of it without leaking account information.
+
+## What the player sees
+
+<Figure id="ui-menu" caption="The in-game manuscript menu during a two-player session (the world keeps running, with a warning that you can still be caught)." />
+
+- Host a room, invite a friend or share a random 6-character room code; or find nearby rooms.
+- In the lobby hall both players step onto a gear platform; twelve lamps light up over five seconds and the run starts.
+- If your partner drops, the world pauses for a 60-second wait. Only the host can then choose "continue alone" or "return to menu".
+
+## How it works
+
+<Flow steps={[
+  { k: "Backend", t: "Steam (SteamSockets) with automatic fallback to Null + IpNetDriver" },
+  { k: "Advertise", t: "Project + protocol version keys only; room code is random" },
+  { k: "Lobby", t: "Assembly platform: both on it for 5 s (team muster component)" },
+  { k: "Roster", t: "Each player's RunToken (GUID) locked when the run starts" },
+  { k: "Drop", t: "Pawn kept in place; 60 s wait; reconnect re-attaches the same pawn" }
+]} />
+
+- **One flow, two backends.** Everything backend-specific (session settings, search filters, reading results) is isolated in `US_SessionBackendSettings`. When Steam is not available the engine falls back to the Null subsystem and the IP net driver automatically, so PIE and `-nosteam` runs use the same code.
+- **Run roster.** A local GUID `RunToken` identifies each player instance. Once the run starts, unknown tokens are refused in `PreLogin`; travelling between stages and true reconnects both resolve back to the same roster slot.
+- **Drop handling.** `AUS_PlayerController::PawnLeavingGame` keeps the disconnected player's pawn in the world (the engine calls it before `Logout`), and `RestartPlayer` re-attaches it on reconnect.
+- **Leaving on purpose** sends a "declare leaving" RPC and waits for an ack (1.5 s cap) so the server does not mistake it for a network drop and pause for 60 s.
+
+<Callout kind="warn" title="Constraints the design had to respect">
+Steam lobby search is limited to nearby regions by the engine, and UE's Steam <code>FindSessionById</code> is not implemented — so room codes are random codes searched among advertised rooms, and cross-region play goes through friend invites. The host's SteamID was rejected as a room code because it would expose the host.
+</Callout>
+
+## Why this design
+
+- **Privacy as a test.** An automation test whitelists the advertised session keys, so no account field can be added by accident.
+- **Protocol version in the advertisement.** Steam App 480 is shared by many projects; filtering on project + protocol version keeps strangers' sessions and older builds out.
+- **Arrival grace.** After a non-seamless travel, a client still loading is not a disconnect; the server waits up to 30 s for travelling members before starting the 60 s disconnect flow.
+
+## Limits and next steps
+
+- Two-machine Steam acceptance (invites, codes, reconnect over the internet) has not been completed.
+- Up to two players by design; the third join is refused by the server.
+
+## Where the code lives
+
+`Public/Multiplayer/{Core,Integration,Presentation}`, `Public/GameMenu/{Core,Integration,Presentation}`, `Public/Online/`, tests `UnrealShadows.Multiplayer.*` and `UnrealShadows.GameMenu.*`.

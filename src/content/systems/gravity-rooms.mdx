@@ -1,0 +1,80 @@
+---
+title: Gravity rooms and seams
+summary: Stage 2 is a 48 m cube whose six faces are six rooms. Each face has its own gravity, each of the 12 edges is a curved seam, and guards on walls path-find in a "nav twin" far below the map.
+order: 5
+area: Movement · Level tech
+status: verified
+statusNote: Stage2.Gravity.* automation (rotation, seams, room frames, room bounds) plus PIE suites for the cube, the lips and the sword prototype; five gravity lanes audited for zero blockers.
+classes: [AUS_GravityZone, AUS_GravitySeam, UUS_GravitySubsystem, UUS_CharacterMovementComponent, US_RoomBounds]
+sources:
+  - Source/UnrealShadows_LOTL/Public/Stage2/Gravity/
+  - Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp
+  - Source/UnrealShadows_LOTL/Tools/Stage2/BuildStage2GravityCube.py
+  - Source/UnrealShadows_LOTL/Tools/Stage2/AnalyseStage2Clipping.py
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Figure from "../../components/Figure.astro";
+import Callout from "../../components/Callout.astro";
+import { url as u } from "../../lib/url";
+
+## The problem
+
+The level is built on all six inner faces of a cube. Players walk up a wall, across the ceiling, and fall "down" into a different room. That needs: per-room gravity for characters, smooth transitions at the edges, AI that can path-find on a wall, abilities that only affect the room you are in, and a way to recover anyone who ends up somewhere with the wrong gravity.
+
+## What the player sees
+
+<Figure id="library-pad" caption="The ceiling face of the cube, seen from its landing pad. The floor room is 48 m above the player's head." />
+
+- Walk off a 35 cm golden step on a tower and you tip over onto the north wall.
+- Get flung by a drain lane across the cube and land on the opposite wall.
+- Guards patrol walls and the ceiling like any other floor.
+
+Explore it in 3D on the <a href={u("/levels/gravity-cube/")}>gravity cube page</a>.
+
+## How it works
+
+<Flow steps={[
+  { k: "Zones", t: "15 AUS_GravityZone boxes: 6 faces + shafts, chimneys and lanes" },
+  { k: "Seams", t: "12 AUS_GravitySeam arcs (16 m) on the cube's edges" },
+  { k: "CMC", t: "UpdateRoomGravity() every move: seams first, then stranded fallback" },
+  { k: "AI", t: "Wall guards path on a nav twin at z −60 000, mapped back to the face" },
+  { k: "Skills", t: "US_RoomBounds: area skills only touch pawns in the same room" }
+]} />
+
+Room gravity is only enabled in maps that actually contain seams, so every other map keeps the engine's default gravity code path untouched:
+
+<Snippet id="gravity-has-seams" strip />
+
+Every movement tick the component asks the seams first; if no seam claims the character and it is not standing on a valid support, `ResolveStrandedGravity` picks the gravity of the room it is in:
+
+<Snippet id="gravity-room-update" strip />
+
+## Key classes and functions
+
+| Piece | Responsibility |
+|---|---|
+| `AUS_GravityZone` | Oriented room box; its up axis defines the room's gravity |
+| `AUS_GravitySeam` | Curved transition along one cube edge |
+| `UUS_GravitySubsystem` | `EvaluateSeams`, `ResolveStrandedGravity`, `HasSeams` |
+| `UUS_CharacterMovementComponent::UpdateRoomGravity` | Applies the result with `SetGravityDirection` |
+| Nav twin | Every collision piece on a wall gets a copy laid flat far below the level for nav-mesh baking |
+
+## Why this design
+
+- **Zero regression by construction.** The default-gravity branch is the original engine path; the new logic only runs when a map has seams.
+- **Recover, don't special-case.** After any teleport (portals, rescue, debug) the stranded resolver puts the correct gravity back, instead of every feature remembering to set it.
+- **Geometry is generated, then audited.** `BuildStage2GravityCube.py` builds the cube and its twin; `AnalyseStage2Clipping.py` checks oriented-box overlaps (2 cm tolerance) and the clearance of the five gravity lanes. A whitelist documents every intended overlap.
+
+<Callout kind="warn" title="A real bug this exposed">
+<code>FAIMoveRequest::SetGoalActor</code> is a no-op on an already initialised request. On walls, guards "saw but didn't chase" until <code>MoveTo</code> built a fresh request for actor goals.
+</Callout>
+
+## Limits and next steps
+
+- Edges are a classic seam: two faces' 9 m bands overlap, so lip points must leave the neighbouring band.
+- The cube is built by a generator plus many narrow patch scripts; a full regeneration is not identical to the shipped map, so changes are made as new guarded patches (each checks the map's file hash before writing).
+
+## Where the code lives
+
+`Public/Stage2/Gravity/`, `Private/PlayerClass/US_CharacterMovementComponent.cpp`, builders and audits under `Tools/Stage2/`.

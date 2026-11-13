@@ -1,0 +1,13 @@
+---
+// A small left-to-right chain of labelled steps (wraps to vertical on phones).
+interface Props { steps: { k?: string; t: string }[] }
+const { steps } = Astro.props;
+---
+<div class="flow" role="list">
+  {steps.map((s, i) => (
+    <>
+      {i > 0 && <span class="flow-arrow" aria-hidden="true">→</span>}
+      <div class="flow-step" role="listitem">{s.k && <b>{s.k}</b>}{s.t}</div>
+    </>
+  ))}
+</div>

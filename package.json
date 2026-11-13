@@ -1,0 +1,35 @@
+{
+  "name": "unrealshadows-portfolio",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "sync": "node scripts/sync/sync.mjs",
+    "build": "astro check && astro build && pagefind --site dist",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "test:all": "npm run test && npm run build && npm run e2e",
+    "verify": "node scripts/sync/verify-content.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
+    "@astrojs/react": "^4.4.2",
+    "astro": "^5.18.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@playwright/test": "^1.65.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.170.0",
+    "pagefind": "^1.6.0",
+    "sharp": "^0.35.5",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  }
+}

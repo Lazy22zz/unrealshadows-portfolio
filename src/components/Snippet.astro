@@ -1,0 +1,18 @@
+---
+// An allowlisted excerpt from the private game repo (see scripts/sync/snippets.json).
+import { Code } from "astro:components";
+import snippets from "../data/snippets.json";
+
+interface Props { id: string; strip?: boolean; caption?: string; lang?: string }
+const { id, strip = false, caption, lang = "cpp" } = Astro.props;
+const s = (snippets as Record<string, { file: string; line: number; code: string; codeStripped: string; commit: string }>)[id];
+if (!s) throw new Error(`Unknown snippet '${id}' — add it to scripts/sync/snippets.json and run npm run sync`);
+---
+<figure class="snippet">
+  <div class="snippet-head">
+    <span>{s.file}:{s.line}</span>
+    <span title="game repo commit">@{s.commit}{strip ? " · comments removed" : ""}</span>
+  </div>
+  <Code code={strip ? s.codeStripped : s.code} lang={lang as any} theme="github-dark-dimmed" />
+  {caption && <figcaption class="snippet-cap">{caption}</figcaption>}
+</figure>

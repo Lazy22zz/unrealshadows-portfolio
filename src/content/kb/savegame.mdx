@@ -1,0 +1,55 @@
+---
+title: SaveGame：成就进度与本机设置
+summary: USaveGame 是一个可序列化的 UObject，用 SaveGameToSlot / LoadGameFromSlot 存读。本项目有两份存档：成就进度和菜单设置，都带版本号，都只在玩家自己的机器上保存。
+order: 9
+topic: 数据持久化
+sources:
+  - Source/UnrealShadows_LOTL/Public/Framework/US_AchievementSaveGame.h
+  - Source/UnrealShadows_LOTL/Private/Framework/US_AchievementSubsystem.cpp
+  - Source/UnrealShadows_LOTL/Private/GameMenu/Integration/US_GameSettingsSubsystem.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+
+## 30 秒理解
+
+1. 写一个 `USaveGame` 子类，要存的字段标 `UPROPERTY(SaveGame)`（或普通 UPROPERTY）。
+2. 保存：`CreateSaveGameObject` → 填字段 → `SaveGameToSlot(Save, SlotName, UserIndex)`。
+3. 读取：`DoesSaveGameExist` → `LoadGameFromSlot` → `Cast` 成自己的类型。
+4. 加一个版本号字段，读到旧版本时升级数据。
+
+## 解决什么问题
+
+成就进度和设置（音量、灵敏度）要在关掉游戏后还在。它们是**玩家个人**的，不属于某一局，也不应该由服务器替客户端保存。
+
+## 在本项目中的应用
+
+<Snippet id="achievement-save" />
+
+- **成就**：`UUS_AchievementSubsystem`（GameInstance 子系统）在普通进度变化 5 秒后保存、解锁时立即保存；只保存“档案级”作用域的进度，“本局”和“遭遇”作用域回菜单时清空。专用服务器不保存。
+- **事件如何到达本机**：游戏逻辑在服务器上报事件，再通过 Client RPC 只发给当事玩家，由玩家本机的子系统记录进度。
+- **设置**：`UUS_GameSettingsSubsystem` 存音量、灵敏度、动态效果开关，读的时候用 `USGameSettings::Upgrade` 把旧版本数据升级。
+
+<Snippet id="settings-load" caption="读取时先判断存档是否存在，再按版本升级。" />
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "服务器", t: "gameplay 上报成就事件" },
+  { k: "Client RPC", t: "只发给拥有者" },
+  { k: "本机子系统", t: "更新进度 → 标记 dirty" },
+  { k: "保存", t: "5 s 防抖 / 解锁立即 SaveGameToSlot" }
+]} />
+
+## 常见错误
+
+- 让服务器替所有客户端保存个人进度。
+- 没有版本号，改结构以后旧存档读出来是错的。
+- 每次进度变化都同步写盘（卡顿）；本项目用防抖。
+- 在专用服务器上读写玩家存档。
+
+## 延伸学习
+
+- `AsyncSaveGameToSlot` / `AsyncLoadGameFromSlot`
+- `ISaveGameSystem` 与平台存档
+- 自定义序列化：`Serialize(FArchive&)`

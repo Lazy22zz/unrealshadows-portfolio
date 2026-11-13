@@ -1,0 +1,61 @@
+---
+title: UObject 生命周期：CDO、构造函数与 BeginPlay
+summary: 构造函数跑在类默认对象（CDO）上，BeginPlay 跑在关卡里真实的实例上，SpawnActor 会在返回之前就把 BeginPlay 跑完。本项目在这三件事上各踩过一次坑。
+order: 1
+topic: 引擎基础
+sources:
+  - Source/UnrealShadows_LOTL/Private/Ability/US_DecoyActor.cpp
+  - Source/UnrealShadows_LOTL/Private/Tests/US_InteractRefusalTests.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Callout from "../../components/Callout.astro";
+
+## 30 秒理解
+
+- **构造函数**：建子组件、设默认值。每个类都会先构造一份 **CDO（Class Default Object）**，蓝图子类的默认值就是在 CDO 上覆盖的。构造函数里不要访问 World。
+- **BeginPlay**：对象真正进入世界后才调用，这时组件、World、GameState 都能用了。
+- **SpawnActor 是同步的**：它返回之前就已经跑完 `BeginPlay`。所以先 Spawn、再调 `Initialize()` 传参数的话，**BeginPlay 读到的还是默认值**。
+
+## 解决什么问题
+
+UE 用 CDO 做两件事：给蓝图/编辑器提供可覆盖的默认值，以及作为 `NewObject` / `SpawnActor` 复制属性的模板。分清哪段代码跑在 CDO 上、哪段跑在实例上，才不会写出“在编辑器里打开蓝图就崩”或“参数没生效”的代码。
+
+## 在本项目中的应用
+
+1. **诱饵提前消失**：Thief 的诱饵存活 8 秒，HUD 倒计时数到 3.0 就跳 0。原因是寿命计时器写在 `BeginPlay` 里，而那时 `Duration` 还是头文件默认值 5.0——`Initialize(…, 8.0)` 是 SpawnActor 返回之后才调的。修法是把计时器移进 `Initialize`。
+2. **场域只活 8 秒**：法师终极场域和暗影之幕有同一个问题：扫描与寿命计时器在 BeginPlay 里按类默认值启动。现在在 `Initialize` 末尾用 DataAsset 的值重启（`StartTimers` / `StartLifetime`）。
+3. **CDO 不跑 BeginPlay**：坛的 `bLocked` 是 BeginPlay 里由 `bStartsLocked` 初始化的，所以在测试里拿 CDO 问 `IsUnlocked()` 会得到 true。测试改为利用这一点去验证“已解锁的坛不说话”。
+4. **蓝图序列化值会盖掉 C++ 新默认值**：改了 C++ 默认值以后，如果蓝图里曾手动改过这个字段，蓝图保存的旧值仍然生效，要在编辑器里 Reset to Default。
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "加载类", t: "构造函数 → CDO（默认值、子组件）" },
+  { k: "SpawnActor", t: "复制 CDO → 构造实例 → 注册组件" },
+  { k: "同步执行", t: "PostInitializeComponents → BeginPlay" },
+  { k: "返回之后", t: "调用方才执行 Initialize(参数)" }
+]} />
+
+## 关键代码及解释
+
+<Snippet id="decoy-initialize" caption="计时器放在 Initialize 里：此时 Duration 已经是调用方传进来的值。注释记录了当时的 bug 现象。" />
+
+另一种写法是 `SpawnActorDeferred` + 设置参数 + `FinishSpawning`，让参数在 BeginPlay 之前就位。本项目多数地方用的是“依赖参数的逻辑全部放进 Initialize”。
+
+## 常见错误
+
+- 在 BeginPlay 里读取“Spawn 之后才设置”的参数。
+- 在构造函数里调用 `GetWorld()`、读 GameState，或依赖关卡内容（CDO 没有 World）。
+- 用 CDO 写测试时以为它跑过 BeginPlay。
+- 以为改 C++ 默认值会自动更新已经保存过的蓝图实例。
+
+<Callout kind="info">
+判断依据很简单：这段逻辑需要的值在什么时候才确定？在构造时就确定的放构造函数，在进入世界时才确定的放 BeginPlay，由调用方传入的放 Initialize（或用 Deferred Spawn）。
+</Callout>
+
+## 延伸学习
+
+- UE 文档：Actor Lifecycle、Unreal Object Handling（CDO 与 `GetDefault<T>()`）
+- `SpawnActorDeferred` / `FinishSpawning`
+- `PostInitProperties`、`PostLoad`、`OnConstruction` 各自的调用时机

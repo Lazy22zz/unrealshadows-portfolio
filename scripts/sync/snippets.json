@@ -1,0 +1,118 @@
+{
+ "_doc": "Allowlist of C++ excerpts copied from the private game repo. file is relative to Source/UnrealShadows_LOTL. 'from' is the first line's exact text (trimmed match); 'lines' is how many lines to copy. strip=true removes // comment lines (for the English pages).",
+ "portal-flags": {
+  "file": "Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "from": "uint8 FUS_SavedMove_Character::GetCompressedFlags() const",
+  "lines": 9
+ },
+ "portal-restore-flags": {
+  "file": "Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "from": "void UUS_CharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)",
+  "lines": 7
+ },
+ "portal-consume": {
+  "file": "Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "from": "void UUS_CharacterMovementComponent::PerformQueuedPortalTraversal()",
+  "lines": 42
+ },
+ "alert-priority": {
+  "file": "Public/MinionClass/US_MinionAIController.h",
+  "from": "enum class EUS_AlertSource : uint8",
+  "lines": 7
+ },
+ "alert-arbiter": {
+  "file": "Public/MinionClass/US_MinionAIController.h",
+  "from": "namespace USMinionAlert",
+  "lines": 50
+ },
+ "interact-resolve": {
+  "file": "Public/PlayerClass/US_InteractComponent.h",
+  "from": "inline EDecision Resolve(bool bCanInteract, bool bHasRefusalLine, float HoldDuration)",
+  "lines": 8
+ },
+ "muster-rule": {
+  "file": "Public/Framework/US_TeamMusterTypes.h",
+  "from": "inline bool IsMusterComplete(const FUS_MusterQuery& Query)",
+  "lines": 14
+ },
+ "coinlock-apply": {
+  "file": "Private/Framework/US_CoinLockTypes.cpp",
+  "from": "ERotateResult ApplyRotation(FUS_CoinLockState& State, uint8 Disc, int32 Steps)",
+  "lines": 32
+ },
+ "shelf-state": {
+  "file": "Public/Stage2/Core/US_RollingShelfTypes.h",
+  "from": "struct FUS_RollingShelfState",
+  "lines": 49
+ },
+ "victory-state": {
+  "file": "Public/Framework/US_GameState.h",
+  "from": "struct FUS_VictoryState",
+  "lines": 13
+ },
+ "victory-mark": {
+  "file": "Private/Framework/US_GameState.cpp",
+  "from": "void AUS_GameState::MarkVictory(ACharacter* Winner)",
+  "lines": 30
+ },
+ "decoy-initialize": {
+  "file": "Private/Ability/US_DecoyActor.cpp",
+  "from": "void AUS_DecoyActor::Initialize(AUS_Character* InOwner, float InDuration, float InNoiseInterval,",
+  "lines": 26
+ },
+ "input-clear-mappings": {
+  "file": "Private/PlayerClass/US_Character.cpp",
+  "from": "// ★ 先清空全部 Mapping Context，再只加\"本职业自己\"的 Look + Move。",
+  "lines": 13
+ },
+ "coinlock-test": {
+  "file": "Private/Tests/US_CoinLockTests.cpp",
+  "from": "IMPLEMENT_SIMPLE_AUTOMATION_TEST(",
+  "lines": 20
+ },
+ "achievement-save": {
+  "file": "Public/Framework/US_AchievementSaveGame.h",
+  "from": "class UNREALSHADOWS_LOTL_API UUS_AchievementSaveGame : public USaveGame",
+  "lines": 14
+ },
+ "gravity-room-update": {
+  "file": "Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "from": "const bool FloatingTransit=FloatingTarget.IsValid() || GetRootMotionSource(TEXT(\"FloatingTransit\")).IsValid();",
+  "lines": 8
+ },
+ "gravity-has-seams": {
+  "file": "Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "from": "void UUS_CharacterMovementComponent::UpdateRoomGravity()",
+  "lines": 11
+ },
+ "chase-state": {
+  "file": "Public/Chase/Core/US_ChaseFatigueTypes.h",
+  "from": "enum class EUS_ChaseState : uint8",
+  "lines": 11
+ },
+ "tasknpc-delegate": {
+  "file": "Private/Interactables/US_TaskNPC.cpp",
+  "from": "bool AUS_TaskNPC::CanInteract_Implementation(AUS_Character* CharacterInstigator) const",
+  "lines": 16
+ },
+ "property-data-resolve": {
+  "file": "Private/Framework/US_GameInstance.cpp",
+  "from": "UUS_PropertyData* UUS_GameInstance::ResolvePropertyData(const UObject* WorldContextObject)",
+  "lines": 16
+ },
+ "nativepaint-makechild": {
+  "file": "Private/UI/US_CoinLockWidget.cpp",
+  "from": "// ---- 之后全部画进逻辑子几何：像素数字与字号自动随分辨率缩放 ----",
+  "lines": 3
+ },
+ "achievement-save-load": {
+  "file": "Private/Framework/US_AchievementSubsystem.cpp",
+  "from": "void UUS_AchievementSubsystem::LoadProgress()",
+  "lines": 34
+ },
+ "settings-load": {
+  "file": "Private/GameMenu/Integration/US_GameSettingsSubsystem.cpp",
+  "from": "void UUS_GameSettingsSubsystem::LoadSettings()",
+  "lines": 13
+ }
+}

@@ -1,0 +1,68 @@
+---
+layout: ../../layouts/MdxPage.astro
+title: The Time Temple — one temple, three eras
+summary: A 42 × 42 m temple that exists three times — Past, Present and Future. Each era is its own maze; the only links are three junctions that each join exactly two eras. Behind the time gate on top of the gravity cube.
+eyebrow: Level design · Stage 2
+back: /levels/
+backLabel: Levels & puzzles
+wide: true
+sources:
+  - Source/UnrealShadows_LOTL/Tools/Stage2/TempleV9/TempleV9Space.py
+  - Source/UnrealShadows_LOTL/Tools/Stage2/TempleV9/TempleV9Layout.py
+  - Source/UnrealShadows_LOTL/Tools/Stage2/TempleV92Greybox/
+  - Source/UnrealShadows_LOTL/Public/Framework/US_TrialPortal.h
+  - Source/UnrealShadows_LOTL/Public/Stage2/Presentation/US_TempleTimeWindow.h
+---
+import TimeTemple from "../../components/interactive/TimeTemple.tsx";
+import Figure from "../../components/Figure.astro";
+import Callout from "../../components/Callout.astro";
+import Flow from "../../components/Flow.astro";
+import temple from "../../data/temple.json";
+
+<TimeTemple client:visible />
+
+## What the player does
+
+The player arrives in the **past** cistern, at the bottom of a well. The goal — a relic sealed in a crypt under the central pier — is visible from the first minute through an oculus in the well floor, but the only way down is a lift that opens when **three time moments** (one per era) have been collected. The relic's seal is held by **four fragments** hidden in dead ends across the eras.
+
+<Flow steps={[
+  { k: "Past", t: "Collect the past moment on the well lip; climb west (long, vistas, crypt) or east (hidden crawl, narrow ledges)" },
+  { k: "Junction C", t: "At the broken crown, step into the future" },
+  { k: "Future", t: "Cross the broken span, drop onto the pier stump: future moment" },
+  { k: "Junction B", t: "At the well's bottom lip, step into the present" },
+  { k: "Present", t: "Climb the pier spiral: present moment; the seal bridge opens a loop back" },
+  { k: "Junction A", t: "Back to the past; the full time ring opens the sanctum and the lift" }
+]} />
+
+The interactive plan above replays the solver's fastest solo route ({temple.solo.steps.length} steps, {temple.solo.seconds} s of pure movement). Toggle the keys to see which locks they open and how much of each era becomes reachable.
+
+## Design rules
+
+- **Each era is a different maze.** Places in different eras may share coordinates; that never connects them.
+- **Exactly three junctions, each joining two eras** (A: past↔present, B: present↔future, C: past↔future). They sit on different heights (+6.6 m, −1.4 m, +13.4 m), so the three eras are threaded vertically.
+- **No floor slabs.** Height is continuous from the crypt (−7 m) to the crown (+15.6 m). The old "three storeys" survive only as a height budget.
+- **The Well of Hours is the spine of spatial memory.** Three beats: from the past well bottom you look up at the sanctum door 15 m overhead; in the future you see the same well again from a broken span; from the Heart you look down at where you started.
+- **One-way drops and doors create Dark Souls-style shortcuts.** A crypt door can only be pushed open from the inside; once open it is two-way.
+- **No soft-locks.** The solver explores every reachable state (positions × eras × keys) and proves that the goal is reachable from all of them.
+
+## How it is built in Unreal
+
+<Figure id="temple-eras" caption="The same spots in the past, present and future art passes." />
+
+The three eras are **three side-by-side copies** of the temple. A junction is an `AUS_TrialPortal` with `bPreserveRelativePlacement`: it shifts the player by the offset between copies, keeping position, facing, camera and velocity — the same predicted, black-screen-free traversal used everywhere else in the game.
+
+Seeing into another era uses two techniques, picked per window by a rule:
+
+- **Wall + echo** when the watched spot is solid and unreachable in the viewer's era: a single-sided wall with a sealed cavity behind it, and `AUS_TempleTimeEcho` mirrors the other player's pose into it. Almost free to render.
+- **SceneCapture windows** everywhere else (`AUS_TempleTimeWindow`), placed beside the path rather than on it, and only capturing while on screen.
+
+<Callout kind="info" title="Iteration history">
+V7 used three stacked floors and a three-era junction; V8 made every junction strictly pairwise; V9.1 threw out floors entirely for a route-first 3-D maze after the first playtest felt like "three slabs with stairs"; V9.2 was validated in a two-process technical slice; V9.4 added the time moments and fragments after players said "I can't tell what I'm meant to do"; V9.5 moved the relic into the crypt with an intro shot and a lift-only entrance.
+</Callout>
+
+## Limitations
+
+- The plan view flattens height; colour shows height, and hovering a path shows both ends' heights.
+- Window and echo placement, lighting and the intro camera are only described here; they need to be seen in engine.
+
+<Figure id="crypt-relic" caption="The relic in the crypt: four chains of light (one per fragment) hold the dome until the fragments are found." />

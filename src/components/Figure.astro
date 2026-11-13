@@ -1,0 +1,16 @@
+---
+import media from "../data/media.json";
+import { media as mediaUrl } from "../lib/url";
+interface Props { id: string; caption?: string; eager?: boolean }
+const { id, caption, eager = false } = Astro.props;
+const m = (media as Record<string, { alt: string; width: number; height: number; source: string }>)[id];
+if (!m) throw new Error(`Unknown media '${id}'`);
+---
+<figure>
+  <a href={mediaUrl(id)} target="_blank" rel="noopener">
+    <img src={mediaUrl(id)} srcset={`${mediaUrl(id, true)} 640w, ${mediaUrl(id)} ${m.width}w`} sizes="(max-width: 800px) 100vw, 780px"
+      width={m.width} height={m.height} alt={m.alt} loading={eager ? "eager" : "lazy"} decoding="async" />
+  </a>
+  <figcaption>{caption ?? m.alt} <span class="faint">· in-engine capture</span></figcaption>
+</figure>
+<style>.faint { color: var(--faint); opacity: 0.8; }</style>

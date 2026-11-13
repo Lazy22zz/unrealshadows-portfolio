@@ -1,0 +1,142 @@
+---
+import Base from "../layouts/Base.astro";
+import project from "../data/project.json";
+import tests from "../data/tests.json";
+import eng from "../data/engineering.json";
+import { url } from "../lib/url";
+
+const folders = Object.entries(project.folders as Record<string, number>).sort((a, b) => b[1] - a[1]);
+const maxF = folders[0][1];
+const groups = Object.entries(tests.groups as Record<string, number>).sort((a, b) => b[1] - a[1]);
+const maxG = groups[0][1];
+const decisions = [
+  ["Pure rules in Core, tested without a world", "Most new systems put their decisions in stateless functions (USCoinLock, USMinionAlert, USTeamMuster, USTrialPortal, USRollingShelf…). Automation tests cover them exhaustively; the world-facing code stays thin."],
+  ["Replicate snapshots, not fields", "Facts that must arrive together are one struct with RepNotify (victory, muster, coin lock, rolling shelf). Two separate replicated fields once dropped the winner's name forever."],
+  ["Server time for every replicated deadline", "Timestamps written by the server and read by clients use GetServerWorldTimeSeconds on both ends; a client's local world clock lags by the load time."],
+  ["One DataAsset for tuning", "Per-class tuning lives in DA_PropertyData (TMap per class), resolved through the GameInstance so server and remote clients read the same file. The old XP data table was removed."],
+  ["Prediction through the CMC, never around it", "Anything that moves the player on a remote client (portals, room gravity, floating transit) is a saved-move flag or root-motion source, so the engine's corrections absorb disagreements."],
+  ["Editor Python for level work", "Maps are built and patched by guarded Python scripts with backups and file-hash checks; geometry is dumped and audited outside the editor."],
+];
+---
+<Base title="Development & Engineering" description="Project structure, technical decisions, automated testing and development status of Unreal Shadows.">
+  <div class="wrap" style="padding-top:34px">
+    <div class="eyebrow rise">Process</div>
+    <h1 class="rise">Development &amp; engineering</h1>
+    <p class="lede rise-2">How the project is organised, how it is tested, and what is finished, in progress or known to be broken — with a source for every number.</p>
+
+    <h2 id="structure">Project structure</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="eyebrow">Module <code>UnrealShadows_LOTL</code></div>
+        <p class="small muted">{project.sourceFiles} header/source files, {project.sourceLines.toLocaleString()} lines, {project.commits} commits ({project.firstCommit} → {project.commitDate}). Files per feature folder (Public + Private):</p>
+        <div class="bars">
+          {folders.map(([n, c]) => (
+            <div class="bar"><span class="bl">{n}</span><span class="bt"><i style={`width:${(c / maxF) * 100}%`} /></span><span class="bn">{c}</span></div>
+          ))}
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Tech stack</div>
+        <ul class="small">
+          <li><strong>Unreal Engine {project.engine}</strong>, C++ (BuildSettingsVersion V7), Blueprint leaf classes for assets and defaults</li>
+          <li>Gameplay: Enhanced Input, AIModule + Behavior Trees + AIPerception, NavigationSystem, GameplayTags, UMG/Slate (most HUD drawn in <code>NativePaint</code>), Niagara (limited), ProceduralMesh, Level Sequences</li>
+          <li>Networking: listen server, replication + RPCs, CharacterMovementComponent prediction; OnlineSubsystem Steam + SteamSockets with Null/IP fallback</li>
+          <li>Tools: editor Python for map building and audits, pure Python solvers for level design, Pillow for placeholder art</li>
+          <li>Process: hand-off notes for every task (<code>.ai/handoffs</code>), design authority in <code>GAME_DESIGN.md</code>, AI coding agents (Claude Code, Codex)</li>
+        </ul>
+        <div class="eyebrow" style="margin-top:14px">Folder pattern</div>
+        <pre class="tree">Source/UnrealShadows_LOTL/
+├─ Public/ · Private/      mirrored per feature
+│  ├─ Chase/  Core · Integration · Presentation
+│  ├─ Stage2/ Core · Gravity · Mechanisms · Presentation
+│  ├─ Framework/  GameMode, GameState, GameInstance…
+│  ├─ PlayerClass/ Character, CMC, components
+│  ├─ Ability/  four classes' abilities and HUDs
+│  └─ Tests/  automation tests
+└─ Tools/  editor Python + pure Python solvers</pre>
+      </div>
+    </div>
+
+    <h2 id="decisions">Main technical decisions</h2>
+    <div class="grid grid-3">
+      {decisions.map(([t, d]) => <div class="card"><h3>{t}</h3><p class="small muted">{d}</p></div>)}
+    </div>
+
+    <h2 id="testing">Automated testing</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="eyebrow">Inventory</div>
+        <p><strong class="gilt" style="font-size:1.6rem">{tests.count}</strong> <span class="muted">automation tests (<code>IMPLEMENT_*_AUTOMATION_TEST</code>) under <code>UnrealShadows.*</code>, by group:</span></p>
+        <div class="bars">
+          {groups.map(([n, c]) => (
+            <div class="bar"><span class="bl">{n}</span><span class="bt"><i style={`width:${(c / maxG) * 100}%`} /></span><span class="bn">{c}</span></div>
+          ))}
+        </div>
+        <p class="small muted" style="margin-top:10px">Counted from source by the sync script; names listed in <code>src/data/tests.json</code>.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Three kinds of check</div>
+        <ul class="small">
+          <li><strong>Automation tests</strong> for pure rules and layouts (decision tables, solvers, HUD layout at 5 resolutions).</li>
+          <li><strong>Scripted <code>-game</code> runs</strong>: Python inside a real game process drives a walking bot or injects input, solo and with two independent processes over 127.0.0.1, and writes a JSON verdict.</li>
+          <li><strong>Pure Python audits</strong> of level data and geometry dumps: solvers, clearances, oriented-box clipping, sight lines.</li>
+        </ul>
+        <p class="small muted">What none of these replace: hands-on playtests, two-machine Steam sessions, and subjective feel. Those are tracked separately below.</p>
+      </div>
+    </div>
+    <h3>Recorded results</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>What</th><th>Result</th><th>Record</th></tr></thead>
+        <tbody>
+          {eng.testRuns.map((r) => (
+            <tr><td>{r.date}</td><td>{r.what}</td><td>{r.result}</td><td><code class="small">{r.source}</code></td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="status">Development status</h2>
+    <div class="grid grid-2">
+      <div class="card"><span class="pill ok">Verified in engine</span><ul class="small">{eng.status.verified.map((s) => <li>{s}</li>)}</ul></div>
+      <div class="card"><span class="pill wip">In progress / not yet verified</span><ul class="small">{eng.status.inProgress.map((s) => <li>{s}</li>)}</ul></div>
+      <div class="card"><span class="pill plan">Planned</span><ul class="small">{eng.status.planned.map((s) => <li>{s}</li>)}</ul></div>
+      <div class="card"><span class="pill warn">Known issues</span><ul class="small">{eng.status.knownIssues.map((s) => <li>{s}</li>)}</ul></div>
+    </div>
+
+    <h2 id="iterations">Design iterations</h2>
+    <ol class="timeline">
+      {eng.iterations.map((it) => (
+        <li><span class="when">{it.date}</span><div><strong>{it.title}</strong><p class="small muted">{it.text}</p></div></li>
+      ))}
+    </ol>
+    <p class="small muted">Level-specific iterations are on each level page, e.g. the <a href={url("/levels/time-temple/")}>time temple</a> (V7 → V9.5) and the <a href={url("/levels/coin-lock/")}>coin lock</a>.</p>
+
+    <h2 id="credits">Credits &amp; tools</h2>
+    <div class="card">
+      <ul class="small">
+        <li><strong>Origin.</strong> The project began from the scaffold of a UE5 multiplayer tutorial (first commits, Nov–Dec 2025). Everything described on this site was built afterwards.</li>
+        <li><strong>Development.</strong> Design and direction by the author. Implementation, scripts and documentation were produced with AI coding agents (Anthropic's Claude Code and OpenAI's Codex), with each task logged in a hand-off note and verified as described above.</li>
+        <li><strong>3D assets.</strong> KayKit asset packs by Kay Lousberg (published as CC0; the licence text is not stored in the repo) for characters, dungeon and furniture pieces.</li>
+        <li><strong>Textures.</strong> Poly Haven (CC0) stone and rock sets for the time temple; licence files kept in <code>ArtSource/TempleV92/PolyHaven</code>.</li>
+        <li><strong>Audio.</strong> Kenney RPG Audio and Interface Sounds (CC0), plus project-synthesised sounds; provenance in <code>Source/AudioLicenses</code>.</li>
+        <li><strong>UI art.</strong> Journal and trial-panel illustrations were AI-generated (via Codex) from written art briefs and approved by the author before import; prompts and hashes are recorded in the repo.</li>
+        <li><strong>This site.</strong> Astro, React, Three.js, Pagefind; fonts Cinzel, Inter and JetBrains Mono (SIL OFL).</li>
+      </ul>
+    </div>
+  </div>
+</Base>
+<style>
+  .bars { display: grid; gap: 4px; margin-top: 10px; }
+  .bar { display: grid; grid-template-columns: 130px 1fr 36px; gap: 8px; align-items: center; font-size: 0.8rem; }
+  .bl { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bt { height: 8px; background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden; }
+  .bt i { display: block; height: 100%; background: linear-gradient(90deg, var(--gilt-dim), var(--gilt)); border-radius: 4px; }
+  .bn { text-align: right; font-family: var(--mono); color: var(--text); }
+  .tree { background: #15110d; border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 0.74rem; overflow-x: auto; color: var(--muted); }
+  .timeline { list-style: none; padding: 0; border-left: 2px solid var(--line); margin-left: 8px; }
+  .timeline li { display: grid; grid-template-columns: 90px 1fr; gap: 12px; padding: 0 0 14px 18px; position: relative; }
+  .timeline li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--gilt); }
+  .when { font-family: var(--mono); color: var(--gilt); font-size: 0.85rem; }
+  .timeline p { margin: 2px 0 0; }
+</style>

@@ -1,0 +1,22 @@
+---
+import media from "../data/media.json";
+import { media as mediaUrl } from "../lib/url";
+interface Props { ids: string[]; cols?: number }
+const { ids, cols = 3 } = Astro.props;
+const M = media as Record<string, { alt: string; width: number; height: number }>;
+---
+<div class="gallery" style={`--cols:${cols}`}>
+  {ids.map((id) => (
+    <a href={mediaUrl(id)} target="_blank" rel="noopener" class="g-item">
+      <img src={mediaUrl(id, true)} alt={M[id].alt} loading="lazy" width="640" height={Math.round(640 * M[id].height / M[id].width)} />
+      <span>{M[id].alt}</span>
+    </a>
+  ))}
+</div>
+<style>
+  .gallery { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(100% / var(--cols) - 12px)), 1fr)); margin: 1.4rem 0; }
+  @media (max-width: 700px) { .gallery { grid-template-columns: 1fr 1fr; } }
+  .g-item { display: block; text-decoration: none; color: var(--muted); font-size: 0.8rem; line-height: 1.35; }
+  .g-item img { border-radius: 8px; border: 1px solid var(--line); aspect-ratio: 16/9; object-fit: cover; width: 100%; margin-bottom: 6px; transition: border-color .2s; }
+  .g-item:hover img { border-color: var(--gilt-dim); }
+</style>

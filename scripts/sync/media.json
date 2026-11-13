@@ -1,0 +1,129 @@
+{
+ "_doc": "Allowlist of screenshots copied from the game repo's Saved/ folder. cropTop/cropBottom are fractions removed (window chrome). Every entry is a real capture from the editor or a -game process.",
+ "core-shield": {
+  "src": "Saved/CoreShield/review/01-shield-and-four-swords.png",
+  "alt": "The time gate on the core deck, inside a flowing shield ringed by four orbiting swords"
+ },
+ "time-gate": {
+  "src": "Saved/CoreShield/review/10-gate-front.png",
+  "alt": "The time gate seen from the deck: a bronze ring with a view into the temple's past"
+ },
+ "core-deck": {
+  "src": "Saved/CoreShield/review/09-deck-and-gate.png",
+  "alt": "The enlarged core deck with its compass inlay and the gate at its south end"
+ },
+ "sun-rotunda": {
+  "src": "Saved/SwordShrines/review/05-sun-rotunda.png",
+  "alt": "Sundial well: the sun sword under a crystal shield on a gold circle"
+ },
+ "wave-rim": {
+  "src": "Saved/SwordShrines/review/13-wave-rim.png",
+  "alt": "Tide well seen from the bookcase rim, the wave sword in the middle of a water circle"
+ },
+ "crypt-relic": {
+  "src": "Saved/TempleCrypt/review/crypt-09-crypt-relic.png",
+  "alt": "The relic under its pale gold dome in the crypt below the pier"
+ },
+ "crypt-lift": {
+  "src": "Saved/TempleCrypt/review/crypt-07-look-up-lift.png",
+  "alt": "Looking up the lift shaft from the temple's well floor"
+ },
+ "temple-eras": {
+  "src": "Saved/TempleV92Art/sheets/era-comparison.png",
+  "alt": "The same cameras in the past, present and future versions of the temple (V9.2 art test map)",
+  "cropBottom": 0.5
+ },
+ "library-pad": {
+  "src": "Saved/LibraryMazeArt/shots-WARRIOR/05-PadVista.png",
+  "alt": "The library maze on the ceiling face, seen from the landing pad"
+ },
+ "library-top": {
+  "src": "Saved/LibraryMazeArt/shots-WARRIOR/11-TopAtoJ.png",
+  "alt": "Walking along the shelf tops; a rolling case bridges two rows"
+ },
+ "library-lane": {
+  "src": "Saved/LibraryMazeArt/Phase2/detail-shots-1080/04-LaneK1.png",
+  "alt": "Rolling case K1 on its iron rail with the quill marker on its face"
+ },
+ "library-winch": {
+  "src": "Saved/LibraryMazeArt/Phase2/detail-shots-1080/08-WinchW3.png",
+  "alt": "Winch W3 seen through the grille bay of the dividing shelf"
+ },
+ "npc-lineup": {
+  "src": "Saved/Stage1NPCArt/Screenshots/npc-final-overview.png",
+  "alt": "The four class trial NPCs: thief, mage, warrior and hunter"
+ },
+ "stage1-hall": {
+  "src": "Saved/Stage1Redesign/Screenshots/02-mechanical-hall.png",
+  "alt": "Stage 1's mechanical hall with the coin lock table"
+ },
+ "stage1-hub": {
+  "src": "Saved/Stage1Redesign/Screenshots/04-trial-hub.png",
+  "alt": "The trial hub of Stage 1"
+ },
+ "stage1-portal": {
+  "src": "Saved/Stage1Redesign/Screenshots/portal-A-opening.png",
+  "alt": "A summoned portal opening in its stone arch"
+ },
+ "stage1-table": {
+  "src": "Saved/Stage1Redesign/Screenshots/10-mechanical-table.png",
+  "alt": "The coin lock table in the mechanical hall"
+ },
+ "stage1-altar": {
+  "src": "Saved/Stage1CrossRoom/Screenshots/1players-dlc0-altar-solved.png",
+  "alt": "Cross-room puzzle: the potion cradle solved",
+  "cropTop": 0.035
+ },
+ "wormhole": {
+  "src": "Saved/TrainingArena/shots/02-wormhole-out-close.png",
+  "alt": "The black-gold wormhole that leads to the training arena"
+ },
+ "shields": {
+  "src": "Saved/ClassFx/shots-solo3/01-three-shields.png",
+  "alt": "The warrior's three shield tiers"
+ },
+ "ui-coinlock": {
+  "src": "Saved/CoinLockArt/Screenshots/1players-1280x720-engaged.png",
+  "alt": "Coin lock panel with the clutch engaged",
+  "cropTop": 0.035
+ },
+ "ui-mage": {
+  "src": "Saved/MageSockets/Screenshots/1players-1280x720-complete-focused-1920x1080.png",
+  "alt": "Mage trial: the three-ring arcane circuit",
+  "cropTop": 0.035
+ },
+ "ui-thief": {
+  "src": "Saved/ThiefCuteMotion/Screenshots/1players-board-1920x1080.png",
+  "alt": "Thief trial: the blind leap knife board",
+  "cropTop": 0.035
+ },
+ "ui-hunter": {
+  "src": "Saved/HunterThreeKind/PIE-solo/board.png",
+  "alt": "Hunter duel: herding skeletons into traps with fixed-shape blocks"
+ },
+ "ui-hunter-fan": {
+  "src": "Saved/HunterThreeKind/PIE-solo/choice.png",
+  "alt": "The hunter's hunt / cancel fan over a target",
+  "cropTop": 0.035
+ },
+ "ui-warrior": {
+  "src": "Saved/WarriorFireIdentity/Screenshots/1players-1280x720-fire-death-one-heart.png",
+  "alt": "Warrior trial: the three-lane shield runner",
+  "cropTop": 0.035
+ },
+ "ui-journal": {
+  "src": "Saved/Stage1JournalArt/Screenshots/1players-1280x720-body-1920x1080.png",
+  "alt": "The field journal with layered illustrated hints",
+  "cropTop": 0.035
+ },
+ "ui-menu": {
+  "src": "Saved/CleanMenu/duo-main.png",
+  "alt": "In-game manuscript menu during a two-player session",
+  "cropTop": 0.035
+ },
+ "ui-denied": {
+  "src": "Saved/InteractGlyphs/Screenshots/stage1-coins-0-denied.png",
+  "alt": "Glyph interaction prompt: the coin conditions shake when not met",
+  "cropTop": 0.035
+ }
+}

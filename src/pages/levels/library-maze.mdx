@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/MdxPage.astro
+title: The library maze — rolling shelves on the ceiling
+summary: The ceiling face of the gravity cube is a hall of 5 m bookcases. Below you walk the aisles past a guard; on top you walk the shelves to reach a sword. Three cases roll between two stops when you turn a winch on the floor.
+eyebrow: Level design · Stage 2 · ceiling face
+back: /levels/
+backLabel: Levels & puzzles
+wide: true
+sources:
+  - Source/UnrealShadows_LOTL/Tools/Stage2/LibraryMaze/LibraryMazeLayout.py
+  - Source/UnrealShadows_LOTL/Tools/Stage2/LibraryMaze/LIBRARY_MAZE.md
+  - Source/UnrealShadows_LOTL/Public/Stage2/Mechanisms/US_Stage2RollingShelf.h
+  - Source/UnrealShadows_LOTL/Public/Stage2/Mechanisms/US_Stage2ShelfWinch.h
+---
+import LibraryMaze from "../../components/interactive/LibraryMaze.tsx";
+import Figure from "../../components/Figure.astro";
+import Gallery from "../../components/Gallery.astro";
+import Callout from "../../components/Callout.astro";
+import lm from "../../data/library-maze.json";
+
+<LibraryMaze client:visible />
+
+## The brief
+
+The player's brief was short: the face should be **two layers**. Going for the artifact you walk the floor, where a guard patrols. Going for the sword you must walk **along the shelf tops**, and the tops need detours, dead ends, and reasons to climb down and work a mechanism that moves the shelves.
+
+## Design rules
+
+- **The whole face is bookcases.** The first version kept a straight diagonal wall and put a small puzzle in one corner; it was rejected as "blunt". In the current version the two halves are separated only by how the cases join up: a dividing line of shelves (`PW`, `E1`, `PE`, `PEE`) runs from the west wall to the east wall, and its top is the upper layer's main road.
+- **A rolling case is a bridge on top and a wall on the floor.** Every configuration keeps the floor split into a sword side and an artifact side (switch the demo to *Floor* and try all eight).
+- **Both stops are real paths; some turns open nothing.** That is what makes the order matter: the fewest turns from the landing is **{lm.minTurns}**, with exactly {lm.orders.length} valid orders.
+- **Measured gaps, not guessed ones.** A sprinting body clears a 2 m gap about every other try (there is no jump; the capsule's rounded bottom hooks the far edge), never 4 m, and never one guarded by an 80 cm parapet. So two open edges never face each other within 3 m.
+- **Classes may not skip it.** Shelf tops sit inside a blink ward, so the thief's knife-teleport is refused there, and the thief's step height was normalised to everyone else's.
+
+<Callout kind="warn" title="A pocket the solver found">
+Extending one row of cases on the artifact side turned the aisle at the foot of the stairs into a dead pocket: once down, you could no longer reach winch W3. The solver flood-fills the floor for all eight configurations, so this showed up as a failed check before anything was built.
+</Callout>
+
+## From solver to shipped map
+
+<Gallery ids={["library-pad", "library-top", "library-lane", "library-winch"]} cols={2} />
+
+1. `LibraryMazeLayout.py` holds every piece, stop and winch station, and checks **97 rules** in a few seconds.
+2. `ApplyLibraryMaze.py` builds a candidate map from the formal map; a walking bot follows the solver's own winch order in `-game`.
+3. After playtests (thief fairness, guard patrols), the patch was written to the formal `Level_02` behind a file-hash guard.
+4. Art and sound (wordless markers — quill, ink bottle, candle, ladder — iron rails, winch sounds) were added afterwards as no-collision dressing, and a geometry comparison confirmed that no colliding piece moved.
+
+Results recorded on the shipped map: walking bot **79/79** (warrior), **82/82** (thief), **79/79** (duo roster); five gravity lanes with zero blockers.

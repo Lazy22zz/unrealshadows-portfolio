@@ -1,0 +1,65 @@
+---
+title: 自动化测试：纯函数测试 + 脚本化 -game 验证
+summary: 本项目把可以离开 World 的规则都写成纯函数，用 UE 的 Automation 框架穷举测试；依赖真实世界的行为则用编辑器 Python 在 -game 进程里驱动机器人走一遍，输出 JSON 结论。
+order: 10
+topic: 工程实践
+sources:
+  - Source/UnrealShadows_LOTL/Private/Tests/
+  - Source/UnrealShadows_LOTL/Tools/Stage2/LibraryMaze/VerifyLibraryMazeGame.py
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Callout from "../../components/Callout.astro";
+
+## 30 秒理解
+
+```cpp
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMyTest, "Project.Area.Name",
+    EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FMyTest::RunTest(const FString& Parameters)
+{
+    TestEqual(TEXT("描述"), Actual, Expected);
+    return true;
+}
+```
+
+命令行运行：`UnrealEditor-Cmd.exe <项目> -ExecCmds="Automation RunTests UnrealShadows" -unattended -nullrhi`。
+
+## 解决什么问题
+
+关卡、网络和 UI 的问题往往只在 PIE 里才看得到，而 PIE 慢、不能穷举。把“判断”从“执行”里拆出来，判断部分就能在毫秒级别内被完整测试；执行部分再用少量脚本场景覆盖。
+
+## 在本项目中的应用
+
+- **规则层全部是纯函数**：硬币锁、警报仲裁、集合、传送门落点、滑柜位置、追猎疲劳、HUD 布局（`ComputeLayout` 在 5 档分辨率下不出屏、不重叠）。
+- **穷举 + 独立参考实现**：硬币锁测试遍历 36×36×离合×锈死的所有局面，用一个独立写的宽搜对账生产代码，并钉死最坏步数 4 / 5 / 7。
+- **回归护栏**：修过的 bug 都有一条断言守着，例如“离合脱开时转一枚盘，另一枚逐位不变”、“过期的诱饵必须让位”、“Hunter 任务不计入 3/3”。
+- **脚本化 -game 验证**：Python 在游戏进程里生成走路机器人，按求解器给出的路线真实输入移动，双人用两个独立进程连 127.0.0.1，结果写 JSON（例如书库 79/79、82/82）。
+
+<Snippet id="coinlock-test" />
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "纯规则", t: "Core/*.h 无 World 依赖" },
+  { k: "Automation", t: "穷举真值表、布局、求解器" },
+  { k: "-game 脚本", t: "真实移动 + 真实复制" },
+  { k: "人工", t: "手感、可读性、双机 Steam" }
+]} />
+
+<Callout kind="warn" title="测试的盲区要写清楚">
+自动化通过不等于玩起来没问题。本项目在每份交接记录里把“没验证的”单独列出来：真人键鼠、镜头舒适度、丢包下的手感、双机 Steam。网站的状态表也按这个区分。
+</Callout>
+
+## 常见错误
+
+- 测试依赖关卡内容，地图一改测试就坏。
+- 用 CDO 测“开局状态”（CDO 不跑 BeginPlay）。
+- 走路机器人在空中就判定“到达”：落点要等落地后再判断。
+- 测试脚本里变量名覆盖了结果列表（`out`），结果只剩后几项、而且全是通过。
+
+## 延伸学习
+
+- `IMPLEMENT_COMPLEX_AUTOMATION_TEST`、Latent Commands
+- Functional Testing（`AFunctionalTest`）
+- Gauntlet（打包版自动化）

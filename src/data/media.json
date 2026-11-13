@@ -1,0 +1,176 @@
+{
+ "core-shield": {
+  "alt": "The time gate on the core deck, inside a flowing shield ringed by four orbiting swords",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/CoreShield/review/01-shield-and-four-swords.png"
+ },
+ "time-gate": {
+  "alt": "The time gate seen from the deck: a bronze ring with a view into the temple's past",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/CoreShield/review/10-gate-front.png"
+ },
+ "core-deck": {
+  "alt": "The enlarged core deck with its compass inlay and the gate at its south end",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/CoreShield/review/09-deck-and-gate.png"
+ },
+ "sun-rotunda": {
+  "alt": "Sundial well: the sun sword under a crystal shield on a gold circle",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/SwordShrines/review/05-sun-rotunda.png"
+ },
+ "wave-rim": {
+  "alt": "Tide well seen from the bookcase rim, the wave sword in the middle of a water circle",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/SwordShrines/review/13-wave-rim.png"
+ },
+ "crypt-relic": {
+  "alt": "The relic under its pale gold dome in the crypt below the pier",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/TempleCrypt/review/crypt-09-crypt-relic.png"
+ },
+ "crypt-lift": {
+  "alt": "Looking up the lift shaft from the temple's well floor",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/TempleCrypt/review/crypt-07-look-up-lift.png"
+ },
+ "temple-eras": {
+  "alt": "The same cameras in the past, present and future versions of the temple (V9.2 art test map)",
+  "width": 1600,
+  "height": 967,
+  "source": "Saved/TempleV92Art/sheets/era-comparison.png"
+ },
+ "library-pad": {
+  "alt": "The library maze on the ceiling face, seen from the landing pad",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/LibraryMazeArt/shots-WARRIOR/05-PadVista.png"
+ },
+ "library-top": {
+  "alt": "Walking along the shelf tops; a rolling case bridges two rows",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/LibraryMazeArt/shots-WARRIOR/11-TopAtoJ.png"
+ },
+ "library-lane": {
+  "alt": "Rolling case K1 on its iron rail with the quill marker on its face",
+  "width": 1600,
+  "height": 900,
+  "source": "Saved/LibraryMazeArt/Phase2/detail-shots-1080/04-LaneK1.png"
+ },
+ "library-winch": {
+  "alt": "Winch W3 seen through the grille bay of the dividing shelf",
+  "width": 1600,
+  "height": 900,
+  "source": "Saved/LibraryMazeArt/Phase2/detail-shots-1080/08-WinchW3.png"
+ },
+ "npc-lineup": {
+  "alt": "The four class trial NPCs: thief, mage, warrior and hunter",
+  "width": 1600,
+  "height": 1000,
+  "source": "Saved/Stage1NPCArt/Screenshots/npc-final-overview.png"
+ },
+ "stage1-hall": {
+  "alt": "Stage 1's mechanical hall with the coin lock table",
+  "width": 1600,
+  "height": 900,
+  "source": "Saved/Stage1Redesign/Screenshots/02-mechanical-hall.png"
+ },
+ "stage1-hub": {
+  "alt": "The trial hub of Stage 1",
+  "width": 1600,
+  "height": 900,
+  "source": "Saved/Stage1Redesign/Screenshots/04-trial-hub.png"
+ },
+ "stage1-portal": {
+  "alt": "A summoned portal opening in its stone arch",
+  "width": 1600,
+  "height": 900,
+  "source": "Saved/Stage1Redesign/Screenshots/portal-A-opening.png"
+ },
+ "stage1-table": {
+  "alt": "The coin lock table in the mechanical hall",
+  "width": 1600,
+  "height": 900,
+  "source": "Saved/Stage1Redesign/Screenshots/10-mechanical-table.png"
+ },
+ "stage1-altar": {
+  "alt": "Cross-room puzzle: the potion cradle solved",
+  "width": 1600,
+  "height": 868,
+  "source": "Saved/Stage1CrossRoom/Screenshots/1players-dlc0-altar-solved.png"
+ },
+ "wormhole": {
+  "alt": "The black-gold wormhole that leads to the training arena",
+  "width": 1600,
+  "height": 900,
+  "source": "Saved/TrainingArena/shots/02-wormhole-out-close.png"
+ },
+ "shields": {
+  "alt": "The warrior's three shield tiers",
+  "width": 1280,
+  "height": 720,
+  "source": "Saved/ClassFx/shots-solo3/01-three-shields.png"
+ },
+ "ui-coinlock": {
+  "alt": "Coin lock panel with the clutch engaged",
+  "width": 1286,
+  "height": 733,
+  "source": "Saved/CoinLockArt/Screenshots/1players-1280x720-engaged.png"
+ },
+ "ui-mage": {
+  "alt": "Mage trial: the three-ring arcane circuit",
+  "width": 1600,
+  "height": 876,
+  "source": "Saved/MageSockets/Screenshots/1players-1280x720-complete-focused-1920x1080.png"
+ },
+ "ui-thief": {
+  "alt": "Thief trial: the blind leap knife board",
+  "width": 1600,
+  "height": 881,
+  "source": "Saved/ThiefCuteMotion/Screenshots/1players-board-1920x1080.png"
+ },
+ "ui-hunter": {
+  "alt": "Hunter duel: herding skeletons into traps with fixed-shape blocks",
+  "width": 1286,
+  "height": 760,
+  "source": "Saved/HunterThreeKind/PIE-solo/board.png"
+ },
+ "ui-hunter-fan": {
+  "alt": "The hunter's hunt / cancel fan over a target",
+  "width": 1286,
+  "height": 733,
+  "source": "Saved/HunterThreeKind/PIE-solo/choice.png"
+ },
+ "ui-warrior": {
+  "alt": "Warrior trial: the three-lane shield runner",
+  "width": 1286,
+  "height": 733,
+  "source": "Saved/WarriorFireIdentity/Screenshots/1players-1280x720-fire-death-one-heart.png"
+ },
+ "ui-journal": {
+  "alt": "The field journal with layered illustrated hints",
+  "width": 1600,
+  "height": 898,
+  "source": "Saved/Stage1JournalArt/Screenshots/1players-1280x720-body-1920x1080.png"
+ },
+ "ui-menu": {
+  "alt": "In-game manuscript menu during a two-player session",
+  "width": 1286,
+  "height": 731,
+  "source": "Saved/CleanMenu/duo-main.png"
+ },
+ "ui-denied": {
+  "alt": "Glyph interaction prompt: the coin conditions shake when not met",
+  "width": 1286,
+  "height": 733,
+  "source": "Saved/InteractGlyphs/Screenshots/stage1-coins-0-denied.png"
+ }
+}

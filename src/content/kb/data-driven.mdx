@@ -1,0 +1,54 @@
+---
+title: 数据驱动：DataAsset、DataTable 与按职业的调参
+summary: 本项目把所有按职业区分的数值集中在一个 PrimaryDataAsset 里，用 TMap<职业, 参数结构体> 组织，并删掉了早期的 DataTable。关键是：读不到配置时也要有能用的默认值。
+order: 8
+topic: 数据结构
+sources:
+  - Source/UnrealShadows_LOTL/Public/US_PropertyData.h
+  - Source/UnrealShadows_LOTL/Private/Framework/US_GameInstance.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+
+## 30 秒理解
+
+| 资产 | 适合 |
+|---|---|
+| `UPrimaryDataAsset`（单例） | 全局调参，一份文件，结构清晰，可嵌套 USTRUCT |
+| `UDataAsset`（多实例） | 每个物体一份资料卡（交互提示、图标、音效） |
+| `UDataTable` | 大量同结构的行，行名本身有意义（掉落表、对话表） |
+
+## 解决什么问题
+
+数值写死在代码里，设计师要改就得重新编译；分散在各个蓝图里，又很难统一调整、也容易漏配。
+
+## 在本项目中的应用
+
+- `DA_PropertyData`（`UUS_PropertyData`）里有 `MovementParamsByClass`、`SprintParamsByClass`、`MageParamsByClass` 等 `TMap<ECharacterClass, FUS_SprintParams>` 这样的映射。新职业只加一行，不加代码。
+- **一个真实 bug 促成了这次重构**：Mage 按 Shift 不能冲刺。冲刺 RPC 里有 `if (!Stats) return`，而 Stats 来自一个只有 Thief 蓝图配了的 DataTable。重构后移动参数的 getter 永远返回有效值（结构体默认值），找不到配置也能跑。
+- 配置入口统一为 `UUS_GameInstance::ResolvePropertyData`，服务器和远端客户端读到的是同一个文件。
+- `UUS_PropertyData::IsDataValid` 在编辑器里检查必填的职业映射和非法数值。
+
+<Snippet id="property-data-resolve" />
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "编辑器", t: "设计师改 DA_PropertyData" },
+  { k: "加载", t: "GameInstance 持有引用（两端都有）" },
+  { k: "读取", t: "组件 BeginPlay：按 CharacterClass 查 TMap" },
+  { k: "兜底", t: "找不到 → 用 USTRUCT 默认值，不报错不卡死" }
+]} />
+
+## 常见错误
+
+- 运行时依赖一个“必须配置了才能工作”的资产，漏配就静默失效。
+- 改了 USTRUCT 的字段布局，已保存资产里的值被重置（要在编辑器里核对）。
+- 只在服务器加载配置，客户端 HUD 用的分母和服务器不一致（例如冲刺时长）：需要复制，或两端都从 GameInstance 读。
+- 用 DataTable 存只有一行的“全局配置”。
+
+## 延伸学习
+
+- `UDeveloperSettings`（项目设置页里的配置，本项目的 UI 字体就在这里）
+- Asset Manager 与 `PrimaryAssetId`
+- Data Registries

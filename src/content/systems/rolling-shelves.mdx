@@ -1,0 +1,61 @@
+---
+title: Rolling shelves — a replicated mechanism on a server clock
+summary: 5 m bookcases that slide along rails when a winch is turned. Both machines compute the position from one replicated state and the server's clock, so the case only sends a packet when it starts, stops or arrives — and riders drift 0 cm.
+order: 8
+area: Level mechanisms · Networking
+status: verified
+statusNote: Stage2.RollingShelf.Rules automation; test range 34/34 solo, two-process net 4/4 + 4/4; in the shipped Level_02 the maze route passed 79/79 (warrior), 82/82 (thief) and 79/79 (duo roster).
+classes: [AUS_Stage2RollingShelf, AUS_Stage2ShelfWinch, FUS_RollingShelfState, USRollingShelf]
+sources:
+  - Source/UnrealShadows_LOTL/Public/Stage2/Core/US_RollingShelfTypes.h
+  - Source/UnrealShadows_LOTL/Public/Stage2/Mechanisms/US_Stage2RollingShelf.h
+  - Source/UnrealShadows_LOTL/Public/Stage2/Mechanisms/US_Stage2ShelfWinch.h
+  - Source/UnrealShadows_LOTL/Tools/Stage2/LibraryMaze/LibraryMazeLayout.py
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Figure from "../../components/Figure.astro";
+import { url as u } from "../../lib/url";
+
+## The problem
+
+The ceiling face is a library maze: to reach the sword you walk on bookcase tops, and three of the cases roll between two stops when someone turns a winch on the floor. A case on top is a bridge; on the floor it is a wall. The mechanism had to carry players standing on it, refuse to crush anyone, stop when someone steps into its lane, and look identical on host and client.
+
+## What the player sees
+
+<Figure id="library-lane" caption="Rolling case K1 on its rail. The quill marker on its face matches the marker on its winch." />
+
+- Hold E on a winch: the case rolls, slowly out of a stop and slowly into the next.
+- If anyone (player or guard) is in the lane, the winch refuses and the player says why.
+- Step in front of a moving case and it stops in front of you, then continues when you leave.
+- Stand on top and you ride along.
+
+Try the puzzle it creates on the <a href={u("/levels/library-maze/")}>library maze page</a>.
+
+## How it works
+
+<Flow steps={[
+  { k: "Winch", t: "AUS_Stage2ShelfWinch (a re-usable TrialSwitch, never latches)" },
+  { k: "Server", t: "Lane empty? → state = Moving, Param, ServerTime" },
+  { k: "Replicate", t: "One small struct, only on start / hold / arrive" },
+  { k: "Both ends", t: "Param(t) = Param0 ± (now − ServerTime) / Travel" },
+  { k: "Riders", t: "CMC based movement carries pawns on the Carriage" }
+]} />
+
+<Snippet id="shelf-state" strip caption="The whole replicated state, and the pure functions both ends use to evaluate it." />
+
+## Why this design
+
+- **State, not motion, is replicated.** The `Carriage` component is not driven by movement replication; each end positions it from the state and the synchronised server time. Bandwidth is a handful of packets per turn and both ends agree exactly.
+- **The rejection box is 6 cm smaller** than the case on each side and 6 cm lower on top, so a player standing on the case or leaning against its side does not block it.
+- **Riders are exempt from blocking.** A vertical case (the lift) sweeps exactly where its passengers stand; a pawn whose movement base is this case is not an obstacle.
+- **Solvable by construction.** The layout lives in a pure-Python file with its own solver and 97 checks: the minimum winch order, dead-end states, floor regions for every shelf configuration, sprint-gap rules (a sprinting body can clear 2 m, not 4 m).
+
+## Limits and next steps
+
+- A remote client turning a winch was injected through scripts, not real input; latency and packet loss while riding were not measured.
+- The physical hold-E check on the shipped map did not register progress in one injected probe and was not counted as passed.
+
+## Where the code lives
+
+`Public/Stage2/Core/US_RollingShelfTypes.h`, `Public/Stage2/Mechanisms/US_Stage2RollingShelf.h`, `US_Stage2ShelfWinch.h`; design and solver in `Tools/Stage2/LibraryMaze/`.

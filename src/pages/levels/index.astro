@@ -1,0 +1,62 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url, media } from "../../lib/url";
+import M from "../../data/media.json";
+import lm from "../../data/library-maze.json";
+import temple from "../../data/temple.json";
+import cube from "../../data/cube.json";
+
+const meta = M as Record<string, { alt: string }>;
+const demos = [
+  { href: "/levels/time-temple/", img: "temple-eras", title: "Time Temple — three eras", stat: `${Object.keys((temple as any).places).length} places · ${(temple as any).soloStates.toLocaleString()} solver states · 0 soft-locks`,
+    text: "One temple built three times. You switch era only at three junctions, each joining two eras. Toggle eras, keys and the solver's route." },
+  { href: "/levels/library-maze/", img: "library-top", title: "Library maze — rolling shelves", stat: `${(lm as any).states.toLocaleString()} states · min ${(lm as any).minTurns} winch turns`,
+    text: "The ceiling face as a hall of bookcases. Turn winches to roll 5 m cases; watch which shelf tops connect and how the floor is split." },
+  { href: "/levels/coin-lock/", img: "ui-coinlock", title: "Coin clutch lock", stat: "72 states · worst case 7 moves",
+    text: "Stage 1's prologue lock, playable. Rules ported from C++ and checked against the same values as the engine test." },
+  { href: "/levels/gravity-cube/", img: "core-deck", title: "Gravity cube — 3D", stat: `${(cube as any).boxes.length} collision boxes · ${(cube as any).zones.length} gravity volumes`,
+    text: "Six rooms on six faces, twelve seams and the lanes that throw players across the cube, from the shipped map's data." },
+];
+const practices = [
+  ["Route first, then building", "Every major space starts as pure-Python data (places, paths, masses) with a solver. The building is grown around the routes, not the other way round."],
+  ["Prove it before the editor", "Each layout module has a verify() with dozens of checks: shortest route, soft-lock states, dead ends, sight lines, sprint gaps, clearances. The library maze has 97; the time temple pre-greybox audit had 122."],
+  ["Candidate map, then formal map", "Changes land in a copied candidate map first. Writing the formal map is a guarded patch that refuses to run unless the map's file hash matches, and keeps a backup."],
+  ["Audit the geometry", "An exported geometry dump is checked with oriented-box overlap tests (2 cm tolerance) and five gravity-lane clearance sweeps. Intended overlaps are whitelisted with a reason."],
+  ["Walk it with a bot", "Scripted -game runs drive a walking bot along the solver's own route with real movement input, solo and in a duo roster, and report pass counts."],
+  ["Fairness rules", "No jump button; class abilities may not skip a puzzle (a thief blink ward exists for exactly this); a sprinting body clears 2 m gaps, so open edges never face each other within 3 m."],
+];
+---
+<Base title="Level & Puzzle Design" description="Interactive, data-driven demos of the level and puzzle design in Unreal Shadows.">
+  <div class="wrap" style="padding-top:34px">
+    <div class="eyebrow rise">Design</div>
+    <h1 class="rise">Level &amp; puzzle design</h1>
+    <p class="lede rise-2">The levels in this project are designed as data first: routes, keys and moving parts are written as plain Python with a solver,
+      proven, and only then built in Unreal. The demos below are drawn from that same data.</p>
+    <div class="grid grid-2" style="margin-top:28px">
+      {demos.map((d) => (
+        <a class="card media-card" href={url(d.href)}>
+          <img src={media(d.img, true)} alt={meta[d.img].alt} loading="lazy" width="640" height="360" />
+          <div class="body">
+            <h3>{d.title}</h3>
+            <p class="small muted">{d.text}</p>
+            <span class="pill">{d.stat}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <h2>How these levels are made</h2>
+    <div class="grid grid-3">
+      {practices.map(([t, d], i) => (
+        <div class="card"><div class="eyebrow">{String(i + 1).padStart(2, "0")}</div><h3>{t}</h3><p class="small muted">{d}</p></div>
+      ))}
+    </div>
+
+    <h2>Stage 1 at a glance</h2>
+    <div class="grid grid-3">
+      <figure><img src={media("stage1-hall", true)} alt={meta["stage1-hall"].alt} loading="lazy" width="640" height="360" /><figcaption>Mechanical hall: the coin lock table that opens the central gate.</figcaption></figure>
+      <figure><img src={media("stage1-hub", true)} alt={meta["stage1-hub"].alt} loading="lazy" width="640" height="360" /><figcaption>Trial hub: three class rooms branch off a central hall, each opening a return shortcut once solved.</figcaption></figure>
+      <figure><img src={media("stage1-altar", true)} alt={meta["stage1-altar"].alt} loading="lazy" width="640" height="360" /><figcaption>Cross-room puzzles: a diorama in room A turns the real statues in room B; a potion cabinet in A answers the altar in B.</figcaption></figure>
+    </div>
+  </div>
+</Base>

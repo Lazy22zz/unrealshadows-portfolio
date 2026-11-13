@@ -1,0 +1,66 @@
+---
+title: Chase fatigue and head status
+summary: Being chased has to end. Each pursuit builds heat, each chaser has its own stamina, and the state players see above guards is a replicated snapshot that the presentation layer only reads.
+order: 4
+area: AI · UI
+status: verified
+statusNote: Rules covered by Chase.Fatigue, Chase.StaggeredStamina, Chase.SprintTokens and Chase.HeadIcon. The staggered-stamina change was logged as not yet PIE-tested; crowded rooms need human playtesting.
+classes: [UUS_ChaseFatigueSubsystem, USChaseEvents, UUS_MinionStatusComponent, FUS_MinionHeadStatus]
+sources:
+  - Source/UnrealShadows_LOTL/Public/Chase/Core/US_ChaseFatigueTypes.h
+  - Source/UnrealShadows_LOTL/Public/Chase/Core/US_ChaseFatigueSubsystem.h
+  - Source/UnrealShadows_LOTL/Public/Chase/Integration/US_ChaseFatigueEvents.h
+  - Source/UnrealShadows_LOTL/Public/Chase/Presentation/
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+
+## The problem
+
+Players are caught on contact and cannot kill anything. If a chase never ends, the only exit is to break line of sight — and a room with six to eight guards has no blind spots. A per-guard meter does not work either: when one guard tires, a fresh one takes over immediately ("infinite relay"). The first fix attached fatigue to the *pursuit* of each player instead — but when that meter filled, every chaser gave up on the same frame, which read as a switch flipping. The current version keeps the per-player heat and adds per-chaser stamina so they drop out one at a time.
+
+## What the player sees
+
+- Icons above guards: `?` suspicious, `!` spotted, chasing, searching, sweating, panting — never a stamina bar. (A 3+1 tier redesign of these icons is specified but not implemented yet.)
+- Chasers tire one by one; the last one stops, then the followers drop off 0–1.5 s apart.
+- A red ink ring under your feet points at whoever is chasing you (a separate, local-only component).
+
+## How it works
+
+<Flow steps={[
+  { k: "Report", t: "Real sight only: OnPawnDetected → USChaseEvents::ReportChasing" },
+  { k: "Tokens", t: "At most 2 sprint tokens per player (shared with the encircle system)" },
+  { k: "Stamina", t: "Per chaser, ±15% individual variance; n chasers drain n^0.6 faster" },
+  { k: "Heat", t: "Per player; rises only while someone holds a token; full = no new tokens" },
+  { k: "Snapshot", t: "Server writes FUS_MinionHeadStatus; clients only read it" }
+]} />
+
+The pursuit state each player is in is a small replicated enum:
+
+<Snippet id="chase-state" strip />
+
+Gameplay never touches the subsystem directly. Abilities and the AI controller call the free functions in `USChaseEvents` (Integration), so the rules (Core) and the icons/music (Presentation) never need to know about each other.
+
+## Key classes and functions
+
+| Layer | Piece |
+|---|---|
+| Core | `UUS_ChaseFatigueSubsystem` (server), `namespace USChaseFatigue` pure rules, `FUS_ChaseFatigueTuning` |
+| Integration | `USChaseEvents::ReportChasing`, `IsChaserWinded`, `GetChaserSpeedMult` |
+| Presentation | `UUS_MinionStatusComponent` / widget (25 m + line-of-sight gate), `UUS_ChaseMusicComponent` |
+
+## Why this design
+
+- **Memory is not sight.** Only a real perception lock may *continue* a pursuit. A remembered last-seen point does not, or fatigue would never resolve.
+- **Ask per controller.** Sweating and speed come from the chaser's own stamina, not the player's meter — otherwise every guard would start sweating on the same frame.
+- **Screen-space widgets see through walls by default,** so the head icon hides beyond 25 m or behind geometry. That gate exists to prevent wall-hacking, not for looks.
+- **Rollback is one flag**: `ChaseFatigue.bStaggeredStamina = false` restores the earlier all-at-once behaviour.
+
+## Limits and next steps
+
+- The old team "pressure thermometer" and its three-stage music were retired in this redesign; music now follows the pursuit state only.
+- Crowded-room tuning still needs human playtests.
+
+## Where the code lives
+
+`Public/Chase/Core`, `Public/Chase/Integration`, `Public/Chase/Presentation` (and the matching `Private/` folders). Tests `UnrealShadows.Chase.*`.

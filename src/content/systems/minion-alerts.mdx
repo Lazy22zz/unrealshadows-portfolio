@@ -1,0 +1,74 @@
+---
+title: Minion alert arbitration (Lure > Sight > Noise)
+summary: A tiny, testable priority rule decides who may write the Behavior Tree's targets, so a guard that sees you always chases you, a decoy always beats sight, and the tree never flickers between branches.
+order: 3
+area: AI
+status: verified
+statusNote: Truth table covered by UnrealShadows.Minion.AlertPriority; behaviour checked in PIE (guards switch from investigating to chasing on sight, decoys still win).
+classes: [AUS_MinionAIController, USMinionAlert, UAIPerceptionComponent, UBTService_UpdateChaseTarget]
+sources:
+  - Source/UnrealShadows_LOTL/Public/MinionClass/US_MinionAIController.h
+  - Source/UnrealShadows_LOTL/Private/MinionClass/US_MinionAIController.cpp
+  - Source/UnrealShadows_LOTL/Private/MinionClass/AI/
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Callout from "../../components/Callout.astro";
+
+## The problem
+
+Guards run a Behavior Tree whose top branch is *Investigate a location*, with *Chase target* below it. That order existed so that player abilities (a thief's decoy, a mage's ghost book) could pull a guard away even while it was chasing someone.
+
+A playtest exposed the cost: after the relic was taken, guards were called to its location by an alert ripple — and **walked right past the player** on the way, because the investigate point kept the higher branch alive. Seeing a player wrote `TargetActor`, but the tree never got there.
+
+## What the player sees
+
+- A guard heading to a noise turns and chases you as soon as it sees you.
+- Throwing a decoy (or summoning the ghost book) while being chased still steals the guard's attention.
+- Sprinting noise does **not** rescue you from a guard that already sees you — only abilities do. (This was a deliberate behaviour change.)
+
+## How it works
+
+Every write into the two blackboard slots is tagged with a source. The numeric value *is* the priority:
+
+<Snippet id="alert-priority" strip />
+
+<Flow steps={[
+  { k: "T0 Lure", t: "Decoy, Ghost Book, Dominion push — beats everything while fresh" },
+  { k: "T1 Sight", t: "Perception poll every 0.3 s; clears any Noise point" },
+  { k: "T2 Noise", t: "Hearing, ripples, last-seen point — rejected while sight is locked" }
+]} />
+
+The decision layer is stateless so the full truth table is unit-tested; the controller only supplies the facts (incumbent source, is the lure fresh, is sight locked).
+
+<Snippet id="alert-arbiter" strip caption="Pure decision functions. Reordering the enum would silently invert the arbitration, so the first test assertion pins the numeric order." />
+
+## Key classes and functions
+
+| Piece | Responsibility |
+|---|---|
+| `EUS_AlertSource` | `None / Noise / Sight / Lure`, value = priority |
+| `USMinionAlert::ShouldAcceptInvestigate` | May a new investigate point land? |
+| `USMinionAlert::ShouldClearInvestigateOnSight` | Sight clears Noise points, never Lure points |
+| `AUS_MinionAIController::IsSightLockActive` | Fresh sight **and** the target slot holds a live player |
+| `SetTargetActor` / `SetInvestigateLocation` | Gain an optional `Source` parameter with safe defaults, so old callers did not change |
+
+## Why this design
+
+- **Keep the BT asset, arbitrate the writes.** Reordering Selector branches in `BT_Minion.uasset` would be an editor-only change that no test could protect. Arbitrating in C++ costs nothing in the editor and is unit-testable.
+- **Both halves are required.** Only clearing noise on sight makes the tree thrash: a noise source writes every 0.5 s, sight clears every 0.3 s, and `MoveTo` restarts constantly. Rejecting noise *at the source* while sight is locked makes it converge.
+- **Expired lures must give way.** A stale `Lure` incumbent is folded to `None`; otherwise a guard that never reached a decoy's point would have its investigate slot locked forever. The automation test caught this before PIE did.
+- **Ownership before de-bounce.** The 500 cm de-bounce on investigate updates returns early, so the source is recorded first — otherwise a decoy thrown near a noise point would keep `Noise` ownership and sight would delete it.
+
+<Callout kind="info" title="Perception migration">
+The same controller moved from the deprecated <code>UPawnSensingComponent</code> to <code>UAIPerceptionComponent</code>. Sight is polled every 0.3 s on purpose: AIPerception's events fire only on gain/loss, and several systems relied on the old "keep reporting while you see" rhythm.
+</Callout>
+
+## Limits and next steps
+
+- Pure-hearing pursuit only writes `InvestigateLocation`, so ability "rescues" during hearing-only chases are not recognised by systems that read `TargetActor`.
+- The BT asset still reads Investigate-over-Chase; the priority lives in code and in this document.
+
+## Where the code lives
+
+`Public/MinionClass/US_MinionAIController.h` (the `USMinionAlert` namespace sits at the top), BT tasks/services under `Private/MinionClass/AI/`, test `UnrealShadows.Minion.AlertPriority`.

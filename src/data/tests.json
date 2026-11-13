@@ -1,0 +1,1743 @@
+{
+ "count": 342,
+ "groups": {
+  "Ability": 4,
+  "Achievement": 4,
+  "AIAudit": 6,
+  "Audio": 1,
+  "Chase": 4,
+  "Debug": 6,
+  "DLC": 2,
+  "EnvironmentCards": 7,
+  "Flow": 1,
+  "GameMenu": 10,
+  "Guidance": 2,
+  "Hunter": 8,
+  "HunterCipher": 2,
+  "Interact": 5,
+  "Mage": 2,
+  "MainMenu": 5,
+  "Minion": 18,
+  "Multiplayer": 9,
+  "ShieldRestore": 6,
+  "ShieldRunner": 2,
+  "Stage1": 33,
+  "Stage2": 122,
+  "Tasks": 18,
+  "UI": 56,
+  "Warrior": 7,
+  "World": 2
+ },
+ "tests": [
+  {
+   "name": "UnrealShadows.Ability.MageFx.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AbilityFxTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Ability.ShieldArt.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AbilityFxTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Ability.Thief.ArrivalAssets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ThiefArrivalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Ability.Thief.ArrivalTiming",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ThiefArrivalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Achievement.Persistence.SaveRoundTrip",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AchievementRuleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Achievement.Rules.CountAndContext",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AchievementRuleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Achievement.Rules.FailureReset",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AchievementRuleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Achievement.Rules.UniqueAndSequence",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AchievementRuleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.AIAudit.ChaseRetryAndSpeed",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AIAuditRegressionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.AIAudit.ForcedMemory",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AIAuditRegressionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.AIAudit.PatrolWatchdog",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AIAuditRegressionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.AIAudit.RippleRadiusBoundary",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AIAuditRegressionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.AIAudit.RoomAlert",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AIAuditRegressionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.AIAudit.ServerInteractRange",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_AIAuditRegressionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Audio.Stage1.TaskCueResolution",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1AudioTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Chase.Fatigue",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ChaseFatigueTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Chase.HeadIcon",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ChaseFatigueTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Chase.SprintTokens",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ChaseStaggerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Chase.StaggeredStamina",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ChaseStaggerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Debug.AssemblyBoundary",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_DebugBoundaryTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Debug.CheatArgs",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_DebugCheatTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Debug.CommandBoundary",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_DebugBoundaryTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Debug.MoveMultiplier",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_DebugCheatTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Debug.RetiredBoundary",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_DebugBoundaryTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Debug.ServerBoundary",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_DebugBoundaryTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.DLC.HunterDoesNotCountTowardStage1",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterDLCTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.DLC.HunterGateResolution",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterDLCTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.EnvironmentCards.BlueprintLifecycle",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EnvironmentCardTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.EnvironmentCards.InputLockOwnership",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EnvironmentCardTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.EnvironmentCards.ManagerLifecycle",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EnvironmentCardTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.EnvironmentCards.PIE.EmptyCatalog",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EnvironmentCardPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.EnvironmentCards.PIE.TwoPlayers",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EnvironmentCardPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.EnvironmentCards.RevealTimeline",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EnvironmentCardTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.EnvironmentCards.Selection",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EnvironmentCardTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Flow.TwoStageContract",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TeamMusterTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.Clean.Interaction",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CleanMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.Clean.Scrolling",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CleanMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.Clean.SettingsCompatibility",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CleanMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.DisconnectRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.HostWait",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.MenuKey",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.RosterEviction",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.Settings",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.Text",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.GameMenu.TravelArrivalGrace",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Guidance.PIE.SinglePlayer",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidancePIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Guidance.PIE.TwoPlayers",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidancePIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.HerdV4.MapLibrary",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterHerdTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.HerdV4.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterHerdV3CoreTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.HerdV4.ShapesAndDrops",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterHerdTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.InputVerbs",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterInputTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.Reusable.AssetContract",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterReusableTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.Reusable.IdentityAndCapacity",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterReusableTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.Rotation.SixFamilies",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterRotationTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Hunter.Woodwork.ExactPacking",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterWoodworkTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.HunterCipher.Generation.1000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tasks/US_HunterCipherTaskComponent.cpp"
+  },
+  {
+   "name": "UnrealShadows.HunterCipher.Validation.AlternatingTraceSeal",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tasks/US_HunterCipherTaskComponent.cpp"
+  },
+  {
+   "name": "UnrealShadows.Interact.CoinLockPrompt",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractRefusalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Interact.LineOfSightRule",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractLineOfSightTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Interact.PromptView",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractGlyphTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Interact.RefusalGating",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractRefusalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Interact.SealedDoorLockedDialog",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractRefusalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Mage.OracleForesight",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_OracleForesightTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Mage.Tenebrae",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TenebraeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.MainMenu.BackdropFrame",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MainMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.MainMenu.ConfirmLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MainMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.MainMenu.HomeLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MainMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.MainMenu.Navigation",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MainMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.MainMenu.Text",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MainMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.AlertPriority",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionAlertTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.ArchetypeProfile",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionArchetypeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.AwarenessState",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionAwarenessTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.BehaviorLocks",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionReactionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.CommitTokens",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionEncircleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.FlankGuard",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionEncircleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HeadStatus.ApprovedArt",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionHeadStatusTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HeadStatus.ClientQueries",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionHeadStatusTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HeadStatus.LureLifecycle",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionHeadStatusTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HeadStatus.PIE.Network",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionHeadStatusPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HeadStatus.PIE.Standalone",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionHeadStatusPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HeadStatus.Priority",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionHeadStatusTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HeadStatus.SourceWindows",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionHeadStatusTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.HookPoints",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionEncircleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.Memory",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionMemoryTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.ReactionPolicy",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionReactionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.SearchScoring",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionSearchTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Minion.SightComposition",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MinionAwarenessTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.AssemblyPlatformArt",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.BackendSettings",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.Rules.ClassifyFailure",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.Rules.Describe",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.Rules.DirectAddress",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.Rules.DisplayName",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.Rules.LobbySnapshot",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.Rules.RoomCode",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Multiplayer.RunRoster.LockAndReconnect",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_RunRosterTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRestore.Maze.BlockCounts2Through5",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRestoreMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRestore.Maze.ExactActionSolver",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRestoreMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRestore.Maze.Fallback",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRestoreMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRestore.Maze.Generator1000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRestoreMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRestore.Maze.RaritySolverBudgets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRestoreMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRestore.Maze.RuntimeRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRestoreMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRunner.Generator1000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRunnerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.ShieldRunner.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRunnerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.CoinLock.Anim",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoinLockTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.CoinLock.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoinLockTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.CoinLock.TableInteraction",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoinTableTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.CrossRoom.CorridorGate",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1CrossRoomTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.CrossRoom.Phials.1000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1CrossRoomTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.CrossRoom.Statues.1000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1CrossRoomTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.FinalGate.MusterRoster",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TeamMusterTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.FlowCheats.Coins",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1FlowCheatTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.FlowCheats.Refusal",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1FlowCheatTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.FlowCheats.Trials",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1FlowCheatTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Hints.CompletionAndLocalView",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1HintTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Hints.DistanceHysteresis",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1HintTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Hints.LegacyDefaults",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1HintTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodge.Gates",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodge.RevealQueue",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodgeTrials.Chests.10000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTrialTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodgeTrials.Layout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTrialTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodgeTrials.PicksAndStrikes",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTrialTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodgeTrials.Prompts",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTrialTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodgeTrials.Tokens.10000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTrialTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterLodgeTrials.Trail.10000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterLodgeTrialTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.HunterTracking.Generation.1000Seeds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1CrossRoomTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Journal.ArtAssets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Journal.Authority",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Journal.Reading",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Journal.ReadingFlow",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Journal.Rings",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.Journal.SealRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.TrialPortal.ArrivalOffset",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.TrialPortal.ReturnRouting",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.TrialPortal.RevealScale",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.TrialPortal.SeamlessTraversal",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage1.TrialPortal.TriggerHitTest",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Artifact.AutoRegister",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2GuidanceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Atrium.LayoutVariantDefaults",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2AtriumTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Atrium.PatrolRoute",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2AtriumTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Atrium.PIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2AtriumPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Atrium.SlidingDoorRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2AtriumTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Atrium.SoloSplitAlternation",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2AtriumTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Atrium.TwoPlayerPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2AtriumDuoPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.BlinkWard.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_BlinkWardTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.CareerOptions",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CareerOptionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.ApprovedLeaves",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2CodexTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Input.LeafBounds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexInputTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Input.ProductionCards",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexInputTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Input.Remapping",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexInputTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Input.Semantics",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexInputTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Input.Validation",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexInputTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Panels.Mage",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexPanelTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Picture.Motion",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexInputTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Codex.Wordless.Artwork",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_WordlessCodexTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.CoreLoopProto.TickGate",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoreLoopProtoPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.CoreSeal.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2CoreSealTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.CoreSeal.UnlockAuthority",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2CoreSealTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.CoreShield.AudioAssets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoreShieldTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.CoreShield.AudioRuntime",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoreShieldTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.CoreShield.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoreShieldTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Death.CommitOrdering",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2DeathFlowTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Death.NoLegacyDeathSymbols",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2DeathFlowTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Death.ReviveAltarContract",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2DeathFlowTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Death.RoomLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2DeathFlowTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Death.StageExclusivity",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2DeathFlowTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Death.StateContract",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2DeathFlowTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Departure.Muster",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2ReturnGateTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Echo.ChainLock",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EchoTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Echo.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_EchoTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.Exploration",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLiftTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.Leap.Curves",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLeapTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.Leap.PresentationCurves",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLeapTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.Leap.RootMotionNetSerialize",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLeapTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.Leap.WorldArc",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLeapTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.Lift",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLiftTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.LiftAutoReturn",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLiftTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.LiftPartitionSeams",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingLiftTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingPlateTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3Core",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingCoreTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3Encounter",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3GravityResponse",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3Physics",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3Routes",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3Structure",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingCoreTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3SupportedGravity",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V3Traversal",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V4Bridge",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV4Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V4BridgeCycle",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV4Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V4BridgeGravity",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV4Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V4Motion",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV4Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V4RandomPlate",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV4Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Floating1C.V4Resident",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FloatingV4Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.CubeLipsPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityCubeLipsPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.CubePIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityCubePIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.Facing",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.LipProtoPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityLipProtoPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.RoomBounds",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.RoomFrame",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.Rotation",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.Seam",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravityTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.SkillRoomPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravitySkillPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.SpikeDuoPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravitySpikePIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.SpikePIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravitySpikePIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.SwordProtoCameraPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravitySwordCameraPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.SwordProtoFlickerPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravitySwordFlickerPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.SwordProtoPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravitySwordProtoPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Gravity.SwordsPIE",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GravitySwordsPIETests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Guidance.Corridor",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2GuidanceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Guidance.Lookahead",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2GuidanceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Guidance.NearestAndRouteStickiness",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Guidance.TargetPick",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2GuidanceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Guidance.TrailSlot",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Guidance.VisualLifecycle",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.HintTablet.Layout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2HintTabletTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.HintTablet.Motion",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2HintTabletTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Maze1B.TogglePlateDrivesBank",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Maze1BV2Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Maze1B.ToggleRule",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Maze1BV2Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Maze1B.V31SealPathRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Maze1BV31Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Maze1B.V3LookRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Maze1BV2Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Mechanisms.BellPlaneDistance",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2CoreLoopV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Mechanisms.ChargePlate",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2MechanismTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Mechanisms.DepartureGate",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2CoreLoopV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Mechanisms.PatrolAcceptance",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2CoreLoopV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Mechanisms.PlateFeedback",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2PlateFeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Mechanisms.PlayerPlateOverlap",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2CoreLoopV3Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Mechanisms.RosterVariants",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2MechanismTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Objective.Mask",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2ReturnGateTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.PitLidReset",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_PitLidResetTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Rescue.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_RescuePuzzleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Rescue.Templates",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_RescuePuzzleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.ReturnGate.DirectionalSeal",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2ReturnGateTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.ReturnGate.SameSideExit",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2ReturnGateTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.ReturnGate.VisualPhases",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2ReturnGateTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.RollingShelf.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_RollingShelfTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.RollingShelf.SoundAssets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_LibraryMazeSoundTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Sanctuary.ArtGeometry",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Sanctuary1CTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Sanctuary.ConduitRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Sanctuary1CTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Sanctuary.FieldRoutes",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Sanctuary1CTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Sanctuary.ResonanceRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Sanctuary1CTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Sanctuary.StateMapping",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Sanctuary1CTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Sanctuary.StepRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Sanctuary1CTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.SwordShrine.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_SwordShrineTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.ThreeSeal.ServerLock",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ThreeSealMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.ThreeSeal.WallSequence",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ThreeSealMazeTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.RelicSeal",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TempleRelicSealTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.Rules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TimeHallTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.SealedRelicRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TempleSealedRelicTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.TempleAmbience",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TempleAmbienceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.TempleEcho",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TempleTimeEchoTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.TempleSealFx",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TempleSealFxTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.TempleSeals",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TimeHallTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.TempleV7",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TimeHallTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.TimeWindowYaw",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoreShieldTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TimeHall.TowerRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TimeHallTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Training.CodexLectern",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CodexLecternTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.Training.PracticeRules",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_PracticeMinionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TrialPortal.StableSplitRouting",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Stage2.TrialPortal.ViewTransform",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.HunterCipher.FullscreenLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_HunterCipherWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.Input.NoHHelp",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TaskNPCNoHelpTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.MageCircuit.FullscreenLayoutAndDragMath",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_MagePuzzleWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.MageCircuit.GeneratedRoutesMatchAuthority",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_MagePuzzleWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.MageCircuit.IllustratedArtAndAnnulus",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_MagePuzzleWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.MageCircuit.LaneAssignment",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_MagePuzzleWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.MageCircuit.TemplatesAreUnique",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tasks/US_MagePuzzleTaskComponent.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.MageCircuit.TraceStopsAndSealMatching",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_MagePuzzleWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.MageCircuit.ValidationAndStability",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tasks/US_MagePuzzleTaskComponent.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ShieldRunner.AnimationAssets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ShieldRunnerWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ShieldRunner.CooldownEffort",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ShieldRunnerWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ShieldRunner.FullscreenLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ShieldRunnerWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ShieldRunner.LaneMotion",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ShieldRunnerWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ShieldRunner.MotionLifecycle",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ShieldRunnerWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ShieldRunner.ProtectionHalo",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ShieldRunnerWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ShieldRunner.SingleStepInput",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ShieldRunnerWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ThiefTrial.FullscreenLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_ThiefTrialWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.Tasks.ThiefTrial.Motion",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ThiefMotionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.CareerSelect.Navigation",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_CareerSelectWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.CareerSelectLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.CenterHUDLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_SketchHUD.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.ClassAccent",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_SketchHUD.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.ClassInk.Consumers",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.ClassInk.Table",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.CoinLockIllustrated",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoinLockTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.CoinLockLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoinLockTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Feedback.Audio",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FeedbackAudioTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Feedback.Captions",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FeedbackCaptionTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Feedback.Escalation",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FeedbackEscalationTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Feedback.Primitives",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Feedback.PromptMigration",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_FeedbackPromptTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.GameMenuLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GameMenuTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.GuidanceTrail.Visibility",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Guide.Emitters",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Guide.Math",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Guide.Track",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Guide.Wisp",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_GuidanceTrailTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.HunterChoice.ReferenceAndHitTargets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterChoiceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.HunterSkillArt.ApprovedSourceAndStates",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterSkillArtTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.HunterThreeKind.ImportedA",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterHerdTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.HunterWoodwork.ImportedSources",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_HunterWoodworkTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.InkBrush.Geometry",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.InkBrush.GlyphScript",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InkGlyphScriptTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.InteractGlyphPaint",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractGlyphTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.InteractGlyphRowLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractGlyphTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.InteractPromptLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.JournalHunterSpread",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.JournalLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.JournalPageCurl",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage1JournalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.LocationRevealLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MageFeedback.AudioAssets",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MageFeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MageFeedback.ElementColours",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MageFeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MageFeedback.SectorCrossings",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MageFeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MageFeedback.SlotLadder",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MageFeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MageFeedback.Timeline",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MageFeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MageSkillArt.SourceAndProgress",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MageSkillArtTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MultiplayerLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MultiplayerTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.MusterSealLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_MusterSealTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.NPCDialogLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.NPCDialogTokens",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_InteractGlyphTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.NPCPictogramLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.PlayerTextEnglish",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.RegionRevealLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.RescueLockLayout",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_RescuePuzzleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Stage2ObjectiveRow",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_Stage2ReturnGateTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.StaminaBarStyle",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/UI/US_SketchHUD.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.StaminaResonance.Geometry",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_StaminaResonanceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.StaminaResonance.PawnReset",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_StaminaResonanceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.StaminaResonance.State",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_StaminaResonanceTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Style.Tokens",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.Thief.LightStoneClip",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Ability/US_ThiefHUDWidget.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.ThreatRing",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ThreatRingTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.TitleFont.Fallback",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_UIStyleTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.UI.TrailGeometry.Polyline",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_TrailGeometryTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Warrior.RepairFeedback.PathSafety",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_WarriorRepairFeedbackTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Warrior.RepairTemplates.CatalogAndSymmetries",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRepairTemplatesTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Warrior.RepairTemplates.SelectionAndRollback",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRepairTemplatesTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Warrior.RepairV2.AuthorityProtocol",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRepairV2Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Warrior.RepairV2.CertifiedCatalog",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRepairV2Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Warrior.RepairV2.EconomyAndCaps",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRepairV2Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.Warrior.RepairV2.UndoAndMultiplierMatrix",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_ShieldRepairV2Tests.cpp"
+  },
+  {
+   "name": "UnrealShadows.World.SignalPolicy",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_WorldSignalPolicyTests.cpp"
+  },
+  {
+   "name": "UnrealShadows.World.SignalTokens",
+   "kind": "simple",
+   "file": "Source/UnrealShadows_LOTL/Private/Tests/US_WorldSignalTokenTests.cpp"
+  }
+ ]
+}

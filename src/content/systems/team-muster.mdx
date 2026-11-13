@@ -1,0 +1,52 @@
+---
+title: Team muster — one rule for every "everyone here" moment
+summary: Stage 1's final gate, Stage 2's departure check and the extraction all ask the same question. One component and one pure function answer it, and only living players count.
+order: 6
+area: Gameplay framework · Networking
+status: verified
+statusNote: Rule covered by Stage1.FinalGate.MusterRoster and Stage2.Departure.Muster; HUD ring layout by UI.MusterSealLayout. HUD animation not human-verified at every resolution.
+classes: [UUS_TeamMusterComponent, USTeamMuster, AUS_FinalGateZone, AUS_Stage2DepartureZone, FUS_MusterState]
+sources:
+  - Source/UnrealShadows_LOTL/Public/Framework/US_TeamMusterComponent.h
+  - Source/UnrealShadows_LOTL/Public/Framework/US_TeamMusterTypes.h
+  - Source/UnrealShadows_LOTL/Public/Framework/US_FinalGateZone.h
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Callout from "../../components/Callout.astro";
+
+## The problem
+
+Originally, completing the third Stage 1 task travelled the whole session to Stage 2 immediately — even if your partner was in the middle of a side quest. The fix needed: "doors open, then wait until every player is in the zone for 3 seconds". Stage 2 needs the same thing twice: everyone has *left* the spawn room (to start the round) and everyone is *back* (to finish).
+
+## What the player sees
+
+- A ring with one segment per living player; your own segment is always at 12 o'clock.
+- When everyone is in, the ring closes and burns down; leave and it breaks with a shake.
+
+## How it works
+
+<Flow steps={[
+  { k: "Arm", t: "Gate unlocks (3/3) or Stage 2 starts → SetArmed(true)" },
+  { k: "Count", t: "Overlap events + a 0.25 s fallback recount" },
+  { k: "Rule", t: "USTeamMuster::IsMusterComplete(query)" },
+  { k: "Commit", t: "3 s timer → re-check → OnMusterCommitted" },
+  { k: "Replicate", t: "FUS_MusterState snapshot on the GameState" }
+]} />
+
+<Snippet id="muster-rule" strip caption="'Everyone' means every living player. A teammate waiting for rescue in the death cage is not in the denominator — otherwise an unrescued death would make the round impossible to finish." />
+
+## Why this design
+
+- **One component, two modes** (`AllPresent`, `AllAbsent`). The arm condition differs per use; the waiting logic does not.
+- **A cheap poll covers what overlaps cannot.** A player can die or disconnect *inside* the zone; neither fires an overlap event, but both change the denominator. A 0.25 s recount only runs while someone is inside or the muster is armed, instead of hooking five death-state transitions.
+- **Re-validate at commit.** The 3 s timer always fires once scheduled; without a final check, a team that had already split would be travelled anyway.
+- **No silent soft-lock.** If a map is missing its gate zone, the GameMode logs an error and falls back to the old immediate travel — a missing actor must not leave a session stuck at 3/3 forever.
+
+<Callout kind="info">
+The state is replicated as one struct (armed, present, required, commit end time, sequence) so the HUD never sees half an update.
+</Callout>
+
+## Where the code lives
+
+`Public/Framework/US_TeamMusterComponent.h`, `US_TeamMusterTypes.h`, `US_FinalGateZone.h`; HUD ring in `UI/US_SharedHUDWidget.cpp`.

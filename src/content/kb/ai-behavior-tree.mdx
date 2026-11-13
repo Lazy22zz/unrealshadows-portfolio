@@ -1,0 +1,60 @@
+---
+title: AI：行为树、黑板与 AIPerception
+summary: 行为树负责“现在做哪件事”，黑板是它的记忆，AIPerception 提供看见和听见。本项目最大的经验是：谁能往黑板里写什么，应该由一个可测试的规则来决定。
+order: 7
+topic: AI
+sources:
+  - Source/UnrealShadows_LOTL/Public/MinionClass/US_MinionAIController.h
+  - Source/UnrealShadows_LOTL/Private/MinionClass/AI/
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Callout from "../../components/Callout.astro";
+
+## 30 秒理解
+
+- **AIController** 拥有 Pawn，运行行为树，接收感知回调。
+- **Blackboard** 是一组键值：`TargetActor`、`InvestigateLocation`、`PatrolLocation`……
+- **Behavior Tree** 用 Selector / Sequence 和 Decorator 决定执行哪个分支；Service 周期性更新黑板；Task 执行具体动作（MoveTo、等待）。
+- **AIPerception** 用 Sight / Hearing 等 SenseConfig 产生刺激；噪声由 `UAISense_Hearing::ReportNoiseEvent` 发出。
+
+## 解决什么问题
+
+守卫需要在巡逻、调查、追击、被诱饵吸引、被眩晕之间切换，并且要稳定——不能在两个分支之间来回抢，导致 MoveTo 不停重启、走走停停。
+
+## 在本项目中的应用
+
+- **从 PawnSensing 迁到 AIPerception**，但视觉保留 0.3 秒轮询：AIPerception 的事件只在“看见/看不见”的边沿触发，而追猎疲劳、警报涟漪、目标重锁都依赖“看见期间持续上报”的节奏。
+- **警报仲裁**：每次写黑板都标注来源（诱饵 > 视觉 > 噪声）。视觉会清掉噪声调查点，视觉锁定期间噪声在源头被拒，过期的诱饵自动让位。
+
+<Snippet id="alert-arbiter" caption="纯函数，可以把完整真值表写进自动化测试。" />
+
+- **Service 要节点实例化**：`BTService` 默认所有 AI 共享一个对象，成员变量会被别的守卫覆盖。用成员变量存状态的 Service 必须 `bCreateNodeInstance = true`。
+- **追 Actor 要新建请求**：`FAIMoveRequest::SetGoalActor` 对已初始化的请求不起作用，墙上的守卫“看得见却不追”就是这个原因。
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "感知", t: "Sight 轮询 / Hearing 事件" },
+  { k: "仲裁", t: "USMinionAlert：能不能写？清不清？" },
+  { k: "黑板", t: "TargetActor / InvestigateLocation" },
+  { k: "行为树", t: "Investigate > Chase > Patrol 分支" },
+  { k: "移动", t: "MoveTo（导航网格；墙面用导航孪生）" }
+]} />
+
+<Callout kind="warn" title="排查 BT 卡顿的顺序">
+先怀疑 Sequence 重启循环（最后一个任务完成后整串重来）；再查装饰器 Observer Aborts 与“同值写入”；MoveTo 周期性速度归零时先关 <code>bStopOnOverlap</code>。Service 的 OnBecomeRelevant 在重启循环里会抖动，不能当“是否在分支中”的信号。
+</Callout>
+
+## 常见错误
+
+- 多个系统直接往同一个黑板键写，没有优先级。
+- 把行为树分支顺序当成唯一的优先级表达——它在编辑器资产里，测试保护不到。
+- 在 Service 里用成员变量却没开节点实例化。
+- 听觉半径与噪声响度算错：有效半径 = `min(HearingRange × Loudness, MaxRange)`，只调大 MaxRange 没用。
+
+## 延伸学习
+
+- EQS（环境查询系统）
+- `UBTTaskNode` 的 latent 任务与 `FinishLatentTask`
+- StateTree（UE5 的另一套 AI 决策框架）

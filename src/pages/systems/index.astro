@@ -1,0 +1,38 @@
+---
+import Base from "../../layouts/Base.astro";
+import SystemGraph from "../../components/interactive/SystemGraph.tsx";
+import { getCollection } from "astro:content";
+import { url } from "../../lib/url";
+
+const systems = (await getCollection("systems")).sort((a, b) => a.data.order - b.data.order);
+const statusPill = { verified: ["ok", "Verified"], scripted: ["wip", "Script-verified"], "in-progress": ["plan", "In progress"] } as const;
+---
+<Base title="Gameplay Systems" description="How the main C++ gameplay systems of Unreal Shadows work and hand work to each other.">
+  <div class="wrap" style="padding-top:34px">
+    <div class="eyebrow rise">Architecture · C++</div>
+    <h1 class="rise">Gameplay systems</h1>
+    <p class="lede rise-2">How the main C++ systems pass work between the owning client, the server, replicated state and local presentation.
+      Pick a scenario to follow a real call chain, or open any write-up below. Each write-up answers the same seven questions.</p>
+    <SystemGraph client:visible />
+
+    <h2>Write-ups</h2>
+    <div class="grid grid-2">
+      {systems.map((s) => (
+        <a class="card" href={url(`/systems/${s.id}/`)}>
+          <span class={`pill tag ${statusPill[s.data.status][0]}`}>{statusPill[s.data.status][1]}</span>
+          <div class="eyebrow">{s.data.area}</div>
+          <h3 style="padding-right:100px">{s.data.title}</h3>
+          <p class="small muted">{s.data.summary}</p>
+          <div class="small classes">{s.data.classes.slice(0, 4).map((c) => <code>{c}</code>)}</div>
+        </a>
+      ))}
+    </div>
+
+    <h2>Code organisation pattern</h2>
+    <p class="muted" style="max-width:74ch">Newer feature areas are split into three folders. <strong>Core</strong> holds pure rules with no
+      <code>UWorld</code> dependency, so they are unit-tested; <strong>Integration</strong> is the narrow API gameplay code calls; <strong>Presentation</strong>
+      only reads replicated state and never writes gameplay. Examples: <code>Chase/</code>, <code>Guidance/</code>, <code>Multiplayer/</code>,
+      <code>GameMenu/</code>, <code>EnvironmentCards/</code>, <code>Stage1/</code>, <code>Stage2/Core</code>.</p>
+  </div>
+</Base>
+<style>.classes { display: flex; flex-wrap: wrap; gap: 6px; } .classes code { font-size: 0.72rem; }</style>

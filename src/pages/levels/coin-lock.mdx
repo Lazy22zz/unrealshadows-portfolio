@@ -1,0 +1,61 @@
+---
+layout: ../../layouts/MdxPage.astro
+title: The coin clutch lock
+summary: Stage 1's prologue. Two coins from two sealed rooms go into a mechanical table; two discs, a clutch and one seized disc stand between the team and the central gate. Play it below — the rules are a direct port of the game's C++.
+eyebrow: Puzzle design · Stage 1
+back: /levels/
+backLabel: Levels & puzzles
+wide: true
+sources:
+  - Source/UnrealShadows_LOTL/Public/Framework/US_CoinLockTypes.h
+  - Source/UnrealShadows_LOTL/Private/Framework/US_CoinLockTypes.cpp
+  - Source/UnrealShadows_LOTL/Public/Framework/US_CoinLockAltar.h
+  - Source/UnrealShadows_LOTL/Public/UI/US_CoinLockAnim.h
+  - Source/UnrealShadows_LOTL/Private/Tests/US_CoinLockTests.cpp
+---
+import CoinLock from "../../components/interactive/CoinLock.tsx";
+import Snippet from "../../components/Snippet.astro";
+import Figure from "../../components/Figure.astro";
+import Callout from "../../components/Callout.astro";
+import Flow from "../../components/Flow.astro";
+
+<CoinLock client:visible />
+
+## How it plays
+
+Energy runs **source → disc I → junction → disc II → gate seal**. Each disc carries one groove from a U-shaped inlet to a spout on the opposite side; the target position is visible on purpose — the difficulty is mechanical, not hidden information:
+
+- The two discs normally turn independently.
+- Lowering the **clutch** (two idler gears) links them: turning one turns the other **the opposite way** (two idlers in series reverse the direction).
+- **Disc II is seized.** It can only move when disc I drags it through the clutch.
+
+So the intended solution is: engage → use disc I to drag disc II into place → disengage → fix disc I on its own. Forget to disengage and fixing disc I drags disc II right back out.
+
+<Figure id="ui-coinlock" caption="The in-game panel with the clutch engaged." />
+
+## The iteration that created it
+
+The first version had the gears permanently meshed. Players reported **"when I turn the left disc, the right one turns too"** as a bug. Investigation found two causes stacked: the rule itself, and a real presentation bug — one global animation timer made *both* discs wobble, and disc II's teeth and groove were drawn with different angle sources, so meshed discs appeared to turn the *same* way. The redesign kept the linkage but made it a choice (the clutch) and gave it a purpose (the seized disc).
+
+## Rules, animation, widget — three layers
+
+<Flow steps={[
+  { k: "Input", t: "Widget: A/D, Tab, Space; local pre-check of CanDrive" },
+  { k: "RPC", t: "Server_RotateCoinDisc(±1) / Server_SetCoinClutch(target value)" },
+  { k: "Rules", t: "USCoinLock::ApplyRotation — the only function that writes positions" },
+  { k: "State", t: "FUS_CoinLockState replicated as one struct" },
+  { k: "Animation", t: "FUS_CoinLockAnim diffs snapshots; never writes back" }
+]} />
+
+<Snippet id="coinlock-apply" strip caption="The only place disc positions change. The browser demo above runs a TypeScript port of exactly this function." />
+
+- **The clutch RPC sends a target value, not "toggle".** Two players pressing Space at the same moment would cancel each other's toggles; target values are idempotent.
+- **Seized rejection is predicted locally.** The widget and the server call the same `CanDrive`, which only reads replicated state, so the local shake and the server's refusal always agree and no RPC is wasted.
+- **`LastDriver` is replicated only for the animation layer**, so the dragged disc can start a beat later than the driving one.
+- **Puzzles are generated, not authored.** `BuildPuzzle` keeps both discs off target, the clutch free, and requires at least five optimal moves in the shipped table.
+
+<Callout kind="info" title="Checked against the engine test">
+The automation test <code>UnrealShadows.Stage1.CoinLock.Rules</code> compares a production breadth-first search against an independent reference over all 36 × 36 × clutch × seized states and pins the worst cases at 4, 5 and 7 moves. The site's own Vitest suite asserts the same three numbers on the TypeScript port.
+</Callout>
+
+<Snippet id="coinlock-test" caption="How the automation test is declared (comments in the original source are in Chinese)." />

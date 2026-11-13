@@ -1,0 +1,62 @@
+---
+title: RPC 与服务端权威
+summary: 客户端只能“请求”，服务器决定“发生什么”。Server RPC 必须发在客户端拥有的 Actor 上；服务器每一次都要重新校验；表现类的反馈用 Client Unreliable RPC 只发给当事人。
+order: 5
+topic: 网络
+sources:
+  - Source/UnrealShadows_LOTL/Public/PlayerClass/US_PlayerController.h
+  - Source/UnrealShadows_LOTL/Private/PlayerClass/US_InteractComponent.cpp
+  - Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Callout from "../../components/Callout.astro";
+
+## 30 秒理解
+
+| 类型 | 方向 | 用途 |
+|---|---|---|
+| `UFUNCTION(Server, Reliable)` | 客户端 → 服务器 | 请求一个动作（交互、旋转转盘、选职业） |
+| `UFUNCTION(Client, Reliable/Unreliable)` | 服务器 → 拥有该 Actor 的客户端 | 只给当事人的结果或反馈（打开谜题、闪白） |
+| `UFUNCTION(NetMulticast)` | 服务器 → 所有人 | 一次性事件（蒙太奇、音效） |
+
+客户端只能在**自己拥有**的 Actor（PlayerController、Pawn 及其组件）上调用 Server RPC。
+
+## 解决什么问题
+
+所有会影响游戏结果的事情都必须由服务器裁定，否则两端不一致，也给作弊留了口子。同时客户端需要即时反馈，不能每个按键都等一个来回。
+
+## 在本项目中的应用
+
+- **PlayerController 作为 RPC 桥**：NPC、硬币锁这些关卡物体不归客户端所有，所以 `Server_RotateCoinDisc`、`Server_SubmitMagePuzzleAttempt` 都挂在 `AUS_PlayerController` 上，再转给目标物体；服务器校验距离（1500 cm）、阶段、是否是当前解题者。
+- **每次都重新校验**：交互 RPC 到达服务器后会重新检查距离和视线（从胶囊中心到目标，命中目标本身或它的挂接链才算）。这修掉了一个真实漏洞：贴着铁栅站时，客户端的扫掠起点已经在栅栏另一边，可以隔栅拔剑。
+- **只在本机做的反馈不走网络**：交互被拒时说的话、Thief 瞬移的闪白，都是本机效果或一次 `Client Unreliable` RPC——丢一个包无所谓。
+- **拒绝要能对上那一步**：穿门被拒的 RPC 挂在 Character 上而不是 PlayerController，因为它要和移动修正走同一个 Actor 通道，并且不能落到之后新 Possess 的 Pawn 上。
+
+<Snippet id="portal-consume" caption="服务器找不到合法的门 = 拒绝这一步的主张，并把时间戳告诉客户端，让它在重放时跳过。" />
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "客户端", t: "本地预判（可选）：明显不行就不发" },
+  { k: "Server RPC", t: "只带“我想做什么”，不带结果" },
+  { k: "服务器", t: "重新校验：距离、视线、阶段、所有权" },
+  { k: "结果", t: "修改复制状态 / Client RPC 给当事人" }
+]} />
+
+<Callout kind="info" title="目标值而不是“切换”">
+双人同时按离合键时，两个“toggle”请求会互相抵消。离合 RPC 传的是目标值（咬合 / 脱开），同值写入直接忽略，天然幂等。
+</Callout>
+
+## 常见错误
+
+- 在客户端不拥有的 Actor 上调 Server RPC（会被静默丢弃）。
+- 服务器信任客户端传来的位置、结果或“我赢了”。
+- 用 Reliable 发高频表现事件，挤占可靠通道。
+- 在编辑器 Python 脚本里从客户端调 RPC：脚本保护会让它在本机执行，等于没发。本项目的测试改为注入真实输入，或排到下一帧由游戏调用。
+
+## 延伸学习
+
+- `WithValidation` 与 `_Validate`
+- RPC 的执行顺序与通道（同一 Actor 内 Reliable 有序）
+- Net Role：`ROLE_Authority`、`ROLE_AutonomousProxy`、`ROLE_SimulatedProxy`

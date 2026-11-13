@@ -1,0 +1,54 @@
+---
+title: GameInstance / GameMode / GameState / PlayerState：状态放在哪里
+summary: 哪个对象跨关卡存活、哪个只在服务器上存在、哪个会复制给所有人——这决定了一份状态应该住在哪里。放错地方的典型症状是“客户端收不到”或“换图后丢了”。
+order: 3
+topic: 状态管理
+sources:
+  - Source/UnrealShadows_LOTL/Public/Framework/US_GameInstance.h
+  - Source/UnrealShadows_LOTL/Public/Framework/US_GameMode.h
+  - Source/UnrealShadows_LOTL/Public/Framework/US_GameState.h
+  - Source/UnrealShadows_LOTL/Public/PlayerClass/US_PlayerState.h
+---
+import Snippet from "../../components/Snippet.astro";
+import Callout from "../../components/Callout.astro";
+
+## 30 秒理解
+
+| 对象 | 存在于 | 换关卡 | 适合放 |
+|---|---|---|---|
+| GameInstance | 每台机器各一份 | **保留** | 跨关卡的本局数据、设置、DataAsset 入口 |
+| GameMode | **只在服务器** | 重建 | 规则与裁定（生成谁、能否换图） |
+| GameState | 服务器 + 复制到所有客户端 | 重建 | 全队共享的状态（阶段、胜利、集合进度） |
+| PlayerState | 每个玩家一份，复制给所有人 | 重建（可 CopyProperties） | 每个玩家的状态（所选职业、RunToken） |
+
+## 解决什么问题
+
+多人游戏里每个对象的“可见范围”不同。规则必须只在服务器上跑，显示需要的数据必须复制到客户端，跨关卡的数据必须放在不会被销毁的对象上。
+
+## 在本项目中的应用
+
+- **胜利信号从 GameMode 搬到 GameState**：客户端的 HUD 绑定 GameMode 的委托永远收不到（客户端没有 GameMode）。现在 `AUS_GameState` 持有一个复制的胜利结构体，服务器直接广播、远端客户端在 OnRep 里广播。
+- **跨关卡的本局数据住 GameInstance**：已解锁的职业、DLC 开关、本局名单。`ResetSelections()` 刻意不清 DLC 开关，否则每次回菜单都会被重置。
+- **DataAsset 入口也放在 GameInstance**：GameMode 在远端客户端上不存在，所以客户端 HUD 和本地预检读不到挂在 GameMode 上的配置。
+- **每个玩家的职业放在 PlayerState**：两名玩家可以选同一个职业，各自的选择要复制给对方。
+
+## 关键代码及解释
+
+<Snippet id="property-data-resolve" caption="统一的配置入口：优先 GameInstance（两端都有），迁移期才回退到只在服务器存在的 GameMode。" />
+
+<Callout kind="warn" title="多人下“本机的 GameInstance”不是权威">
+DLC 开关存在每台机器的 GameInstance 里，但只有房主那份算数。加入者要显示“本局有没有 DLC”，必须读复制下来的 <code>AUS_GameState::IsHunterDLCActive()</code>，不能读自己的 GameInstance。
+</Callout>
+
+## 常见错误
+
+- 客户端代码调用 `GetGameMode()`（在客户端返回 null）。
+- 把每个玩家的数据放进 GameState 的数组里，而不是 PlayerState。
+- 把需要跨 `ServerTravel` 保留的数据放进 GameMode 或 PlayerState。
+- 在 PostLogin 时读 GameState 上一个要在 BeginPlay 才写入的值：本项目把 DLC 标志的写入提前到 `InitGameState`，因为 PIE 下 PostLogin 早于 World BeginPlay。
+
+## 延伸学习
+
+- `AGameModeBase::InitGame` → `InitGameState` → `PreLogin` / `PostLogin` 的顺序
+- Seamless travel 与 `APlayerState::CopyProperties`
+- `UGameInstanceSubsystem` / `UWorldSubsystem`（本项目的成就、设置、重力、警报涟漪都是子系统）

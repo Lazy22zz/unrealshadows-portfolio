@@ -1,0 +1,52 @@
+---
+title: Actor Components：用组合代替继承
+summary: 一个 NPC 父类 + 可插拔的任务组件，四个职业 NPC 只换外观；角色身上的冲刺、交互、死亡、技能都是组件。行为放在组件里，Actor 只负责把它们装在一起。
+order: 2
+topic: 架构
+sources:
+  - Source/UnrealShadows_LOTL/Public/Interactables/US_TaskNPC.h
+  - Source/UnrealShadows_LOTL/Public/Tasks/US_TaskNPCComponent.h
+  - Source/UnrealShadows_LOTL/Public/PlayerClass/US_SprintComponent.h
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+
+## 30 秒理解
+
+`UActorComponent` 是挂在 Actor 上的一块行为（没有位置）；`USceneComponent` 再加上变换和挂接。把“会做什么”拆成组件，同一个 Actor 类就能通过换组件变成不同的东西，而不用为每种变化写一个子类。
+
+## 解决什么问题
+
+如果每个职业 NPC 都是一个 C++ 子类，那么对话、交互、完成记录这些共同逻辑要么复制四份，要么堆在越来越深的继承链里。设计上的要求是“只有一个父类，四个蓝图只换模型”。
+
+## 在本项目中的应用
+
+- **任务 NPC**：`AUS_TaskNPC` 只有碰撞、模型、提示数据和 `bTaskCompleted`。真正的任务逻辑在 `UUS_TaskNPCComponent` 的子类里：Thief 飞刀、Mage 回路、Warrior 节拍跑道、Hunter 密码。NPC 在 BeginPlay 里找到自己身上的任务组件，`CanInteract` / `Interact` 全部委托给它。
+- **角色**：冲刺（`UUS_SprintComponent`，构造函数里 `CreateDefaultSubobject`）、交互（`UUS_InteractComponent`）、死亡流程（`UUS_DeathComponent`）、职业技能（`UUS_AbilityComponent` 的各个子类，一主一副两个槽位）。
+- **只读表现组件**：Guard 头顶状态、玩家脚下的追猎圈都是本机组件，只读复制下来的状态。
+
+## 简化流程图
+
+<Flow steps={[
+  { k: "玩家按 E", t: "AUS_TaskNPC::CanInteract" },
+  { k: "委托", t: "TaskComponent->CanStartTask()" },
+  { k: "开始", t: "TaskComponent->BeginTask() 打开对应谜题" },
+  { k: "完成", t: "HandleTaskCompleted → GameMode 解锁职业" }
+]} />
+
+## 关键代码及解释
+
+<Snippet id="tasknpc-delegate" caption="有任务组件就完全交给组件裁定，NPC 本体不写任何任务专属规则。" />
+
+## 常见错误
+
+- 组件依赖 Owner 的某个状态，却在 Owner 的 BeginPlay 之前就去找它（组件的 BeginPlay 顺序不保证）。
+- 每帧 `FindComponentByClass`：本项目把 9 个输入回调里的查找改成 BeginPlay 缓存一次（换职业会换 Pawn，自动重建）。
+- 蓝图里加了组件、C++ 里又 `CreateDefaultSubobject` 了同一个，导致两份。
+- 组件里存了跨对象的裸指针，Actor 销毁后悬空——用 `TWeakObjectPtr` 或 `TObjectPtr` + UPROPERTY。
+
+## 延伸学习
+
+- `UActorComponent` vs `USceneComponent`，`bWantsInitializeComponent`
+- `CreateDefaultSubobject` 与 `SetDefaultSubobjectClass`（本项目用它把角色的 CMC 换成自定义类）
+- 组件复制：`SetIsReplicatedByDefault`

@@ -1,0 +1,163 @@
+{
+ "portal-flags": {
+  "file": "Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "line": 557,
+  "code": "uint8 FUS_SavedMove_Character::GetCompressedFlags() const\n{\n    uint8 Result = Super::GetCompressedFlags();\n    if (bSavedWantsPortalTraversal)\n    {\n        Result |= FLAG_Custom_0;\n    }\n    if(bSavedWantsFloatingTraversal) Result|=FLAG_Custom_1;\n    return Result;",
+  "codeStripped": "uint8 FUS_SavedMove_Character::GetCompressedFlags() const\n{\n    uint8 Result = Super::GetCompressedFlags();\n    if (bSavedWantsPortalTraversal)\n    {\n        Result |= FLAG_Custom_0;\n    }\n    if(bSavedWantsFloatingTraversal) Result|=FLAG_Custom_1;\n    return Result;",
+  "commit": "19e4252"
+ },
+ "portal-restore-flags": {
+  "file": "Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "line": 116,
+  "code": "void UUS_CharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)\n{\n    Super::UpdateFromCompressedFlags(Flags);\n\n    // 服务端与客户端重放侧从压缩标志还原本步的穿门主张。\n    bWantsPortalTraversal = (Flags & FSavedMove_Character::FLAG_Custom_0) != 0;\n    bWantsFloatingTraversal=(Flags & FSavedMove_Character::FLAG_Custom_1)!=0;",
+  "codeStripped": "void UUS_CharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)\n{\n    Super::UpdateFromCompressedFlags(Flags);\n\n    bWantsPortalTraversal = (Flags & FSavedMove_Character::FLAG_Custom_0) != 0;\n    bWantsFloatingTraversal=(Flags & FSavedMove_Character::FLAG_Custom_1)!=0;",
+  "commit": "19e4252"
+ },
+ "portal-consume": {
+  "file": "Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "line": 500,
+  "code": "void UUS_CharacterMovementComponent::PerformQueuedPortalTraversal()\n{\n    AUS_Character* Character = Cast<AUS_Character>(CharacterOwner);\n    if (!Character)\n    {\n        return;\n    }\n\n    // 死循环护栏：服务端已否决这一步（或更早的一步）的穿门主张，重放时不能再穿。\n    const float MoveTimeStamp = GetCurrentMoveTimeStamp();\n    if (MoveTimeStamp >= 0.f && MoveTimeStamp <= LastRejectedTraversalTimestamp)\n    {\n        return;\n    }\n\n    // 客户端不能指定穿哪扇门：两端都从角色胶囊当前位置独立查找。\n    AUS_TrialPortal* Portal = AUS_TrialPortal::FindTraversablePortalFor(Character);\n    // 服务端复核远程客户端的主张：它在本机严格落进了触发盒，服务端这一刻的位置可能差几厘米（从盒子最边缘踩入时），\n    // 给一点容差再找一次，免得一次干净的预测穿门被拒绝、客户端闪过去又被拉回。\n    if (!Portal && Character->HasAuthority() && !Character->IsLocallyControlled() && MoveTimeStamp >= 0.f)\n    {\n        Portal = AUS_TrialPortal::FindTraversablePortalFor(Character, USTrialPortal::ServerClaimTolerance);\n        if (Portal)\n        {\n            UE_LOG(LogTrialPortalMove, Verbose, TEXT(\"%s: 服务端在 %.0f cm 容差内接受了边缘处的穿门主张\"),\n                *Character->GetName(), USTrialPortal::ServerClaimTolerance);\n        }\n    }\n    if (!Portal)\n    {\n        UE_LOG(LogTrialPortalMove, Warning,\n            TEXT(\"%s: 消费穿门标志时在 %s 处找不到可穿的门（门已失活？角色已走出触发盒？）\"),\n            *Character->GetName(), *Character->GetActorLocation().ToCompactString());\n\n        // 服务端找不到合法的门 = 拒绝这一步的主张，通知客户端别再重放它。\n        if (Character->HasAuthority() && !Character->IsLocallyControlled() && MoveTimeStamp >= 0.f)\n        {\n            Character->Client_RejectPortalTraversal(MoveTimeStamp, Character->GetControlRotation());\n        }\n        return;\n    }",
+  "codeStripped": "void UUS_CharacterMovementComponent::PerformQueuedPortalTraversal()\n{\n    AUS_Character* Character = Cast<AUS_Character>(CharacterOwner);\n    if (!Character)\n    {\n        return;\n    }\n\n    const float MoveTimeStamp = GetCurrentMoveTimeStamp();\n    if (MoveTimeStamp >= 0.f && MoveTimeStamp <= LastRejectedTraversalTimestamp)\n    {\n        return;\n    }\n\n    AUS_TrialPortal* Portal = AUS_TrialPortal::FindTraversablePortalFor(Character);\n    if (!Portal && Character->HasAuthority() && !Character->IsLocallyControlled() && MoveTimeStamp >= 0.f)\n    {\n        Portal = AUS_TrialPortal::FindTraversablePortalFor(Character, USTrialPortal::ServerClaimTolerance);\n        if (Portal)\n        {\n            UE_LOG(LogTrialPortalMove, Verbose, TEXT(\"%s: 服务端在 %.0f cm 容差内接受了边缘处的穿门主张\"),\n                *Character->GetName(), USTrialPortal::ServerClaimTolerance);\n        }\n    }\n    if (!Portal)\n    {\n        UE_LOG(LogTrialPortalMove, Warning,\n            TEXT(\"%s: 消费穿门标志时在 %s 处找不到可穿的门（门已失活？角色已走出触发盒？）\"),\n            *Character->GetName(), *Character->GetActorLocation().ToCompactString());\n\n        if (Character->HasAuthority() && !Character->IsLocallyControlled() && MoveTimeStamp >= 0.f)\n        {\n            Character->Client_RejectPortalTraversal(MoveTimeStamp, Character->GetControlRotation());\n        }\n        return;\n    }",
+  "commit": "19e4252"
+ },
+ "alert-priority": {
+  "file": "Source/UnrealShadows_LOTL/Public/MinionClass/US_MinionAIController.h",
+  "line": 50,
+  "code": "enum class EUS_AlertSource : uint8\n{\n    None  = 0,\n    Noise = 1,\n    Sight = 2,\n    Lure  = 3\n};",
+  "codeStripped": "enum class EUS_AlertSource : uint8\n{\n    None  = 0,\n    Noise = 1,\n    Sight = 2,\n    Lure  = 3\n};",
+  "commit": "19e4252"
+ },
+ "alert-arbiter": {
+  "file": "Source/UnrealShadows_LOTL/Public/MinionClass/US_MinionAIController.h",
+  "line": 62,
+  "code": "namespace USMinionAlert\n{\n    /** 新的调查点能否落地。 */\n    inline bool ShouldAcceptInvestigate(\n        const EUS_AlertSource Incoming,\n        const EUS_AlertSource Incumbent,\n        const bool bLureActive,\n        const bool bSightLockActive)\n    {\n        // 已过期的 T0 不再享有任何优先级。少了这一步，能力结束后若 Minion 一直\n        // 没走到那个点，槽会被过期的 Lure **永久锁死**，噪声再也进不来。\n        const EUS_AlertSource Effective =\n            (Incumbent == EUS_AlertSource::Lure && !bLureActive)\n                ? EUS_AlertSource::None\n                : Incumbent;\n\n        // T0 在位且未过期 → 只有 T0 能刷新它。\n        if (Effective == EUS_AlertSource::Lure)\n        {\n            return Incoming == EUS_AlertSource::Lure;\n        }\n        // 视觉锁定期内噪声在**源头**被拒。写进去再让视觉清掉会让\n        // Investigate/Chase 两个分支来回抢断 → MoveTo 重启抖动。\n        if (Incoming == EUS_AlertSource::Noise && bSightLockActive)\n        {\n            return false;\n        }\n        return Incoming >= Effective || Effective == EUS_AlertSource::None;\n    }\n\n    /** 新的 TargetActor 能否落地（只裁\"诱饵 vs 玩家\"，其余仍由控制器的同值/新鲜度逻辑管）。 */\n    inline bool ShouldAcceptTarget(\n        const bool bIncomingIsPlayer,\n        const bool bIncumbentIsLure,\n        const bool bLureActive)\n    {\n        // GhostBook 这类漂移诱饵占着 TargetActor 时，视觉不许抢回来。\n        return !(bIncomingIsPlayer && bIncumbentIsLure && bLureActive);\n    }\n\n    /** 看见玩家时是否清掉在位的调查点。 */\n    inline bool ShouldClearInvestigateOnSight(const EUS_AlertSource Incumbent)\n    {\n        // 只清噪声点。清掉 T0 会让诱饵失去\"压过视觉锁定\"的能力，\n        // 那正是当初把 Investigate 排在 Chase 之上的唯一理由。\n        return Incumbent == EUS_AlertSource::Noise;\n    }\n}\n\n/**",
+  "codeStripped": "namespace USMinionAlert\n{\n    inline bool ShouldAcceptInvestigate(\n        const EUS_AlertSource Incoming,\n        const EUS_AlertSource Incumbent,\n        const bool bLureActive,\n        const bool bSightLockActive)\n    {\n        const EUS_AlertSource Effective =\n            (Incumbent == EUS_AlertSource::Lure && !bLureActive)\n                ? EUS_AlertSource::None\n                : Incumbent;\n\n        if (Effective == EUS_AlertSource::Lure)\n        {\n            return Incoming == EUS_AlertSource::Lure;\n        }\n        if (Incoming == EUS_AlertSource::Noise && bSightLockActive)\n        {\n            return false;\n        }\n        return Incoming >= Effective || Effective == EUS_AlertSource::None;\n    }\n\n    inline bool ShouldAcceptTarget(\n        const bool bIncomingIsPlayer,\n        const bool bIncumbentIsLure,\n        const bool bLureActive)\n    {\n        return !(bIncomingIsPlayer && bIncumbentIsLure && bLureActive);\n    }\n\n    inline bool ShouldClearInvestigateOnSight(const EUS_AlertSource Incumbent)\n    {\n        return Incumbent == EUS_AlertSource::Noise;\n    }\n}",
+  "commit": "19e4252"
+ },
+ "interact-resolve": {
+  "file": "Source/UnrealShadows_LOTL/Public/PlayerClass/US_InteractComponent.h",
+  "line": 52,
+  "code": "inline EDecision Resolve(bool bCanInteract, bool bHasRefusalLine, float HoldDuration)\n{\n    if (!bCanInteract && bHasRefusalLine)\n    {\n        return EDecision::Refuse;\n    }\n    return HoldDuration > 0.f ? EDecision::StartHold : EDecision::Instant;\n}",
+  "codeStripped": "inline EDecision Resolve(bool bCanInteract, bool bHasRefusalLine, float HoldDuration)\n{\n    if (!bCanInteract && bHasRefusalLine)\n    {\n        return EDecision::Refuse;\n    }\n    return HoldDuration > 0.f ? EDecision::StartHold : EDecision::Instant;\n}",
+  "commit": "19e4252"
+ },
+ "muster-rule": {
+  "file": "Source/UnrealShadows_LOTL/Public/Framework/US_TeamMusterTypes.h",
+  "line": 99,
+  "code": "inline bool IsMusterComplete(const FUS_MusterQuery& Query)\n{\n    if (!Query.bArmed || Query.LivingCount <= 0)\n    {\n        return false;\n    }\n\n    if (Query.Mode == EUS_MusterMode::AllAbsent)\n    {\n        return Query.PresentLivingCount <= 0;\n    }\n\n    return Query.PresentLivingCount >= Query.LivingCount;\n}",
+  "codeStripped": "inline bool IsMusterComplete(const FUS_MusterQuery& Query)\n{\n    if (!Query.bArmed || Query.LivingCount <= 0)\n    {\n        return false;\n    }\n\n    if (Query.Mode == EUS_MusterMode::AllAbsent)\n    {\n        return Query.PresentLivingCount <= 0;\n    }\n\n    return Query.PresentLivingCount >= Query.LivingCount;\n}",
+  "commit": "19e4252"
+ },
+ "coinlock-apply": {
+  "file": "Source/UnrealShadows_LOTL/Private/Framework/US_CoinLockTypes.cpp",
+  "line": 16,
+  "code": "ERotateResult ApplyRotation(FUS_CoinLockState& State, uint8 Disc, int32 Steps)\n{\n    if ((Disc != DiscA && Disc != DiscB) || Steps == 0)\n    {\n        return ERotateResult::Invalid;\n    }\n\n    if (!CanDrive(State, Disc))\n    {\n        return ERotateResult::Seized;\n    }\n\n    // 咬合时另一枚反向同步数：A→惰轮1→惰轮2→B，两枚惰轮串联 ⇒ A 与 B 转向相反。\n    const int32 Other = State.bClutchEngaged ? -Steps : 0;\n    const int32 DeltaA = (Disc == DiscA) ? Steps : Other;\n    const int32 DeltaB = (Disc == DiscB) ? Steps : Other;\n\n    State.RotA = WrapPosition(static_cast<int32>(State.RotA) + DeltaA);\n    State.RotB = WrapPosition(static_cast<int32>(State.RotB) + DeltaB);\n    State.LastDriver = Disc;\n    return ERotateResult::Rotated;\n}\n\nbool SetClutch(FUS_CoinLockState& State, bool bEngaged)\n{\n    if (State.bClutchEngaged == bEngaged)\n    {\n        return false;\n    }\n    State.bClutchEngaged = bEngaged;\n    return true;\n}",
+  "codeStripped": "ERotateResult ApplyRotation(FUS_CoinLockState& State, uint8 Disc, int32 Steps)\n{\n    if ((Disc != DiscA && Disc != DiscB) || Steps == 0)\n    {\n        return ERotateResult::Invalid;\n    }\n\n    if (!CanDrive(State, Disc))\n    {\n        return ERotateResult::Seized;\n    }\n\n    const int32 Other = State.bClutchEngaged ? -Steps : 0;\n    const int32 DeltaA = (Disc == DiscA) ? Steps : Other;\n    const int32 DeltaB = (Disc == DiscB) ? Steps : Other;\n\n    State.RotA = WrapPosition(static_cast<int32>(State.RotA) + DeltaA);\n    State.RotB = WrapPosition(static_cast<int32>(State.RotB) + DeltaB);\n    State.LastDriver = Disc;\n    return ERotateResult::Rotated;\n}\n\nbool SetClutch(FUS_CoinLockState& State, bool bEngaged)\n{\n    if (State.bClutchEngaged == bEngaged)\n    {\n        return false;\n    }\n    State.bClutchEngaged = bEngaged;\n    return true;\n}",
+  "commit": "19e4252"
+ },
+ "shelf-state": {
+  "file": "Source/UnrealShadows_LOTL/Public/Stage2/Core/US_RollingShelfTypes.h",
+  "line": 31,
+  "code": "struct FUS_RollingShelfState\n{\n    GENERATED_BODY()\n\n    /** 0 = stop a, 1 = stop b: where the case is, or is going. */\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") uint8 TargetStop = 0;\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") EUS_RollingShelfPhase Phase = EUS_RollingShelfPhase::Rest;\n    /** 0 at stop a .. 1 at stop b, at ServerTime. */\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") float Param = 0.f;\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") double ServerTime = 0.0;\n    /** Accepted turns so far (wraps). Presentation and \"first turn\" only. */\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") uint8 Turns = 0;\n};\n\nnamespace USRollingShelf\n{\n    /** Where the case is along its lane (0..1) at a server time. Linear in time; Ease() shapes it for the eye. */\n    inline float ParamAt(const FUS_RollingShelfState& S, double Now, float TravelSeconds)\n    {\n        if (S.Phase != EUS_RollingShelfPhase::Moving) return FMath::Clamp(S.Param, 0.f, 1.f);\n        const float Dir = S.TargetStop ? 1.f : -1.f;\n        const float Step = float((Now - S.ServerTime) / FMath::Max(TravelSeconds, .1f));\n        return FMath::Clamp(S.Param + Dir * FMath::Max(Step, 0.f), 0.f, 1.f);\n    }\n\n    /** Slow out of a stop, slow into a stop. Ease(0) = 0, Ease(1) = 1, never runs backwards. */\n    inline float Ease(float P)\n    {\n        P = FMath::Clamp(P, 0.f, 1.f);\n        return P * P * (3.f - 2.f * P);\n    }\n\n    inline bool HasArrived(const FUS_RollingShelfState& S, double Now, float TravelSeconds)\n    {\n        if (S.Phase != EUS_RollingShelfPhase::Moving) return false;\n        const float P = ParamAt(S, Now, TravelSeconds);\n        return S.TargetStop ? P >= 1.f : P <= 0.f;\n    }\n\n    /** The stop the case stands at, or -1 while it is on its way. */\n    inline int32 RestStop(const FUS_RollingShelfState& S)\n    {\n        return S.Phase == EUS_RollingShelfPhase::Rest ? int32(S.TargetStop) : -1;\n    }\n\n    /** May the winch turn now? bBlocked: a body stands in the lane the case would sweep. */\n    inline EUS_ShelfTurnRefusal CanTurn(const FUS_RollingShelfState& S, bool bBlocked)\n    {\n        if (S.Phase != EUS_RollingShelfPhase::Rest) return EUS_ShelfTurnRefusal::Moving;",
+  "codeStripped": "struct FUS_RollingShelfState\n{\n    GENERATED_BODY()\n\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") uint8 TargetStop = 0;\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") EUS_RollingShelfPhase Phase = EUS_RollingShelfPhase::Rest;\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") float Param = 0.f;\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") double ServerTime = 0.0;\n    UPROPERTY(BlueprintReadOnly, Category = \"Rolling Shelf\") uint8 Turns = 0;\n};\n\nnamespace USRollingShelf\n{\n    inline float ParamAt(const FUS_RollingShelfState& S, double Now, float TravelSeconds)\n    {\n        if (S.Phase != EUS_RollingShelfPhase::Moving) return FMath::Clamp(S.Param, 0.f, 1.f);\n        const float Dir = S.TargetStop ? 1.f : -1.f;\n        const float Step = float((Now - S.ServerTime) / FMath::Max(TravelSeconds, .1f));\n        return FMath::Clamp(S.Param + Dir * FMath::Max(Step, 0.f), 0.f, 1.f);\n    }\n\n    inline float Ease(float P)\n    {\n        P = FMath::Clamp(P, 0.f, 1.f);\n        return P * P * (3.f - 2.f * P);\n    }\n\n    inline bool HasArrived(const FUS_RollingShelfState& S, double Now, float TravelSeconds)\n    {\n        if (S.Phase != EUS_RollingShelfPhase::Moving) return false;\n        const float P = ParamAt(S, Now, TravelSeconds);\n        return S.TargetStop ? P >= 1.f : P <= 0.f;\n    }\n\n    inline int32 RestStop(const FUS_RollingShelfState& S)\n    {\n        return S.Phase == EUS_RollingShelfPhase::Rest ? int32(S.TargetStop) : -1;\n    }\n\n    inline EUS_ShelfTurnRefusal CanTurn(const FUS_RollingShelfState& S, bool bBlocked)\n    {\n        if (S.Phase != EUS_RollingShelfPhase::Rest) return EUS_ShelfTurnRefusal::Moving;",
+  "commit": "19e4252"
+ },
+ "victory-state": {
+  "file": "Source/UnrealShadows_LOTL/Public/Framework/US_GameState.h",
+  "line": 25,
+  "code": "struct FUS_VictoryState\n{\n    GENERATED_BODY()\n\n    UPROPERTY()\n    bool bVictory = false;\n\n    UPROPERTY()\n    TObjectPtr<ACharacter> Winner = nullptr;\n\n    UPROPERTY()\n    FString WinnerName;\n};",
+  "codeStripped": "struct FUS_VictoryState\n{\n    GENERATED_BODY()\n\n    UPROPERTY()\n    bool bVictory = false;\n\n    UPROPERTY()\n    TObjectPtr<ACharacter> Winner = nullptr;\n\n    UPROPERTY()\n    FString WinnerName;\n};",
+  "commit": "19e4252"
+ },
+ "victory-mark": {
+  "file": "Source/UnrealShadows_LOTL/Private/Framework/US_GameState.cpp",
+  "line": 29,
+  "code": "void AUS_GameState::MarkVictory(ACharacter* Winner)\n{\n    if (!HasAuthority()) return;\n    if (Victory.bVictory) return;\n\n    Victory.bVictory = true;\n    Victory.Winner   = Winner;\n    // 名字在服务端解析后随包携带：客户端即使胜者 actor channel 未就绪也能显示胜者名\n    Victory.WinnerName.Empty();\n    if (Winner)\n    {\n        if (const APlayerState* PS = Winner->GetPlayerState())\n        {\n            Victory.WinnerName = PS->GetPlayerName();\n        }\n    }\n\n    // 服务端本端立即 fire（覆盖 listen-server host 的本地玩家）。\n    // 远程客户端通过 OnRep_Victory 收到。OnRep 不会在 Authority 上触发，所以不会重复。\n    OnVictory.Broadcast(Winner);\n}\n\nvoid AUS_GameState::OnRep_Victory()\n{\n    if (Victory.bVictory)\n    {\n        OnVictory.Broadcast(Victory.Winner);\n    }\n}",
+  "codeStripped": "void AUS_GameState::MarkVictory(ACharacter* Winner)\n{\n    if (!HasAuthority()) return;\n    if (Victory.bVictory) return;\n\n    Victory.bVictory = true;\n    Victory.Winner   = Winner;\n    Victory.WinnerName.Empty();\n    if (Winner)\n    {\n        if (const APlayerState* PS = Winner->GetPlayerState())\n        {\n            Victory.WinnerName = PS->GetPlayerName();\n        }\n    }\n\n    OnVictory.Broadcast(Winner);\n}\n\nvoid AUS_GameState::OnRep_Victory()\n{\n    if (Victory.bVictory)\n    {\n        OnVictory.Broadcast(Victory.Winner);\n    }\n}",
+  "commit": "19e4252"
+ },
+ "decoy-initialize": {
+  "file": "Source/UnrealShadows_LOTL/Private/Ability/US_DecoyActor.cpp",
+  "line": 33,
+  "code": "void AUS_DecoyActor::Initialize(AUS_Character* InOwner, float InDuration, float InNoiseInterval,\n    float InAttractionRadius, float InCaptureRadius)\n{\n    OwningPlayer = InOwner;\n    Duration = FMath::Max(0.1f, InDuration);\n    NoiseInterval = FMath::Max(0.1f, InNoiseInterval);\n    AttractionRadius = FMath::Max(100.f, InAttractionRadius);\n    CaptureRadius = FMath::Max(10.f, InCaptureRadius);\n    CaptureCollision->SetSphereRadius(CaptureRadius, true);\n\n    // 生命周期计时器必须放这里、不能放 BeginPlay：SpawnActor 会在返回前同步跑完 BeginPlay，\n    // 那时 Duration 还是头文件默认值（旧 5.0）→ 用默认值起计时器会让诱饵提前自毁，而组件侧\n    // DecoyExpireWorldTime 用的是真实 DecoyDuration（8）→ HUD 数到 3.0 时 actor 已销毁 → 瞬跳 0。\n    // Initialize 在 SpawnActor 返回之后调用，此时 Duration 已是组件传入的正确值。\n    if (HasAuthority())\n    {\n     const auto* GS=GetWorld()->GetGameState();HeadLureEndServerTime=(GS?GS->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds())+Duration;\n        GetWorldTimerManager().SetTimer(\n            LifetimeTimerHandle, this, &AUS_DecoyActor::OnLifetimeExpired,\n            Duration, false);\n        GetWorldTimerManager().SetTimer(\n            NoiseTimerHandle, this, &AUS_DecoyActor::EmitNoise,\n            NoiseInterval, true, 0.0f);\n    }\n}",
+  "codeStripped": "void AUS_DecoyActor::Initialize(AUS_Character* InOwner, float InDuration, float InNoiseInterval,\n    float InAttractionRadius, float InCaptureRadius)\n{\n    OwningPlayer = InOwner;\n    Duration = FMath::Max(0.1f, InDuration);\n    NoiseInterval = FMath::Max(0.1f, InNoiseInterval);\n    AttractionRadius = FMath::Max(100.f, InAttractionRadius);\n    CaptureRadius = FMath::Max(10.f, InCaptureRadius);\n    CaptureCollision->SetSphereRadius(CaptureRadius, true);\n\n    if (HasAuthority())\n    {\n     const auto* GS=GetWorld()->GetGameState();HeadLureEndServerTime=(GS?GS->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds())+Duration;\n        GetWorldTimerManager().SetTimer(\n            LifetimeTimerHandle, this, &AUS_DecoyActor::OnLifetimeExpired,\n            Duration, false);\n        GetWorldTimerManager().SetTimer(\n            NoiseTimerHandle, this, &AUS_DecoyActor::EmitNoise,\n            NoiseInterval, true, 0.0f);\n    }\n}",
+  "commit": "19e4252"
+ },
+ "input-clear-mappings": {
+  "file": "Source/UnrealShadows_LOTL/Private/PlayerClass/US_Character.cpp",
+  "line": 933,
+  "code": "// ★ 先清空全部 Mapping Context，再只加\"本职业自己\"的 Look + Move。\n// MappingContext 挂在 LocalPlayer 上、不随 Pawn 销毁 —— 换职业（SwitchPlayerClass）\n// 时旧职业的 IMC（如 IMC_Move_Thief）会残留：旧 IMC 把同一物理键映射到旧动作\n// 且 Consume Input，新职业的绑定收不到（实例：Thief 转 Warrior 后 RMB 被残留的\n// IA_ThiefTeleport 吃掉，ShieldRestore puzzle 弹不出来；而 R 反而误触发副技能）。\n// ClearAllMappings 对任意职业组合 / 未来新增职业 IMC 一律有效。\nSubsystem->ClearAllMappings();\n\n// Look IMC — 始终激活（倒计时期间也可以转动视角）\nif (LookMappingContext)\n{\n    Subsystem->AddMappingContext(LookMappingContext, 0);\n}",
+  "codeStripped": "Subsystem->ClearAllMappings();\n\nif (LookMappingContext)\n{\n    Subsystem->AddMappingContext(LookMappingContext, 0);\n}",
+  "commit": "19e4252"
+ },
+ "coinlock-test": {
+  "file": "Source/UnrealShadows_LOTL/Private/Tests/US_CoinLockTests.cpp",
+  "line": 85,
+  "code": "IMPLEMENT_SIMPLE_AUTOMATION_TEST(\n    FUSCoinLockRulesTest,\n    \"UnrealShadows.Stage1.CoinLock.Rules\",\n    EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)\n\nbool FUSCoinLockRulesTest::RunTest(const FString& Parameters)\n{\n    using USCoinLock::ERotateResult;\n    constexpr int32 N = USCoinLock::NumPositions;\n\n    // ---- 基础数学 ----\n    TestEqual(TEXT(\"一圈六格\"), N, 6);\n    TestEqual(TEXT(\"负数也折回 0..5\"), static_cast<int32>(USCoinLock::WrapPosition(-1)), 5);\n    TestEqual(TEXT(\"超圈也折回\"), static_cast<int32>(USCoinLock::WrapPosition(7)), 1);\n    TestEqual(TEXT(\"同位零步\"), USCoinLock::ShortestSignedSteps(2, 2), 0);\n    TestEqual(TEXT(\"走近路（+1 而不是 -5）\"), USCoinLock::ShortestSignedSteps(5, 0), 1);\n    TestEqual(TEXT(\"走近路（-1 而不是 +5）\"), USCoinLock::ShortestSignedSteps(0, 5), -1);\n\n    for (uint8 From = 0; From < N; ++From)\n    {",
+  "codeStripped": "IMPLEMENT_SIMPLE_AUTOMATION_TEST(\n    FUSCoinLockRulesTest,\n    \"UnrealShadows.Stage1.CoinLock.Rules\",\n    EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)\n\nbool FUSCoinLockRulesTest::RunTest(const FString& Parameters)\n{\n    using USCoinLock::ERotateResult;\n    constexpr int32 N = USCoinLock::NumPositions;\n\n    TestEqual(TEXT(\"一圈六格\"), N, 6);\n    TestEqual(TEXT(\"负数也折回 0..5\"), static_cast<int32>(USCoinLock::WrapPosition(-1)), 5);\n    TestEqual(TEXT(\"超圈也折回\"), static_cast<int32>(USCoinLock::WrapPosition(7)), 1);\n    TestEqual(TEXT(\"同位零步\"), USCoinLock::ShortestSignedSteps(2, 2), 0);\n    TestEqual(TEXT(\"走近路（+1 而不是 -5）\"), USCoinLock::ShortestSignedSteps(5, 0), 1);\n    TestEqual(TEXT(\"走近路（-1 而不是 +5）\"), USCoinLock::ShortestSignedSteps(0, 5), -1);\n\n    for (uint8 From = 0; From < N; ++From)\n    {",
+  "commit": "19e4252"
+ },
+ "achievement-save": {
+  "file": "Source/UnrealShadows_LOTL/Public/Framework/US_AchievementSaveGame.h",
+  "line": 9,
+  "code": "class UNREALSHADOWS_LOTL_API UUS_AchievementSaveGame : public USaveGame\n{\n    GENERATED_BODY()\n\npublic:\n    static constexpr int32 CurrentVersion = 1;\n\n    UPROPERTY(SaveGame)\n    int32 SaveVersion = CurrentVersion;\n\n    UPROPERTY(SaveGame)\n    TMap<FName, FUS_AchievementProgress> ProfileProgress;\n};",
+  "codeStripped": "class UNREALSHADOWS_LOTL_API UUS_AchievementSaveGame : public USaveGame\n{\n    GENERATED_BODY()\n\npublic:\n    static constexpr int32 CurrentVersion = 1;\n\n    UPROPERTY(SaveGame)\n    int32 SaveVersion = CurrentVersion;\n\n    UPROPERTY(SaveGame)\n    TMap<FName, FUS_AchievementProgress> ProfileProgress;\n};",
+  "commit": "19e4252"
+ },
+ "gravity-room-update": {
+  "file": "Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "line": 473,
+  "code": "    const bool FloatingTransit=FloatingTarget.IsValid() || GetRootMotionSource(TEXT(\"FloatingTransit\")).IsValid();\n    if (Gravity->EvaluateSeams(Location, GetGravityDirection(), NewGravity)\n        || (!SupportedFloating && !FloatingTransit\n            && Gravity->ResolveStrandedGravity(Location, GetGravityDirection(), NewGravity)))\n    {\n        SetGravityDirection(NewGravity);\n    }\n}",
+  "codeStripped": "    const bool FloatingTransit=FloatingTarget.IsValid() || GetRootMotionSource(TEXT(\"FloatingTransit\")).IsValid();\n    if (Gravity->EvaluateSeams(Location, GetGravityDirection(), NewGravity)\n        || (!SupportedFloating && !FloatingTransit\n            && Gravity->ResolveStrandedGravity(Location, GetGravityDirection(), NewGravity)))\n    {\n        SetGravityDirection(NewGravity);\n    }\n}",
+  "commit": "19e4252"
+ },
+ "gravity-has-seams": {
+  "file": "Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp",
+  "line": 415,
+  "code": "void UUS_CharacterMovementComponent::UpdateRoomGravity()\n{\n    if (!UpdatedComponent || !CharacterOwner)\n    {\n        return;\n    }\n    const UUS_GravitySubsystem* Gravity = UUS_GravitySubsystem::Get(this);\n    if (!Gravity || !Gravity->HasSeams())\n    {\n        return;\n    }",
+  "codeStripped": "void UUS_CharacterMovementComponent::UpdateRoomGravity()\n{\n    if (!UpdatedComponent || !CharacterOwner)\n    {\n        return;\n    }\n    const UUS_GravitySubsystem* Gravity = UUS_GravitySubsystem::Get(this);\n    if (!Gravity || !Gravity->HasSeams())\n    {\n        return;\n    }",
+  "commit": "19e4252"
+ },
+ "chase-state": {
+  "file": "Source/UnrealShadows_LOTL/Public/Chase/Core/US_ChaseFatigueTypes.h",
+  "line": 36,
+  "code": "enum class EUS_ChaseState : uint8\n{\n    /** 没有人在追。 */\n    None,\n    /** 有敌人在追，体力尚足。 */\n    Chased,\n    /** 追击者疲惫（≥ WindedThreshold）：减速、头顶流汗。 */\n    Winded,\n    /** 刚累垮放弃；体力降回 ReengageThreshold 以下之前没有人会重新追这名玩家。 */\n    Recovering\n};",
+  "codeStripped": "enum class EUS_ChaseState : uint8\n{\n    None,\n    Chased,\n    Winded,\n    Recovering\n};",
+  "commit": "19e4252"
+ },
+ "tasknpc-delegate": {
+  "file": "Source/UnrealShadows_LOTL/Private/Interactables/US_TaskNPC.cpp",
+  "line": 48,
+  "code": "bool AUS_TaskNPC::CanInteract_Implementation(AUS_Character* CharacterInstigator) const\n{\n    if (!CharacterInstigator)\n    {\n        return false;\n    }\n\n    // 有任务组件 → 完全交给组件裁定。组件基类默认仍卡 !bTaskCompleted；\n    // Mage 谜题子类放开此门控，让\"已解开/冷却中\"也能交互 → 触发 NPC 对话。\n    if (TaskComponent)\n    {\n        return TaskComponent->CanStartTask(CharacterInstigator);\n    }\n\n    return !bTaskCompleted;\n}",
+  "codeStripped": "bool AUS_TaskNPC::CanInteract_Implementation(AUS_Character* CharacterInstigator) const\n{\n    if (!CharacterInstigator)\n    {\n        return false;\n    }\n\n    if (TaskComponent)\n    {\n        return TaskComponent->CanStartTask(CharacterInstigator);\n    }\n\n    return !bTaskCompleted;\n}",
+  "commit": "19e4252"
+ },
+ "property-data-resolve": {
+  "file": "Source/UnrealShadows_LOTL/Private/Framework/US_GameInstance.cpp",
+  "line": 23,
+  "code": "UUS_PropertyData* UUS_GameInstance::ResolvePropertyData(const UObject* WorldContextObject)\n{\n    const UWorld* World = WorldContextObject ? WorldContextObject->GetWorld() : nullptr;\n    if (!World)\n    {\n        return nullptr;\n    }\n\n    if (const UUS_GameInstance* GameInstance = World->GetGameInstance<UUS_GameInstance>())\n    {\n        if (UUS_PropertyData* Data = GameInstance->GetPropertyData())\n        {\n            return Data;\n        }\n    }",
+  "codeStripped": "UUS_PropertyData* UUS_GameInstance::ResolvePropertyData(const UObject* WorldContextObject)\n{\n    const UWorld* World = WorldContextObject ? WorldContextObject->GetWorld() : nullptr;\n    if (!World)\n    {\n        return nullptr;\n    }\n\n    if (const UUS_GameInstance* GameInstance = World->GetGameInstance<UUS_GameInstance>())\n    {\n        if (UUS_PropertyData* Data = GameInstance->GetPropertyData())\n        {\n            return Data;\n        }\n    }",
+  "commit": "19e4252"
+ },
+ "nativepaint-makechild": {
+  "file": "Source/UnrealShadows_LOTL/Private/UI/US_CoinLockWidget.cpp",
+  "line": 522,
+  "code": "// ---- 之后全部画进逻辑子几何：像素数字与字号自动随分辨率缩放 ----\nconst FGeometry Canvas = AllottedGeometry.MakeChild(\n    L.CanvasSize, FSlateLayoutTransform(S, L.Origin));",
+  "codeStripped": "const FGeometry Canvas = AllottedGeometry.MakeChild(\n    L.CanvasSize, FSlateLayoutTransform(S, L.Origin));",
+  "commit": "19e4252"
+ },
+ "achievement-save-load": {
+  "file": "Source/UnrealShadows_LOTL/Private/Framework/US_AchievementSubsystem.cpp",
+  "line": 455,
+  "code": "void UUS_AchievementSubsystem::LoadProgress()\n{\n    Progress.Reset();\n    if (GetGameInstance() && GetGameInstance()->IsDedicatedServerInstance()) return;\n    if (UUS_AchievementSaveGame* Save = Cast<UUS_AchievementSaveGame>(\n        UGameplayStatics::LoadGameFromSlot(SaveSlotName, 0)))\n    {\n        if (Save->SaveVersion <= UUS_AchievementSaveGame::CurrentVersion)\n        {\n            Progress = Save->ProfileProgress;\n        }\n    }\n}\n\nvoid UUS_AchievementSubsystem::SaveProgress()\n{\n    if (GetGameInstance() && GetGameInstance()->IsDedicatedServerInstance()) return;\n    UUS_AchievementSaveGame* Save = Cast<UUS_AchievementSaveGame>(\n        UGameplayStatics::CreateSaveGameObject(UUS_AchievementSaveGame::StaticClass()));\n    if (!Save) return;\n\n    Save->SaveVersion = UUS_AchievementSaveGame::CurrentVersion;\n    for (const UUS_AchievementDefinition* Definition : Definitions)\n    {\n        if (!Definition || Definition->Scope != EUS_AchievementScope::Profile) continue;\n        if (const FUS_AchievementProgress* State = Progress.Find(Definition->AchievementId))\n        {\n            Save->ProfileProgress.Add(Definition->AchievementId, *State);\n        }\n    }\n    if (UGameplayStatics::SaveGameToSlot(Save, SaveSlotName, 0)) bProfileDirty = false;\n}\n\nvoid UUS_AchievementSubsystem::MarkProfileDirty(bool bSaveImmediately)",
+  "codeStripped": "void UUS_AchievementSubsystem::LoadProgress()\n{\n    Progress.Reset();\n    if (GetGameInstance() && GetGameInstance()->IsDedicatedServerInstance()) return;\n    if (UUS_AchievementSaveGame* Save = Cast<UUS_AchievementSaveGame>(\n        UGameplayStatics::LoadGameFromSlot(SaveSlotName, 0)))\n    {\n        if (Save->SaveVersion <= UUS_AchievementSaveGame::CurrentVersion)\n        {\n            Progress = Save->ProfileProgress;\n        }\n    }\n}\n\nvoid UUS_AchievementSubsystem::SaveProgress()\n{\n    if (GetGameInstance() && GetGameInstance()->IsDedicatedServerInstance()) return;\n    UUS_AchievementSaveGame* Save = Cast<UUS_AchievementSaveGame>(\n        UGameplayStatics::CreateSaveGameObject(UUS_AchievementSaveGame::StaticClass()));\n    if (!Save) return;\n\n    Save->SaveVersion = UUS_AchievementSaveGame::CurrentVersion;\n    for (const UUS_AchievementDefinition* Definition : Definitions)\n    {\n        if (!Definition || Definition->Scope != EUS_AchievementScope::Profile) continue;\n        if (const FUS_AchievementProgress* State = Progress.Find(Definition->AchievementId))\n        {\n            Save->ProfileProgress.Add(Definition->AchievementId, *State);\n        }\n    }\n    if (UGameplayStatics::SaveGameToSlot(Save, SaveSlotName, 0)) bProfileDirty = false;\n}\n\nvoid UUS_AchievementSubsystem::MarkProfileDirty(bool bSaveImmediately)",
+  "commit": "19e4252"
+ },
+ "settings-load": {
+  "file": "Source/UnrealShadows_LOTL/Private/GameMenu/Integration/US_GameSettingsSubsystem.cpp",
+  "line": 16,
+  "code": "void UUS_GameSettingsSubsystem::LoadSettings()\n{\n    Settings = FUS_GameSettings();\n    if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))\n    {\n        if (const UUS_GameSettingsSave* Save =\n            Cast<UUS_GameSettingsSave>(UGameplayStatics::LoadGameFromSlot(SlotName, 0)))\n        {\n            Settings = USGameSettings::Upgrade(Save->Settings, Save->Version);\n        }\n    }\n    bDirty = false;\n}",
+  "codeStripped": "void UUS_GameSettingsSubsystem::LoadSettings()\n{\n    Settings = FUS_GameSettings();\n    if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))\n    {\n        if (const UUS_GameSettingsSave* Save =\n            Cast<UUS_GameSettingsSave>(UGameplayStatics::LoadGameFromSlot(SlotName, 0)))\n        {\n            Settings = USGameSettings::Upgrade(Save->Settings, Save->Version);\n        }\n    }\n    bDirty = false;\n}",
+  "commit": "19e4252"
+ }
+}

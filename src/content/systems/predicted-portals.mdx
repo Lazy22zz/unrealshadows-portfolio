@@ -1,0 +1,87 @@
+---
+title: Seamless, client-predicted portals
+summary: Walking through a portal is a movement event inside CharacterMovementComponent, so a remote client crosses instantly with no black screen and no correction snap — and the server still decides.
+order: 1
+area: Networking · Movement
+status: verified
+statusNote: Pure rules covered by the Stage1.TrialPortal.* automation tests; prediction and edge rejection checked in a scripted two-process session (59/59, zero rejected crossings after the 25 cm tolerance fix). Feel under packet loss still needs a human pass.
+classes: [UUS_CharacterMovementComponent, FUS_SavedMove_Character, AUS_TrialPortal, AUS_Character]
+sources:
+  - Source/UnrealShadows_LOTL/Public/PlayerClass/US_CharacterMovementComponent.h
+  - Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp
+  - Source/UnrealShadows_LOTL/Public/Framework/US_TrialPortal.h
+  - Source/UnrealShadows_LOTL/Private/Tests/US_TrialPortalTests.cpp
+---
+import Snippet from "../../components/Snippet.astro";
+import Flow from "../../components/Flow.astro";
+import Figure from "../../components/Figure.astro";
+import Callout from "../../components/Callout.astro";
+
+## The problem
+
+The first portal implementation faded the screen to black for 1.2 s, froze the character and then moved it on the server. Nothing needed hiding — it is a same-level teleport — so the fade was pure decoration, and it was the one thing that made portals feel like a loading screen. The player's ask was simple: *"when I walk into the door I should already be on the other side."*
+
+Doing that on a **remote client** is the hard part. `UCharacterMovementComponent` (CMC) only trusts its own movement stream. Anything that moves the pawn outside that stream gets pulled back by the next `ClientAdjustPosition`.
+
+## What the player sees
+
+<Figure id="stage1-portal" caption="A summoned portal in Stage 1. Walking into it keeps your speed, your sprint and your camera direction." />
+
+- Run into the ring and you come out of the paired ring running in the same direction, at the same speed, with the camera turned by exactly the same angle.
+- A short white flash (0.12 s) and, for named destinations, a location banner.
+- Return portals send each player back to **the entrance they used** (A in → A out, B in → B out), even in a two-player session where both used different entrances.
+
+## How it works
+
+<Flow steps={[
+  { k: "Overlap", t: "Trigger box overlaps the locally controlled pawn → QueuePortalTraversal()" },
+  { k: "Saved move", t: "Next move carries FLAG_Custom_0 in its compressed flags" },
+  { k: "Both ends", t: "Client predicts and server replays the same step" },
+  { k: "Find door", t: "Each side finds the portal from the capsule's own position" },
+  { k: "Resolve", t: "Pure function: exit frame, DeltaYaw, rotated velocity" },
+  { k: "Reject?", t: "Server can't find a door → Client_RejectPortalTraversal(timestamp)" }
+]} />
+
+The traversal is a **flag on the saved move**, exactly like `bPressedJump`. The client never says *which* portal or *where* to land — the compressed flags have no room for that, which is a feature: both ends independently look up the portal that covers the capsule and run the same pure function to compute the landing.
+
+<Snippet id="portal-flags" caption="The traversal claim travels with the move itself." />
+<Snippet id="portal-restore-flags" strip />
+
+When the move is consumed, the component first checks the **anti-loop guard**: if the server already rejected this (or an earlier) timestamp, a replay after correction must not traverse again — otherwise reject → correct → replay → traverse → reject would loop forever.
+
+<Snippet id="portal-consume" strip caption="Consuming the flag. The server accepts a claim inside a 25 cm tolerance so that stepping in at the very edge of the box does not cause a rubber-band." />
+
+`USTrialPortal::ResolveTraversal` turns the portal's local +X axis into the travel axis and computes a single `DeltaYaw` that is applied to the pawn, the control rotation and the velocity. The velocity is rotated, never scaled. The landing is projected onto the nav mesh 2 cm above the floor — inside CMC's floor tolerance — so the animation never shows a falling frame.
+
+## Key classes and functions
+
+| Class / function | Responsibility |
+|---|---|
+| `UUS_CharacterMovementComponent` | `QueuePortalTraversal`, `UpdateFromCompressedFlags`, `PerformQueuedPortalTraversal`, rejection timestamp |
+| `FUS_SavedMove_Character` | Carries the flag; refuses `CanCombineWith` so the event is never merged away |
+| `AUS_TrialPortal::FindTraversablePortalFor` | Pure geometric lookup (capsule as AABB vs. the rotated trigger box) |
+| `USTrialPortal::ResolveTraversal` | Exit transform, `DeltaYaw`, rotated velocity, lateral offset clamp |
+| `USTrialPortal::ResolveExitFrameFor` | Paired returns: recorded entrance wins over the portal's own destination |
+| `AUS_Character::Client_RejectPortalTraversal` | Lives on the Character so it rides the same actor channel as the corrections |
+
+## Why this design
+
+- **No hand-written reconciliation.** Because the event is part of the move, CMC's own correction path absorbs any disagreement.
+- **Overlap only queues.** Moving inside an overlap callback would corrupt the `SavedMove` being built; the move tick consumes the flag one step later.
+- **Arrival suppression registers before the move.** `SetActorLocationAndRotation` fires overlaps synchronously; without it the exit portal would send you straight back.
+- **Pure geometry instead of collision queries** for "which portal am I in": bit-identical on both ends, which prediction depends on.
+- **Graceful fallback.** A Blueprint that still has the stock CMC gets a server-authoritative traversal next frame and a warning, instead of silently broken portals.
+
+<Callout kind="info" title="Why the reject RPC lives on the Character">
+An RPC on the PlayerController uses a different actor channel from the movement corrections, so ordering between them is not guaranteed. A late reject could also land on a pawn possessed later (class switches and Stage 2 revives replace the pawn).
+</Callout>
+
+## Limits and next steps
+
+- `SetTeleporting()` / spawn invulnerability is deliberately not used: the Thief's blink already owns `bIsTeleporting` with its own timer, and two timers would clear each other's window.
+- Automation covers the pure rules (`Stage1.TrialPortal.SeamlessTraversal`, `TriggerHitTest`, `ReturnRouting`, `ArrivalOffset` and the banner layout). Prediction and replay depend on a live world and were verified with scripted two-process sessions, not with a world fixture.
+- Under high packet loss the feel has not been checked by a human tester.
+
+## Where the code lives
+
+`Source/UnrealShadows_LOTL/Private/PlayerClass/US_CharacterMovementComponent.cpp`, `Source/UnrealShadows_LOTL/Private/Framework/US_TrialPortal.cpp`, tests in `Private/Tests/US_TrialPortalTests.cpp`.

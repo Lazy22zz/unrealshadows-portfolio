@@ -1,0 +1,159 @@
+---
+import "../styles/global.css";
+import { NAV, SITE } from "../lib/site";
+import { url } from "../lib/url";
+import project from "../data/project.json";
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: "en" | "zh-CN";
+  /** set false on pages that should not be in the search index */
+  indexed?: boolean;
+}
+const { title, description = SITE.tagline, lang = "en", indexed = true } = Astro.props;
+const fullTitle = title ? `${title} · ${SITE.short}` : `${SITE.title} — UE5 Portfolio`;
+const path = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ""), "") || "/";
+const active = (href: string) => (href === "/" ? path === "/" || path === "" : path.startsWith(href));
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url("media/core-shield.webp"), Astro.site).href} />
+    <meta name="theme-color" content="#110e0c" />
+    <link rel="icon" href={url("favicon.svg")} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="nav">
+      <div class="nav-inner wrap">
+        <a class="brand" href={url("/")} aria-label="Unreal Shadows — home">
+          <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="13" fill="none" stroke="#d9b25e" stroke-width="2" />
+            <path d="M16 5 L19 16 L16 27 L13 16 Z" fill="#d9b25e" />
+            <circle cx="16" cy="16" r="2.6" fill="#110e0c" />
+          </svg>
+          <span>Unreal Shadows</span>
+        </a>
+        <button class="menu-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">☰</button>
+        <nav id="nav-links" class="links" aria-label="Primary">
+          {NAV.map((n) => (
+            <a href={url(n.href)} aria-current={active(n.href) ? "page" : undefined}>{n.label}</a>
+          ))}
+          <button class="search-btn" type="button" data-open-search aria-label="Search the site">
+            <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <span>Search</span><span class="kbd hide-sm">/</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <dialog id="search-dialog" aria-label="Search">
+      <div class="search-head">
+        <strong>Search all pages</strong>
+        <button class="btn" data-close-search type="button">Close</button>
+      </div>
+      <div id="search"></div>
+      <p class="small muted search-note">Search index is built with Pagefind at build time (works on the deployed site and in <code>npm run preview</code>).</p>
+    </dialog>
+
+    <main id="main" data-pagefind-body={indexed ? "" : undefined}>
+      <slot />
+    </main>
+
+    <footer class="foot">
+      <div class="wrap foot-inner">
+        <div>
+          <strong class="gilt">Unreal Shadows</strong> — UE {project.engine} C++ project portfolio.
+          <div class="small muted">Data, code excerpts and screenshots synced from game commit <code>{project.commit}</code> ({project.commitDate}). Source repository is private; excerpts are allowlisted.</div>
+        </div>
+        <div class="small muted foot-links">
+          <a href={url("/engineering/#credits")}>Credits &amp; tools</a>
+          <a href={SITE.github}>GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline define:vars={{ base: import.meta.env.BASE_URL.replace(/\/$/, "") }}>
+      // mobile menu
+      const btn = document.querySelector(".menu-btn");
+      const links = document.getElementById("nav-links");
+      btn?.addEventListener("click", () => {
+        const open = links.classList.toggle("open");
+        btn.setAttribute("aria-expanded", String(open));
+      });
+      // search dialog (Pagefind UI loaded on first open)
+      const dlg = document.getElementById("search-dialog");
+      let loaded = false;
+      async function openSearch() {
+        dlg.showModal();
+        if (loaded) { dlg.querySelector("input")?.focus(); return; }
+        loaded = true;
+        const css = document.createElement("link");
+        css.rel = "stylesheet"; css.href = base + "/pagefind/pagefind-ui.css";
+        document.head.appendChild(css);
+        const s = document.createElement("script");
+        s.src = base + "/pagefind/pagefind-ui.js";
+        s.onload = () => {
+          // eslint-disable-next-line no-undef
+          new PagefindUI({ element: "#search", showSubResults: true, showImages: false, resetStyles: false });
+          setTimeout(() => dlg.querySelector("input")?.focus(), 50);
+        };
+        s.onerror = () => { document.getElementById("search").innerHTML = '<p class="muted">The search index is not available in dev mode. Run <code>npm run build &amp;&amp; npm run preview</code>.</p>'; };
+        document.head.appendChild(s);
+      }
+      document.querySelectorAll("[data-open-search]").forEach((b) => b.addEventListener("click", openSearch));
+      dlg.querySelector("[data-close-search]").addEventListener("click", () => dlg.close());
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "/" && !/input|textarea/i.test(document.activeElement?.tagName || "")) { e.preventDefault(); openSearch(); }
+      });
+      // heading anchors for deep links
+      document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach((h) => {
+        const a = document.createElement("a");
+        a.href = "#" + h.id; a.className = "anchor"; a.textContent = "#"; a.setAttribute("aria-label", "Link to this section");
+        h.appendChild(a);
+      });
+    </script>
+
+    <style>
+      .nav { position: sticky; top: 0; z-index: 50; height: var(--nav-h); background: rgba(17, 14, 12, 0.82); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+      .nav-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+      .brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font: 600 1.05rem/1 var(--serif); letter-spacing: 0.05em; white-space: nowrap; }
+      .links { display: flex; align-items: center; gap: 4px; }
+      .links a { color: var(--muted); text-decoration: none; padding: 8px 11px; border-radius: 7px; font-size: 0.92rem; font-weight: 500; }
+      .links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+      .links a[aria-current="page"] { color: var(--gilt-2); background: rgba(217, 178, 94, 0.1); }
+      .search-btn { margin-left: 8px; display: inline-flex; align-items: center; gap: 8px; background: var(--panel); color: var(--muted); border: 1px solid var(--line-2); border-radius: 8px; padding: 7px 10px; cursor: pointer; font: 500 0.88rem var(--sans); }
+      .search-btn:hover { color: var(--text); border-color: var(--gilt-dim); }
+      .menu-btn { display: none; background: none; border: 1px solid var(--line-2); color: var(--text); border-radius: 8px; padding: 6px 11px; font-size: 1.1rem; cursor: pointer; }
+      @media (max-width: 900px) {
+        .menu-btn { display: block; }
+        .links { display: none; position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; align-items: stretch; padding: 10px 16px 16px; background: #120f0c; border-bottom: 1px solid var(--line); }
+        .links.open { display: flex; }
+        .links a { padding: 12px 10px; }
+        .search-btn { margin: 6px 0 0; justify-content: center; padding: 11px; }
+        .hide-sm { display: none; }
+      }
+      #search-dialog { width: min(760px, calc(100vw - 24px)); max-height: 82vh; border: 1px solid var(--line-2); border-radius: 14px; background: #17120e; color: var(--text); padding: 16px; box-shadow: var(--shadow); }
+      #search-dialog::backdrop { background: rgba(0, 0, 0, 0.65); }
+      .search-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+      .search-note { margin-top: 12px; }
+      #search { --pagefind-ui-scale: 0.85; --pagefind-ui-primary: #d9b25e; --pagefind-ui-text: #ece2cb; --pagefind-ui-background: #1f1914; --pagefind-ui-border: #50412f; --pagefind-ui-tag: #271f18; --pagefind-ui-font: var(--sans); }
+      .foot { border-top: 1px solid var(--line); margin-top: 80px; padding: 28px 0 40px; background: rgba(0, 0, 0, 0.25); }
+      .foot-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+      .foot-links { display: flex; gap: 16px; }
+    </style>
+  </body>
+</html>
