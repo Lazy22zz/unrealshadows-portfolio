@@ -2,7 +2,7 @@
 
 Source of the portfolio site for **Unreal Shadows**, a 1–2 player co-op stealth puzzle game in Unreal Engine 5.8 C++.
 
-**Live site:** https://lazy22zz.github.io/unrealshadows-portfolio/ *(available once published)*
+**Live site:** https://lazy22zz.github.io/unrealshadows-portfolio/
 
 The game repository is private. This repository only contains the website plus data, short code excerpts and screenshots
 that were explicitly allowlisted and copied from it.
@@ -38,6 +38,7 @@ npm run sync       # re-export level data, code excerpts, test inventory, screen
 npm run verify     # every class name and source path on the site must exist in the game repo
 npm test           # coin-lock rule port (vitest)
 npm run build && npm run e2e   # Playwright: every route, phone + desktop, demo interactions
+SITE_URL=https://lazy22zz.github.io/unrealshadows-portfolio/ npm run e2e   # same suite against the live site
 git add -A && git commit -m "Sync from game <commit>" && git push   # GitHub Actions deploys
 ```
 
